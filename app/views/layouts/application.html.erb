@@ -9,7 +9,33 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
+  <nav>
+      <%if current_headhunter.nil?%>
+        <p>
+          <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
+          <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
+        </p>  
+        <p>
+          <!-- <%= link_to 'Cadastrar-se como candidato', root_path%> | -->
+          <!-- <%= link_to 'Entrar como candidato', root_path%> -->
+        </p>
+      <%else%>
+        <p>
+          Olá <%= current_headhunter.email%> |
+          <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
+        </p>
+      <%end%>
+  </nav>
+
+  <div>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+  </div>
+
+
   <body>
-    <%= yield %>
+    </div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
