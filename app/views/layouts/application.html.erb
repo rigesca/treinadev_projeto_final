@@ -9,7 +9,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <nav>
+  <nav class="navbar">
       <%if current_headhunter.nil?%>
         <p>
           <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
@@ -24,12 +24,19 @@
           Olá <%= current_headhunter.email%> |
           <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
         </p>
+        <p>
+          <%= link_to 'Vagas', job_vacancies_path %>
+        </p>
       <%end%>
   </nav>
 
   <div>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if !notice.nil? %>
+      <p class="notice alert-success"><%= notice %></p>
+    <% end %>
+    <% if !alert.nil? %>
+      <p class="alert alert-danger"><%= alert %></p>
+    <% end %>
   </div>
 
 

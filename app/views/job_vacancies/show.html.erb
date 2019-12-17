@@ -1,0 +1,26 @@
+<div class="container">
+
+    <h2 class="border rounded"><%= @job_vacancy.title%></h2>
+
+    <h4>Descrição da vaga:</h4>
+    <p><%= @job_vacancy.vacancy_description%></p>
+
+    <h4>Descrição das habilidades necessarias para a vaga:</h4>
+    <p><%= @job_vacancy.ability_description%></p>
+
+    <h4>Nível da vaga:</h4>
+    <p><%= @job_vacancy.level%></p>
+
+    <h4>Região:</h4>
+    <p><%= @job_vacancy.region%></p>
+
+    <h4>Faixa salaria:</h4>
+    <p>De <%= number_to_currency @job_vacancy.minimum_wage%> ate <%= number_to_currency @job_vacancy.maximum_wage%></p>
+
+    <h4>Data limite para inscrição:</h4>
+    <p><%= I18n.localize @job_vacancy.limit_date%></p>
+
+    <h4>Status da vaga:</h4>
+    <p><%= @job_vacancy.status%></p>
+
+</div>

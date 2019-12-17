@@ -1,0 +1,24 @@
+pt-BR:
+  activerecord:
+    models:
+      job_vacancy: "Vaga de emprego"
+    attributes:
+      job_vacancy:
+        title: "Título"
+        vacancy_description: "Descrição da vaga"
+        ability_description: "Habilidades necessarias"
+        maximum_wage: "Valor maximo"
+        minimum_wage: "Valor minimo"
+        level: "Nível da vaga"
+        levels: 
+          trainee: "Estágiario"
+          junior: "Júnior"
+          full: "Pleno"
+          senior: "Sênior"
+          specialist: "Especialista"
+          manader: "Diretor"
+        limit_date: "Data limite para inscrições"
+        region: "Região da vaga"
+        status: 
+          open: "Aberta"
+          closed: "Encerrada"
