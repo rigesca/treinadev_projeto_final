@@ -27,20 +27,20 @@ feature 'Visitor navigates from homepage' do
     
 
     context 'visitor is a candidate ' do
-        xscenario 'and click in candidate create page' do
+        scenario 'and click in candidate create page' do
             visit root_path
     
-            click_on 'Cadastrar-se como headhunter'
+            click_on 'Cadastrar-se como candidato'
     
-            expect(current_path).to eq(new_headhunter_registration_path)
+            expect(current_path).to eq(new_candidate_registration_path)
         end
     
-        xscenario 'and click in candidate access page' do
+        scenario 'and click in candidate access page' do
             visit root_path
     
-            click_on 'Cadastrar-se como headhunter'
+            click_on 'Entrar como candidato'
     
-            expect(current_path).to eq(new_headhunter_sessition_path)
+            expect(current_path).to eq(new_candidate_session_path)
         end
     end
 

@@ -5,7 +5,7 @@ class JobVacanciesController < ApplicationController
 
 
     def index
-        @job_vacancies = JobVacancy.all        
+        @job_vacancies = JobVacancy.where(headhunter_id: current_headhunter.id)        
     end
 
     def show

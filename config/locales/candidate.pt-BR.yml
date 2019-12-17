@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      candidate: "Candidato"
+    attributes:
+      candidate:
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+        

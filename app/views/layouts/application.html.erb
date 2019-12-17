@@ -10,22 +10,27 @@
   </head>
 
   <nav class="navbar">
-      <%if current_headhunter.nil?%>
+      <%if current_headhunter.nil? && current_candidate.nil?%>
         <p>
           <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
           <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
         </p>  
         <p>
-          <!-- <%= link_to 'Cadastrar-se como candidato', root_path%> | -->
-          <!-- <%= link_to 'Entrar como candidato', root_path%> -->
+          <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
+          <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
         </p>
-      <%else%>
+      <% elsif !current_headhunter.nil? %>
         <p>
           Olá <%= current_headhunter.email%> |
           <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
         </p>
         <p>
           <%= link_to 'Vagas', job_vacancies_path %>
+        </p>
+      <% else %>
+        <p>
+          Olá <%= current_candidate.email%> |
+          <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
         </p>
       <%end%>
   </nav>
