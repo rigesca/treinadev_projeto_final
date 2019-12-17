@@ -11,42 +11,79 @@
 
 
     <%= form_with model: @job_vacancy, local: true do |form| %>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :title%>
+                    <%= form.text_field :title, class:"form-control"%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :vacancy_description %>
+                    <%= form.text_area :vacancy_description, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :ability_description %>
+                    <%= form.text_area :ability_description, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :level%>
+                    <%= form.collection_radio_buttons :level, JobVacancy.levels, :first, :first, class:"form-control"%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <%= form.label :region %>
+                    <%= form.text_field :region, class: "form-control"%>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <p>Faixa Salario:</p>
+                    <div class="col-sm-4">
+                        <%= form.label :minimum_wage%>
+                        <%= form.number_field :minimum_wage, class: "form-control"%>
+                    </div>
+                    <div class="col-sm-4">
+                        <%= form.label :maximum_wage%>
+                        <%= form.number_field :maximum_wage, class: "form-control"%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <%= form.label :limit_date %>
+                    <%= form.date_field :limit_date, class: "form-control" %>
+                </div>
+            </div>
+        </div>
+
         <p>
-            <%= form.label :title%>
-            <%= form.text_field :title%>
-        </p>
-        <p>
-            <%= form.label :vacancy_description %>
-            <%= form.text_area :vacancy_description, size: '50*5'%>
-        </p>
-        <p>
-            <%= form.label :ability_description %>
-            <%= form.text_area :ability_description, size: '50x5'%>
-        </p>
-        <p>
-            <%= form.label :level%>
-            <%= form.collection_radio_buttons :level, JobVacancy.levels, :first, :second%>
-        </p>
-        </p>
-        <p>
-            <%= form.label :region %>
-            <%= form.text_field :region %>
-        </p>
-        <p>
-            <p>Faixa Salario:</p>
-                <p>
-                    <%= form.label :minimum_wage%>
-                    <%= form.text_field :minimum_wage%>
-                    <%= form.label :maximum_wage%>
-                    <%= form.text_field :maximum_wage%>
-                </p>
-        </p>
-        <p>
-            <%= form.label :limit_date %>
-            <%= form.date_field :limit_date %>
-        </p>
-        <p>
-            <%= form.submit 'Salvar' %>
+            <%= form.submit 'Salvar', class: "btn btn-primary"%>
         </p>
     <%end%>
 

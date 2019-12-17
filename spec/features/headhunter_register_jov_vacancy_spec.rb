@@ -84,4 +84,25 @@ feature 'Headhunter register a job vacancy' do
 
         expect(page).to have_content('Valor minimo deve ser menor que o valor maximo.')
     end
+
+    scenario 'try register with a minimum wage below zero' do
+        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+            password: '123teste')
+        login_as(headhunter)
+        
+        visit new_job_vacancy_path
+
+        fill_in 'Título', with: 'Vaga de programador ruby'
+        fill_in 'Descrição', with: 'A empresa busca por programadores ruby'
+        fill_in 'Habilidades necessarias', with: 'Conhecer TDD e ruby'
+        fill_in 'Valor minimo', with: -50
+        fill_in 'Valor maximo', with: 1500
+        choose('10')
+        fill_in 'Data limite para inscrições', with: 15.day.from_now
+        fill_in 'Região da vaga', with: 'Av. Paulista, 100'
+
+        click_on 'Salvar'
+
+        expect(page).to have_content('Valor minimo deve ser maior ou igual a 0')
+    end
 end

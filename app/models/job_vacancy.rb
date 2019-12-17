@@ -18,6 +18,8 @@ class JobVacancy < ApplicationRecord
   def maximun_wage_not_be_greater_than_minimum
     return unless maximum_wage.present? && minimum_wage.present?
 
+    return if minimum_wage < 0
+
     if minimum_wage > maximum_wage
       errors.add(:minimum_wage, 'deve ser menor que o valor maximo.')
     end
@@ -30,6 +32,5 @@ class JobVacancy < ApplicationRecord
       errors.add(:limit_date, 'deve ser maior que a data atual.')
     end
   end
-
 
 end
