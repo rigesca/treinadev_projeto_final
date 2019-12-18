@@ -5,6 +5,11 @@ feature 'Candidate sing in' do
     scenario 'successfully' do
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
 
         visit root_path
 
