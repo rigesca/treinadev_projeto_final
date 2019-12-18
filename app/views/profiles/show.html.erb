@@ -1,0 +1,50 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h2><%= @profile.name%></h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h4>Nome Social:</h4>
+            <p><%= @profile.social_name%></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h4>Data de nascimento:</h4>
+            <p><%= I18n.localize @profile.birth_date%></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h4>Formação:</h4>
+            <p><%= @profile.formation%></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h4>Descrição:</h4>
+            <p><%= @profile.description%></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <h4>Experiência:</h4>
+            <p><%= @profile.social_name%></p>
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="col-sm-8">
+            <%= link_to 'Editar', edit_profile_path(@profile)%>   
+            <%= link_to 'Voltar', :back%> 
+        </div>
+    </div>
+</div>

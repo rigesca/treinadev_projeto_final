@@ -32,6 +32,11 @@
           Olá <%= current_candidate.email%> |
           <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
         </p>
+        <% if @profile.profile_is_complete?%>
+          <p>
+            <%= link_to 'Perfil', @profile %>
+          </p>
+        <%end%>
       <%end%>
   </nav>
 

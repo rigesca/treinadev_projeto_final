@@ -19,6 +19,6 @@ pt-BR:
           manader: "Diretor"
         limit_date: "Data limite para inscrições"
         region: "Região da vaga"
-        status: 
+        statuses: 
           open: "Aberta"
           closed: "Encerrada"

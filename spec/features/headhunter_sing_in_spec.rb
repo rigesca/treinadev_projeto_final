@@ -63,7 +63,7 @@ feature 'Headhunter sing in' do
     scenario 'and sign out' do
         headhunter = Headhunter.create!(email: 'headhunter@teste.com',
                                         password: '123teste')
-        login_as(headhunter)
+        login_as(headhunter, :scope => :headhunter)
 
         visit root_path
 

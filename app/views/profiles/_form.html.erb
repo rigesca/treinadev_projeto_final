@@ -1,0 +1,82 @@
+<div class="container">
+
+    <% if profile.errors.any? %>
+        <p>Você deve corrigir os seguintes erros para continuar</p>
+        <ul>
+            <% profile.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+        </ul>
+    <% end %>
+
+
+    <%= form_with model: profile, local: true do |form| %>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :name%>
+                    <%= form.text_field :name, class:"form-control"%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :social_name%>
+                    <%= form.text_field :social_name, class:"form-control"%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <%= form.label :birth_date %>
+                    <%= form.date_field :birth_date, class: "form-control" %>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :formation %>
+                    <%= form.text_area :formation, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :description %>
+                    <%= form.text_area :description, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :experience %>
+                    <%= form.text_area :experience, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <%= form.submit 'Salvar', class: "btn btn-primary"%>
+                </div>
+            </div>
+        </div>
+            
+
+    <%end%>
+
+
+
+</div>
