@@ -1,0 +1,30 @@
+<%= nav_bar do%>
+    <%if headhunter.nil? && candidate.nil?%>
+      <p>
+        <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
+        <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
+      </p>  
+      <p>
+        <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
+        <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
+      </p>
+    <% elsif !headhunter.nil? %>
+      <p>
+        Olá <%= headhunter.email%> |
+        <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
+      </p>
+      <p>
+        <%= link_to 'Vagas', job_vacancies_path %>
+      </p>
+    <% else %>
+      <p>
+        Olá <%= candidate.email%> |
+        <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
+      </p>
+      <% if profile.profile_is_complete?%>
+        <p>
+          <%= link_to 'Perfil', profile %>
+        </p>
+      <%end%>
+    <%end%>
+<% end %>

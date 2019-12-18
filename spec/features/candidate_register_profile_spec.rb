@@ -11,10 +11,11 @@ feature 'Candidate register a profile' do
         fill_in 'Nome completo', with: 'Fulano Siclano'
         fill_in 'Nome social', with: 'Siclano'
         fill_in 'Data de nascimento', with: '15/07/1989'
+        attach_file 'Foto do candidato', Rails.root.join('spec', 'support', 'foto.jpeg')
         fill_in 'Formação', with: 'Graduado em analise de sistema'
         fill_in 'Descrição', with: 'Busco oportunidade como programador'
         fill_in 'Experiência', with: 'Trabalho 2 anos na empresa X'
-        
+
         click_on 'Salvar'
 
         expect(page).to have_content('Perfil concluido com sucesso')

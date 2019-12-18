@@ -36,7 +36,7 @@ class ProfilesController < ApplicationController
         
         if @profile.update(profile_params)
             flash[:notice] = 'Perfil alterado com sucesso'
-            redirect_to root_path
+            redirect_to @profile
         else 
             render :edit
         end
@@ -46,6 +46,6 @@ class ProfilesController < ApplicationController
 
     def profile_params
         params.require(:profile).permit(:name, :social_name, :birth_date, 
-                                        :formation, :description, :experience)
+                                        :formation, :description, :experience, :candidate_photo)
     end
 end

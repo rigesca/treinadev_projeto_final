@@ -10,6 +10,7 @@ feature 'Candidate sing in' do
                                   description: 'Busco oportunidade como programador',
                                   experience: 'Trabalhou por 2 anos na empresa X',
                                   candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
 
         visit root_path
 

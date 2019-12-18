@@ -10,6 +10,7 @@ RSpec.describe Profile, type: :model do
                             description: 'Busco oportunidade como programador',
                             experience: 'Trabalhou por 2 anos na empresa X',
                             candidate_id: candidate.id)
+      profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
 
       expect(profile.profile_is_complete?).to eq(true)
     end
