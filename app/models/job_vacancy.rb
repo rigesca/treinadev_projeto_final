@@ -13,7 +13,11 @@ class JobVacancy < ApplicationRecord
                 specialist: 40, manager: 50}
   enum status: { open: 0, closed: 10}
 
-  protected 
+  def heading
+    "#{level} | #{title}"
+  end
+
+  protected
 
   def maximun_wage_not_be_greater_than_minimum
     return unless maximum_wage.present? && minimum_wage.present?

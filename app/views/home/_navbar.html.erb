@@ -21,10 +21,12 @@
         Olá <%= candidate.email%> |
         <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
       </p>
-      <% if profile.profile_is_complete?%>
-        <p>
-          <%= link_to 'Perfil', profile %>
-        </p>
-      <%end%>
+      <p>
+      <%= link_to 'Perfil', candidate.profile %>
+          <% if candidate.profile.profile_is_complete?%>
+              <%= link_to 'Minhas Vagas', root_path %>
+              <%= link_to 'Busca por vagas', job_vacancies_path %>
+          <%end%>
+      </p>
     <%end%>
 <% end %>

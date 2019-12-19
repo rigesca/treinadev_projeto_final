@@ -1,0 +1,16 @@
+<td>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4><%= link_to vacancy.heading, vacancy%></h4>
+        </div>
+        <div class="col-sm-12">
+            <%= vacancy.vacancy_description%>
+        </div>
+        <div class="col-sm-12">
+            Faixa salárial: <%= number_to_currency vacancy.minimum_wage %> ~ <%= number_to_currency vacancy.maximum_wage %>
+        </div>
+        <div class="col-sm-12">
+            Inscrições aberta ate: <%= I18n.localize vacancy.limit_date %>
+        </div>
+    </div>
+</td>

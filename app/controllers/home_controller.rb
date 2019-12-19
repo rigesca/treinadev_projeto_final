@@ -1,15 +1,15 @@
 class HomeController < ApplicationController
   def index
     if current_candidate.present?
-      @profile = Profile.find_by(candidate_id: current_candidate.id)
+      profile = current_candidate.profile
 
-      if @profile.nil?
+      if !profile.present?
         flash[:alert] = 'É necessario criar um perfil para se inscrever em qualquer vaga'
         redirect_to new_profile_path
       else 
-        if !@profile.profile_is_complete?
+        if !profile.profile_is_complete?
           flash[:alert] = 'É necessario completar o perfil para se inscrever em qualquer vaga'
-          redirect_to edit_profile_path(@profile)
+          redirect_to edit_profile_path(profile)
         end
       end      
     end

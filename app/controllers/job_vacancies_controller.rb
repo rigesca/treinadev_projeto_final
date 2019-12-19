@@ -5,7 +5,11 @@ class JobVacanciesController < ApplicationController
 
 
     def index
-        @job_vacancies = JobVacancy.where(headhunter_id: current_headhunter.id)        
+        if current_headhunter.present?
+            @job_vacancies = JobVacancy.where(headhunter_id: current_headhunter.id)
+        else
+            @job_vacancies = JobVacancy.where("limit_date > ?", Date.current)
+        end      
     end
 
     def show

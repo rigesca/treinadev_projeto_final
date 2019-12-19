@@ -21,6 +21,10 @@
     <p><%= I18n.localize @job_vacancy.limit_date%></p>
 
     <h4>Status da vaga:</h4>
-    <p><%= @job_vacancy.status%></p>
+    <p><%= I18n.t(@job_vacancy.status, scope: [:job_vacancy,]) %></p>
+
+    <% if current_candidate.present?%>
+        <%= link_to 'Candidatar-se a vaga', root_path, class: "btn btn-primary"%>
+    <% end %>
 
 </div>
