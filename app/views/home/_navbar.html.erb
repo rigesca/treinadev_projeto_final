@@ -8,7 +8,7 @@
         <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
         <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
       </p>
-    <% elsif !headhunter.nil? %>
+    <% elsif headhunter.present? %>
       <p>
         Olá <%= headhunter.email%> |
         <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
@@ -23,8 +23,8 @@
       </p>
       <p>
       <%= link_to 'Perfil', candidate.profile %>
-          <% if candidate.profile.profile_is_complete?%>
-              <%= link_to 'Minhas Vagas', root_path %>
+          <% if candidate.profile.present? && candidate.profile.profile_is_complete?%>
+              <%= link_to 'Minhas Vagas', registereds_path %>
               <%= link_to 'Busca por vagas', job_vacancies_path %>
           <%end%>
       </p>

@@ -1,5 +1,8 @@
 class JobVacancy < ApplicationRecord
   belongs_to :headhunter
+  
+  has_many :registereds
+  has_many :candidates, :through => :registereds
 
   validates :title, :vacancy_description, :ability_description, :level,
             :limit_date, :region, presence: true
@@ -16,6 +19,12 @@ class JobVacancy < ApplicationRecord
   def heading
     "#{level} | #{title}"
   end
+
+  def verify_candidate_apply_for_vacancy(candidate_id)
+    registereds.find_by(candidate_id: candidate_id).present?
+  end
+
+
 
   protected
 

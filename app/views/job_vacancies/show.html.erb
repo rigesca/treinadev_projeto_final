@@ -21,10 +21,21 @@
     <p><%= I18n.localize @job_vacancy.limit_date%></p>
 
     <h4>Status da vaga:</h4>
-    <p><%= I18n.t(@job_vacancy.status, scope: [:job_vacancy,]) %></p>
+    <p><%= @job_vacancy.status %></p>
 
     <% if current_candidate.present?%>
-        <%= link_to 'Candidatar-se a vaga', root_path, class: "btn btn-primary"%>
+
+        <% if @job_vacancy.verify_candidate_apply_for_vacancy(current_candidate.id) %>
+            
+            <p class="notice alert-success">Você já se encontra inscrito para essa vaga.</p>
+        
+        <% else %>
+            
+            <%=render partial: "apply_form", locals: {registered: @registered}%>
+
+        <%end%>
     <% end %>
+
+    <%= link_to 'Voltar', job_vacancies_path, class: "btn btn-primary"%>
 
 </div>

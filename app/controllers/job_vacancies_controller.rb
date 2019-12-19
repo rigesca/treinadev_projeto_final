@@ -1,7 +1,7 @@
 class JobVacanciesController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:new,:create]
-
+    before_action :authenticate_candidate!, only: [:apply]
 
 
     def index
@@ -14,6 +14,10 @@ class JobVacanciesController < ApplicationController
 
     def show
         @job_vacancy = JobVacancy.find(params[:id])
+
+        if current_candidate.present?         
+                @registered = Registered.new
+        end
     end
 
     def new
@@ -31,11 +35,18 @@ class JobVacanciesController < ApplicationController
         end
     end
 
-
-
-
-
-
+    def apply
+        @job_vacancy = JobVacancy.find(params[:id])
+        @registered = Registered.new(candidate_id: current_candidate.id, job_vacancy_id: @job_vacancy.id, 
+                                     registered_justification: params[:registered][:registered_justification])
+        if @registered.save
+            flash[:notice] = "Você se escreveu para a vaga: #{@job_vacancy.title}, com sucesso"
+            redirect_to @job_vacancy
+        else
+            flash[:alert] = @registered.errors.full_messages.first
+            redirect_to @job_vacancy
+        end
+    end
 
     private
 

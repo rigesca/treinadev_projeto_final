@@ -1,0 +1,7 @@
+pt-BR:
+  activerecord:
+    models:
+      registered: "Inscrição"
+    attributes:
+      registered:
+        registered_justification: "Justificativa"
