@@ -1,6 +1,6 @@
 <div class="container">
 
-    <h2><%= @job_vacancy.title%></h2>
+    <h3><%= @job_vacancy.title%></h3>
 
     <h4>Descrição da vaga:</h4>
     <p><%= @job_vacancy.vacancy_description%></p>
@@ -30,11 +30,16 @@
             <p class="notice alert-success">Você já se encontra inscrito para essa vaga.</p>
         
         <% else %>
-            
+
             <%=render partial: "apply_form", locals: {registered: @registered}%>
 
         <%end%>
+    
     <% end %>
+
+    <% if current_headhunter.present? %>
+        <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
+    <% end %>    
 
     <%= link_to 'Voltar', job_vacancies_path, class: "btn btn-primary"%>
 

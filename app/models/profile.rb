@@ -9,10 +9,14 @@ class Profile < ApplicationRecord
     if (name.present? && social_name.present? && birth_date.present? &&
         formation.present? && description.present? && experience.present? &&
         candidate_photo.attached?)
-      true
+      true 
     else 
       false
     end
   end    
+
+  def calculates_candidate_age
+    "#{Date.current.year - birth_date.year} Anos"
+  end
 
 end

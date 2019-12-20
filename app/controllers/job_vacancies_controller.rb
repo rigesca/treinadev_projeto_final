@@ -8,7 +8,7 @@ class JobVacanciesController < ApplicationController
         if current_headhunter.present?
             @job_vacancies = JobVacancy.where(headhunter_id: current_headhunter.id)
         else
-            @job_vacancies = JobVacancy.where("limit_date > ?", Date.current)
+            @job_vacancies = JobVacancy.where("limit_date > ?", Date.current).open
         end      
     end
 
@@ -46,6 +46,11 @@ class JobVacanciesController < ApplicationController
             flash[:alert] = @registered.errors.full_messages.first
             redirect_to @job_vacancy
         end
+    end
+
+    def candidate_list
+        @job_vacancy = JobVacancy.find(params[:id])
+        @registereds = @job_vacancy.registereds
     end
 
     private
