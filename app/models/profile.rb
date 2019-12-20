@@ -1,5 +1,6 @@
 class Profile < ApplicationRecord
   belongs_to :candidate
+  has_many :comments
 
   has_one_attached :candidate_photo
 

@@ -34,7 +34,12 @@
 
      <div class="row">
         <div class="col-sm-12">
-            <%= link_to 'Editar', edit_profile_path(@profile), class: "btn btn-primary"%>   
+           <%= link_to 'Comentários', comments_list_profile_path , class: "btn btn-primary"%>
+            
+            <% if current_candidate.present?%>
+                <%= link_to 'Editar', edit_profile_path(@profile), class: "btn btn-primary"%>
+            <% end %>
+
             <%= link_to 'Voltar', :back , class: "btn btn-primary"%> 
         </div>
     </div>

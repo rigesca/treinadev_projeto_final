@@ -5,4 +5,5 @@ class Headhunter < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :job_vacancy
+  has_many :comments
 end

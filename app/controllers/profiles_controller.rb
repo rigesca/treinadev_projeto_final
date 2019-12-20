@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
 
     before_action :authenticate_candidate!, only: [:new,:create,:edit,:update]
-
+    before_action :authenticate_headhunter!, only: [:register_comment]
 
     def new
         @profile = Profile.new
@@ -39,6 +39,29 @@ class ProfilesController < ApplicationController
             redirect_to @profile
         else 
             render :edit
+        end
+    end
+
+    def comments_list
+        if current_headhunter.present?
+            @candidate_comments = current_headhunter.comments.where(profile_id: params[:id])
+            @comment = Comment.new
+        else
+            @candidate_comments = Profile.find(params[:id]).comments
+        end 
+    end
+
+    def register_comment
+        @comment = Comment.new(headhunter_id: current_headhunter.id,
+                               profile_id: params[:id],
+                               comment: params[:comment][:comment])
+
+        if @comment.save
+            flash[:notice] = 'Comentário criado com sucesso'
+            redirect_to comments_list_profile_path
+        else
+            flash[:alert] = @comment.errors.full_messages.first
+            redirect_to comments_list_profile_path
         end
     end
 
