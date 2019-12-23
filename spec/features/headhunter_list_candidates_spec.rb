@@ -154,6 +154,6 @@ feature 'Headhunter list candidates from a vacancy' do
         visit job_vacancy_path(job_vacancy)
         click_on 'Lista Candidatos'
 
-        expect(page).to have_content('A vaga não possui candidatos inscritos')
+        expect(page).to have_content('A vaga não possui candidatos em destaque.')
     end
 end
