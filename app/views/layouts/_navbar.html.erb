@@ -24,6 +24,7 @@
       <p>
       <%= link_to 'Perfil', candidate.profile %>
           <% if candidate.profile.present? && candidate.profile.profile_is_complete?%>
+              <%= link_to 'Mensagens', comments_list_profile_path(current_candidate.profile)%>
               <%= link_to 'Minhas Vagas', registereds_path %>
               <%= link_to 'Busca por vagas', job_vacancies_path %>
           <%end%>
