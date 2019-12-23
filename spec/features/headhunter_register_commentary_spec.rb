@@ -51,7 +51,7 @@ feature 'Headhunter register a commentary for a candidate' do
         expect(page).to have_content(commentary.customized_send_time_message)
     end
 
-    scenario 'successfully' do
+    scenario 'and try to send a comentary without a text' do
         headhunter = Headhunter.create!(email: 'headhunter@teste.com',
                                         password: '123teste')
         
@@ -67,20 +67,6 @@ feature 'Headhunter register a commentary for a candidate' do
         profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
                                        filename:'foto.jpeg')
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
-
-
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id,
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-
         login_as(headhunter, :scope => :headhunter)
 
         visit comments_list_profile_path(profile) 
@@ -89,5 +75,37 @@ feature 'Headhunter register a commentary for a candidate' do
 
         expect(page).to have_content("Comentário não pode ficar em branco")
         expect(page).to have_content("O candidato não possui comentários registrado em seu perfil.")
+    end
+
+    scenario 'and headhunter cant see a commentary from another headhunter' do
+        headhunter_1 = Headhunter.create!(email: 'headhunter@teste_1.com',
+                                          password: '123teste')
+
+        headhunter_2 = Headhunter.create!(email: 'headhunter@teste_2.com',
+                                          password: '123teste')
+        
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                      password: '123teste')
+
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                       filename:'foto.jpeg')
+
+        headhunter_1_comentary = Comment.create!(headhunter_id:headhunter_1.id, profile_id:profile.id, 
+                                                 comment: "Boa noite, sou o Headhunter 1 e gostaria de falar com vc")
+        headhunter_2_comentary = Comment.create!(headhunter_id:headhunter_2.id, profile_id:profile.id, 
+                                                 comment: "Boa noite, sou o Headhunter 2 e gostaria de falar com vc")
+
+        login_as(headhunter_1, :scope => :headhunter)
+
+        visit comments_list_profile_path(profile) 
+        
+        expect(page).to have_content("Boa noite, sou o Headhunter 1 e gostaria de falar com vc")
+        expect(page).not_to have_content("Boa noite, sou o Headhunter 2 e gostaria de falar com vc")
     end
 end

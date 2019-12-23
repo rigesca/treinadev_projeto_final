@@ -51,6 +51,7 @@ class JobVacanciesController < ApplicationController
     def candidate_list
         @job_vacancy = JobVacancy.find(params[:id])
         @registereds = @job_vacancy.registereds
+        @favorits_registereds = @registereds.checked
     end
 
     private

@@ -26,10 +26,13 @@
                             <tr>
                                 <td>
                                     <div class="col">
-                                        <%= link_to "#{registered.candidate.profile.name} - #{registered.candidate.profile.calculates_candidate_age}", profile_path(registered.candidate.profile)%>
+                                        <%= registered.highlight?%> <%= link_to "#{registered.candidate.profile.name} - #{registered.candidate.profile.calculates_candidate_age}", profile_path(registered.candidate.profile)%>
                                     </div>
                                     <div class="col">
                                         <%=registered.registered_justification%> 
+                                    </div>
+                                    <div class="col">
+                                        <%=button_to 'Favorito', mark_registered_path(registered), class: "btn btn-success" %> 
                                     </div>
                                 </td>
                             </tr>
@@ -39,6 +42,52 @@
                 </tbody>
 
             </table>
+
+            <!-- -->
+
+            <table class="table table-striped table-bordered">
+                
+                <thead class="thead-dark">
+                    <tr>
+                        <th>CANDIDATOS EM DESTAQUE</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <%if @favorits_registereds.nil?%>
+                        
+                        <tr>
+                            <td>A vaga não possui candidatos inscritos</td>
+                        </tr>
+
+                    <%else%>
+                        
+                        <% @favorits_registereds.each do |favorit_registered|%>
+                            <tr>
+                                <td>
+                                    <div class="col">
+                                        <%= favorit_registered.highlight?%> <%= link_to "#{favorit_registered.candidate.profile.name} - #{favorit_registered.candidate.profile.calculates_candidate_age}", profile_path(favorit_registered.candidate.profile)%>
+                                    </div>
+                                    <div class="col">
+                                        <%=favorit_registered.registered_justification%> 
+                                    </div>
+                                    <div class="col">
+                                        <%=button_to 'Favorito', mark_registered_path(favorit_registered), class: "btn btn-success" %> 
+                                    </div>
+                                </td>
+                            </tr>
+                        <%end%>
+
+                    <%end%>
+                </tbody>
+
+            </table>
+
+
+
+
+
+
             
         </div>
     </div>

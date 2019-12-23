@@ -8,7 +8,10 @@ Rails.application.routes.draw do
     get 'comments_list', on: :member, shallow: true
     post 'register_comment', on: :member
   end
-  resources :registereds,only: [:index] 
+  
+  resources :registereds,only: [:index] do
+    post 'mark', on: :member
+  end
 
   resources :job_vacancies, only: [:index,:create,:new,:show] do
     post 'apply', on: :member
