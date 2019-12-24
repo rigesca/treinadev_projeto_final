@@ -30,17 +30,8 @@
                                 </div>
                                 
                                 <div class="col">
-                                    <%=registered.registered_justification%>
+                                    <strong>Feedback:</strong><%=registered.closed_feedback%>
                                     <p></p>
-                                </div>
-                                
-                                <div class="col">
-                                    <div class="col-sm-2">
-                                        <%=button_to 'Favorito', mark_registered_path(registered), {class: "btn btn-success", id: "#{registered.id}_#{table_name.gsub(' ','_')}"}  %> 
-                                    </div>
-                                    <div class="col">
-                                        <%=link_to 'Encerra inscrição', cancel_registered_path(registered), {class: "btn btn-danger", id: "#{registered.id}_canceled"}  %> 
-                                    </div>
                                 </div>
 
                             </td>

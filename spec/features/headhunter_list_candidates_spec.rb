@@ -151,9 +151,80 @@ feature 'Headhunter list candidates from a vacancy' do
 
         login_as(headhunter, :scope => :headhunter)
 
-        visit job_vacancy_path(job_vacancy)
-        click_on 'Lista Candidatos'
+        visit candidate_list_job_vacancy_path(job_vacancy.id)
 
         expect(page).to have_content('A vaga não possui candidatos em destaque.')
+    end
+
+    scenario 'and has no favorit registered candidates' do
+        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                        password: '123teste')
+        
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                            password: '123teste')
+
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                       filename:'foto.jpeg')
+
+        
+
+        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                         vacancy_description:'O profissional ira trabalhar com ruby',
+                                         ability_description:'Conhecimento em TDD e ruby',
+                                         level: :junior,
+                                         limit_date: 7.day.from_now,
+                                         region: 'Av.Paulista, 1000',
+                                         minimum_wage: 2500,
+                                         maximum_wage: 2800,
+                                         headhunter_id: headhunter.id)
+
+        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
+                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+        login_as(headhunter, :scope => :headhunter)
+        visit candidate_list_job_vacancy_path(job_vacancy.id)
+
+        expect(page).to have_content('A vaga não possui candidatos em destaque.') 
+    end
+
+    scenario 'and has no canceled registered' do
+        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                        password: '123teste')
+        
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                            password: '123teste')
+
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                       filename:'foto.jpeg')
+
+        
+
+        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                         vacancy_description:'O profissional ira trabalhar com ruby',
+                                         ability_description:'Conhecimento em TDD e ruby',
+                                         level: :junior,
+                                         limit_date: 7.day.from_now,
+                                         region: 'Av.Paulista, 1000',
+                                         minimum_wage: 2500,
+                                         maximum_wage: 2800,
+                                         headhunter_id: headhunter.id)
+
+        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
+                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+        login_as(headhunter, :scope => :headhunter)
+        visit candidate_list_job_vacancy_path(job_vacancy.id)
+
+        expect(page).to have_content('A vaga não possui candidatos recusados.') 
     end
 end

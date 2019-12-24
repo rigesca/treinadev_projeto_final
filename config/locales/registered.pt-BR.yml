@@ -5,3 +5,4 @@ pt-BR:
     attributes:
       registered:
         registered_justification: "Justificativa"
+        closed_feedback: "Feedback"

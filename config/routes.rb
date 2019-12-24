@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   
   resources :registereds,only: [:index] do
     post 'mark', on: :member
+    post 'save_canceled', on: :member
+    get 'cancel', on: :member
   end
 
   resources :job_vacancies, only: [:index,:create,:new,:show] do

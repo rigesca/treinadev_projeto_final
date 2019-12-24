@@ -5,4 +5,8 @@ class Registered < ApplicationRecord
   validates :registered_justification, presence: true
 
   enum highlight: {unchecked: false , checked: true}
+
+  enum status: {in_progress: 0,
+                closed: 5}
+
 end

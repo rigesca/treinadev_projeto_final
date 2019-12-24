@@ -27,7 +27,11 @@
 
         <% if @job_vacancy.verify_candidate_apply_for_vacancy(current_candidate.id) %>
             
-            <p class="notice alert-success">Você já se encontra inscrito para essa vaga.</p>
+            <% if @job_vacancy.verify_status_registered_for_vacancy(current_candidate.id) %>
+                <p class="notice alert-success">Você já se encontra inscrito para essa vaga.</p>
+            <% else %>
+                <p class="notice alert-danger">Vaga encerrada, veja justificativa em "minhas vagas".</p>
+            <% end %>
         
         <% else %>
 
@@ -41,6 +45,6 @@
         <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
     <% end %>    
 
-    <%= link_to 'Voltar', job_vacancies_path, class: "btn btn-primary"%>
+    <%= link_to 'Voltar', :back, class: "btn btn-primary"%>
 
 </div>

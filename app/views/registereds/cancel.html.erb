@@ -1,0 +1,29 @@
+<div class="container">
+    <h3>Encerrar candidatura</h3>
+
+    <br>
+
+    <h4><strong>VAGA:     </strong><%= @job_vacancy.title %></h4>
+    <h4><strong>CANDIDATO:</strong><%= @profile.name %></h4>
+
+    <br>
+
+    <%= form_with model: @registered, url: save_canceled_registered_path, method: :post do |form|%>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label  :closed_feedback%>
+                    <p><em>*Para cancelar a candidatura do inscrito, favor informar um feedback.</em></p>
+                    <%= form.text_area :closed_feedback, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>    
+        <p>
+            <%= form.submit 'Encerrar', class: "btn btn-danger"%>
+        </p>  
+    <%end%>
+
+
+
+</div>

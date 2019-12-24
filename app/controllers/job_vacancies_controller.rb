@@ -50,8 +50,9 @@ class JobVacanciesController < ApplicationController
 
     def candidate_list
         @job_vacancy = JobVacancy.find(params[:id])
-        @registereds = @job_vacancy.registereds
+        @registereds = @job_vacancy.registereds.in_progress
         @favorits_registereds = @registereds.checked
+        @canceled_registereds = @job_vacancy.registereds.closed
     end
 
     private

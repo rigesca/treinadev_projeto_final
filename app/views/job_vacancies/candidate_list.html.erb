@@ -5,6 +5,8 @@
     <%= render partial: 'registered', locals: {registereds: @registereds, table_name:"candidatos"}%>
 
     <%= render partial: 'registered', locals: {registereds: @favorits_registereds, table_name:"candidatos em destaque"}%>
+
+    <%= render partial: 'canceled', locals: {registereds: @canceled_registereds, table_name:"candidatos recusados"}%>
    
     
 </div>
