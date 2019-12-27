@@ -34,7 +34,7 @@ feature 'Candidate consults apply vacancy'do
         click_on 'Minhas Vagas'
 
         expect(page).to have_content(job_vacancy.heading)
-        expect(page).to have_content('in_progress')
+        expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
 
         click_on job_vacancy.heading
 
@@ -94,7 +94,7 @@ feature 'Candidate consults apply vacancy'do
         click_on 'Minhas Vagas'
 
         expect(page).to have_content('O candidato não apresenta todos os requisitos necessarios')
-        expect(page).to have_content('closed')
+        expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
 
         click_on job_vacancy.heading
 

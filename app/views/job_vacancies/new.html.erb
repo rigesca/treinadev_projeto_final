@@ -45,7 +45,9 @@
             <div class="col-sm-8">
                 <div class="form-group">
                     <%= form.label :level%>
-                    <%= form.collection_radio_buttons :level, JobVacancy.levels, :first, :first, class:"form-control"%>
+                    <%= form.collection_radio_buttons :level, JobVacancy.levels, :first, :first, class:"form-control" do |rb|%>
+                        <%= rb.label {rb.radio_button + I18n.t(rb.text, scope: [:enum, :levels])}%>
+                    <%end%>
                 </div>
             </div>
         </div>

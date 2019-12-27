@@ -11,11 +11,17 @@ Rails.application.routes.draw do
   
   resources :registereds,only: [:index] do
     post 'mark', on: :member
-    post 'save_canceled', on: :member
+    
     get 'cancel', on: :member
+    post 'save_canceled', on: :member
+
+    get 'proposal', on: :member, controller: 'proposals', action: :new
+    post 'send_proposal', on: :member, controller: 'proposals', action: :create
   end
 
-  resources :job_vacancies, only: [:index,:create,:new,:show] do
+  resources :proposals, only: [:index, :show]
+
+  resources :job_vacancies, only: [:index,:show, :new, :create] do
     post 'apply', on: :member
     get 'candidate_list', on: :member, shallow: true
   end

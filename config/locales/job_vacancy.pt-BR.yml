@@ -16,7 +16,7 @@ pt-BR:
           full: "Pleno"
           senior: "Sênior"
           specialist: "Especialista"
-          manader: "Diretor"
+          manager: "Diretor"
         limit_date: "Data limite para inscrições"
         region: "Região da vaga"
         statuses: 

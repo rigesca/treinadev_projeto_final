@@ -220,3 +220,15 @@ pt-BR:
       long: "%d de %B de %Y, %H:%M"
       short: "%d de %B, %H:%M"
     pm: ''
+  enum:
+    statuses:
+      open: "Aberto"
+      in_progress: "Em andamento"
+      closed: "Encerrada"
+    levels:
+      trainee: "Estágiario"
+      junior: "Júnior"
+      full: "Pleno"
+      senior: "Sênior"
+      specialist: "Especialista"
+      manager: "Diretor"

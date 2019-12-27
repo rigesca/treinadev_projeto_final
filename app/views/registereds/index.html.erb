@@ -28,9 +28,9 @@
                                 </td>
                                 <td>
                                    <% if registered.closed? %>
-                                        <strong> <%= registered.status %></strong>
+                                        <strong> <%= I18n.t(registered.status, scope: [:enum,:statuses]) %></strong>
                                     <% else %>
-                                        <%= registered.status %>
+                                        <%= I18n.t(registered.status, scope: [:enum,:statuses]) %>
                                     <% end %>
                                 </td>
                             </tr>

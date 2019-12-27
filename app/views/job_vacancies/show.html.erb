@@ -21,7 +21,7 @@
     <p><%= I18n.localize @job_vacancy.limit_date%></p>
 
     <h4>Status da vaga:</h4>
-    <p><%= @job_vacancy.status %></p>
+    <p><%= I18n.t(@job_vacancy.status, scope: [:enum,:statuses]) %></p>
 
     <% if current_candidate.present?%>
 
@@ -45,6 +45,6 @@
         <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
     <% end %>    
 
-    <%= link_to 'Voltar', :back, class: "btn btn-primary"%>
+    <%= link_to 'Voltar', job_vacancies_path , class: "btn btn-primary"%>
 
 </div>

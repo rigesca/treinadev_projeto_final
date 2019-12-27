@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Profile, type: :model do
   context '.profile_is_complete?' do
+    
     it 'with a complete profile' do
       candidate = Candidate.create!(email: 'candidate@teste.com',
                                     password: '123teste')

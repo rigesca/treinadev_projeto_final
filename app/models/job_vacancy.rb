@@ -17,7 +17,7 @@ class JobVacancy < ApplicationRecord
   enum status: { open: 0, closed: 10}
 
   def heading
-    "#{level} | #{title}"
+    "#{I18n.t(level, scope: [:enum,:levels])} | #{title}"
   end
 
   def verify_candidate_apply_for_vacancy(candidate_id)
@@ -31,8 +31,6 @@ class JobVacancy < ApplicationRecord
       false
     end
   end
-
-
 
   protected
 

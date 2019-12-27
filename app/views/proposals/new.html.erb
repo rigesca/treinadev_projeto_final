@@ -1,0 +1,63 @@
+<div class="container">
+
+    <h1>Envio de proposta</h1>
+
+    <p><strong>VAGA: </strong><%= @registered.job_vacancy.heading%></p>
+    <p><strong>CANDIDATO: </strong><%= @registered.candidate.profile.name%></p>
+
+    <% if @proposal.errors.any? %>
+        <p>Você deve corrigir os seguintes erros para continuar</p>
+        <ul>
+            <% @proposal.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+        </ul>
+    <% end %>
+
+
+    <%= form_with model: @proposal,url:send_proposal_registered_path, methods: :post, local:true do |form| %>
+        
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <%= form.label :salary %>
+                    <%= form.text_field :salary, class:"form-control"%>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <%= form.label :start_date, 'Data de inicio das atividades' %>
+                    <%= form.date_field :start_date, class:"form-control"%>
+                </div>
+            </div>
+        </div> 
+       
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :benefits %>
+                    <%= form.text_area :benefits, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <%= form.label :note %>
+                    <%= form.text_area :note, class:"form-control", rows:4%>
+                </div>
+            </div>
+        </div>
+        
+        <p>
+            <%= form.submit 'Enviar'%>
+        </p>
+        
+    <% end %>
+
+
+</div>

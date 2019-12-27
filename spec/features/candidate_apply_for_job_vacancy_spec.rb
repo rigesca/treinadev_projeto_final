@@ -28,7 +28,7 @@ feature 'Candidate apply for a job vacancy' do
 
         visit root_path
         click_on 'Busca por vagas'
-        click_on "#{job_vacancy.level} | #{job_vacancy.title}"
+        click_on job_vacancy.heading
 
         expect(current_path).to eq(job_vacancy_path(job_vacancy))
 
@@ -65,7 +65,7 @@ feature 'Candidate apply for a job vacancy' do
         login_as(candidate, :scope => :candidate)
 
         visit job_vacancies_path
-        click_on "#{job_vacancy.level} | #{job_vacancy.title}"
+        click_on job_vacancy.heading
 
         click_on 'Candidatar-se a vaga'
 
@@ -104,7 +104,7 @@ feature 'Candidate apply for a job vacancy' do
 
         visit job_vacancies_path
 
-        click_on "#{job_vacancy.level} | #{job_vacancy.title}"
+        click_on job_vacancy.heading
 
         expect(page).not_to have_button('Candidatar-se a vaga')
         expect(page).to have_content('Você já se encontra inscrito para essa vaga.')

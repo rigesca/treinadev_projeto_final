@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      proposal: "Proposta"
+    attributes:
+      proposal:
+        start_date: "Data inicial"
+        salary: "Salário"
+        benefits: "Benefícios"
+        note: "Observações"

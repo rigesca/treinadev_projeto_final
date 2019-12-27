@@ -21,7 +21,6 @@
                     <% registereds.each do |registered|%>
                         <tr>
                             <td>
-                                
                                 <div class="col">
                                     <% if registered.checked? %> 
                                         <span class="glyphicon glyphicon-star"></span>
@@ -34,15 +33,16 @@
                                     <p></p>
                                 </div>
                                 
-                                <div class="col">
-                                    <div class="col-sm-2">
-                                        <%=button_to 'Favorito', mark_registered_path(registered), {class: "btn btn-success", id: "#{registered.id}_#{table_name.gsub(' ','_')}"}  %> 
-                                    </div>
-                                    <div class="col">
-                                        <%=link_to 'Encerra inscrição', cancel_registered_path(registered), {class: "btn btn-danger", id: "#{registered.id}_canceled"}  %> 
-                                    </div>
+                                <div class="col-sm-10" style="vertical-align: middle;">
+                                        <%=link_to 'Favorito', mark_registered_path(registered), {class: "btn btn-success", id: "#{registered.id}_#{table_name.gsub(' ','_')}", method: :post}%>                                                                      
+                                        <%=link_to 'Encerra inscrição', cancel_registered_path(registered), {class: "btn btn-danger", id: "#{registered.id}_canceled"}%>
+                                        <% if registered.proposal.present? %>
+                                            <%= link_to 'Ver proposta', root_path, {class: "btn btn-primary", id: "#{registered.proposal.id}_show_proposal"}%>
+                                        <% else %>
+                                            <%=link_to 'Proposta', proposal_registered_path(registered), {class: "btn btn-primary", id: "#{registered.id}_create_proposal"}%> 
+                                        <% end %>
                                 </div>
-
+                                
                             </td>
                         </tr>
                     <%end%>

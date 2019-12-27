@@ -15,7 +15,7 @@ feature 'Headhunter register a job vacancy' do
         fill_in 'Habilidades necessarias', with: 'Conhecer TDD e ruby'
         fill_in 'Valor minimo', with: 2500
         fill_in 'Valor maximo', with: 3000
-        choose('junior')
+        choose('Júnior')
         fill_in 'Data limite para inscrições', with: 7.day.from_now
         fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
@@ -55,7 +55,7 @@ feature 'Headhunter register a job vacancy' do
         fill_in 'Habilidades necessarias', with: 'Conhecer TDD e ruby'
         fill_in 'Valor minimo', with: 2500
         fill_in 'Valor maximo', with: 3000
-        choose('junior')
+        choose('Especialista')
         fill_in 'Data limite para inscrições', with: Date.today.prev_day(3)
         fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
@@ -76,7 +76,7 @@ feature 'Headhunter register a job vacancy' do
         fill_in 'Habilidades necessarias', with: 'Conhecer TDD e ruby'
         fill_in 'Valor minimo', with: 3000
         fill_in 'Valor maximo', with: 1500
-        choose('junior')
+        choose('Estágiario')
         fill_in 'Data limite para inscrições', with: 15.day.from_now
         fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
@@ -97,7 +97,7 @@ feature 'Headhunter register a job vacancy' do
         fill_in 'Habilidades necessarias', with: 'Conhecer TDD e ruby'
         fill_in 'Valor minimo', with: -50
         fill_in 'Valor maximo', with: 1500
-        choose('junior')
+        choose('Pleno')
         fill_in 'Data limite para inscrições', with: 15.day.from_now
         fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
