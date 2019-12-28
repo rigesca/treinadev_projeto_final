@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_27_181842) do
+ActiveRecord::Schema.define(version: 2019_12_28_000324) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -104,6 +104,8 @@ ActiveRecord::Schema.define(version: 2019_12_27_181842) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "registered_id"
+    t.date "limit_feedback_date"
+    t.integer "status", default: 0
     t.index ["registered_id"], name: "index_proposals_on_registered_id"
   end
 

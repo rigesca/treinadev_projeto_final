@@ -225,6 +225,10 @@ pt-BR:
       open: "Aberto"
       in_progress: "Em andamento"
       closed: "Encerrada"
+      submitted: "Enviado"
+      accepted: "Aceito"
+      rejected: "Rejeitado"
+      expired: "Expirado"
     levels:
       trainee: "Estágiario"
       junior: "Júnior"

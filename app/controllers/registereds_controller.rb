@@ -1,5 +1,8 @@
 class RegisteredsController < ApplicationController
 
+    before_action :authenticate_headhunter!, only: [:mark, :save_canceled, :cancel]
+
+
     def index
         @registereds = Registered.where(candidate_id: current_candidate)
     end

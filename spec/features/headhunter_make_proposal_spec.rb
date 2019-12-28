@@ -39,8 +39,9 @@ feature 'Headhunter make a proposal to a candidate'do
 
         page.find("##{registered.id}_create_proposal").click
 
-        fill_in 'Data de inicio das atividades', with: 14.day.from_now
         fill_in 'Salário', with: 2600
+        fill_in 'Data de inicio das atividades', with: 15.day.from_now
+        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
         
@@ -83,8 +84,9 @@ feature 'Headhunter make a proposal to a candidate'do
         login_as(headhunter, :scope => :headhunter)
         visit proposal_registered_path(registered)
 
-        fill_in 'Data de inicio das atividades', with: 14.day.from_now
         fill_in 'Salário', with: 2600
+        fill_in 'Data de inicio das atividades', with: 14.day.from_now
+        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         
         click_on 'Enviar'
@@ -126,9 +128,10 @@ feature 'Headhunter make a proposal to a candidate'do
 
         click_on 'Enviar'
 
-        expect(page).to have_content("Data inicial não pode ficar em branco")
-        expect(page).to have_content("Salário não pode ficar em branco")        
-        expect(page).to have_content("Benefícios não pode ficar em branco")
+        expect(page).to have_content('Data inicial não pode ficar em branco')
+        expect(page).to have_content('Salário não pode ficar em branco')        
+        expect(page).to have_content('Benefícios não pode ficar em branco')
+        expect(page).to have_content('Data limite para resposta não pode ficar em branco')
     end
 
     scenario 'and try to make a proposal with a invalid salary' do
@@ -162,8 +165,9 @@ feature 'Headhunter make a proposal to a candidate'do
         login_as(headhunter, :scope => :headhunter)
         visit proposal_registered_path(registered)
 
-        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
         fill_in 'Salário', with: '2a100'
+        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
+        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         
         click_on 'Enviar'
@@ -202,8 +206,9 @@ feature 'Headhunter make a proposal to a candidate'do
         login_as(headhunter, :scope => :headhunter)
         visit proposal_registered_path(registered)
 
-        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
         fill_in 'Salário', with: 2600
+        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
+
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         
         click_on 'Enviar'
@@ -242,8 +247,9 @@ feature 'Headhunter make a proposal to a candidate'do
         login_as(headhunter, :scope => :headhunter)
         visit proposal_registered_path(registered)
 
-        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
         fill_in 'Salário', with: 1500
+        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
+        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         
         click_on 'Enviar'
@@ -282,8 +288,8 @@ feature 'Headhunter make a proposal to a candidate'do
         login_as(headhunter, :scope => :headhunter)
         visit proposal_registered_path(registered)
 
-        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
         fill_in 'Salário', with: 3200
+        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
         fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
         
         click_on 'Enviar'

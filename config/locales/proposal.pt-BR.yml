@@ -8,3 +8,4 @@ pt-BR:
         salary: "Salário"
         benefits: "Benefícios"
         note: "Observações"
+        limit_feedback_date: "Data limite para resposta"

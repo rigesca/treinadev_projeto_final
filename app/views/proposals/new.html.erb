@@ -18,9 +18,10 @@
     <%= form_with model: @proposal,url:send_proposal_registered_path, methods: :post, local:true do |form| %>
         
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <%= form.label :salary %>
+                    <p><em>Faixa salárial:<%= number_to_currency @minimum%> e <%= number_to_currency @maximum%>
                     <%= form.text_field :salary, class:"form-control"%>
                 </div>
             </div>
@@ -31,6 +32,12 @@
                 <div class="form-group">
                     <%= form.label :start_date, 'Data de inicio das atividades' %>
                     <%= form.date_field :start_date, class:"form-control"%>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <%= form.label :limit_feedback_date, 'Data limite para a resposta a proposta' %>
+                    <%= form.date_field :limit_feedback_date, class:"form-control"%>
                 </div>
             </div>
         </div> 

@@ -1,8 +1,13 @@
 class ProposalsController < ApplicationController
 
+    before_action :authenticate_headhunter!, only: [:new,:create]
+
     def new
         @registered = Registered.find(params[:id])
         @proposal = @registered.build_proposal
+
+        @minimum = @registered.job_vacancy.minimum_wage
+        @maximum = @registered.job_vacancy.maximum_wage
     end
 
     def create
@@ -21,7 +26,7 @@ class ProposalsController < ApplicationController
     private 
 
     def params_proposal
-        params.require(:proposal).permit(:start_date, :salary, :benefits, :note)
+        params.require(:proposal).permit(:salary, :start_date, :limit_feedback_date, :benefits, :note)
     end
 
 end
