@@ -28,8 +28,8 @@ feature 'Headhunter consults job vancancy' do
         expect(page).to have_content(job_vacancy.level)
         expect(page).to have_content(I18n.localize job_vacancy.limit_date)
         expect(page).to have_content(job_vacancy.region)
-        expect(page).to have_content('R$ 2.500,00')
-        expect(page).to have_content('R$ 2.800,00')
+        expect(page).to have_content(number_to_currency job_vacancy.minimum_wage)
+        expect(page).to have_content(number_to_currency job_vacancy.maximum_wage)
     end
 
     scenario 'and no have vancany' do

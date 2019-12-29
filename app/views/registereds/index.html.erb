@@ -20,15 +20,18 @@
                             <tr>
                                 <td>
                                     <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                    <% if registered.in_progress? %>
+                                    <% if registered.in_progress? || registered.proposal? %>
                                         <p><strong>Descrição da vaga:</strong><%= registered.job_vacancy.vacancy_description %></p>
                                     <% else %>
                                         <p><strong>Feedback headhunter: </strong><%= registered.closed_feedback %></p>
                                     <% end %>
                                 </td>
                                 <td>
-                                   <% if registered.closed? %>
+                                    <% if registered.closed? %>
                                         <strong> <%= I18n.t(registered.status, scope: [:enum,:statuses]) %></strong>
+                                    <% elsif registered.proposal?%>
+                                        <strong>Proposta recebida !</strong>
+                                        <p><%= link_to "Ver proposta", registered.proposal%></p>
                                     <% else %>
                                         <%= I18n.t(registered.status, scope: [:enum,:statuses]) %>
                                     <% end %>
