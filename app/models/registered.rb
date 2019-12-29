@@ -8,8 +8,8 @@ class Registered < ApplicationRecord
 
   enum highlight: {unchecked: false , checked: true}
 
-  enum status: {in_progress: 0,
-                closed: 5,
-                proposal: 10}
+  enum status: {in_progress: 0, closed: 5,
+                proposal: 10, reject_proposal: 15,
+                accepted_proposal: 20}
 
 end

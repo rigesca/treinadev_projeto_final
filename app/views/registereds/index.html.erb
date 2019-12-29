@@ -22,6 +22,8 @@
                                     <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
                                     <% if registered.in_progress? || registered.proposal? %>
                                         <p><strong>Descrição da vaga:</strong><%= registered.job_vacancy.vacancy_description %></p>
+                                    <% elsif registered.reject_proposal? || registered.accepted_proposal? %>
+                                        <p><strong>Feedback do candidato:</strong><%= registered.proposal.feedback %></p>
                                     <% else %>
                                         <p><strong>Feedback headhunter: </strong><%= registered.closed_feedback %></p>
                                     <% end %>

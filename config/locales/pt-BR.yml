@@ -229,6 +229,7 @@ pt-BR:
       accepted: "Aceito"
       rejected: "Rejeitado"
       expired: "Expirado"
+      reject_proposal: "Proposta rejeitada"
     levels:
       trainee: "Estágiario"
       junior: "Júnior"

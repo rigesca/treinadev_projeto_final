@@ -49,6 +49,10 @@ feature 'Headhunter make a proposal to a candidate'do
 
         expect(page).to have_content("Proposta enviada ao candidato #{registered.candidate.profile.name} com sucesso")
         expect(page).not_to have_link("##{registered.id}_create_proposal")
+
+        registered.reload
+
+        expect(registered.status).to eq('proposal')
     end
 
     scenario 'and try to make a proposal witout a note' do

@@ -44,8 +44,19 @@
 
     <div class="row">
         <div class="col-sm-10" style="vertical-align: middle;">
-            <%=link_to 'Voltar', :back %>                                                                      
+            <% if @proposal.submitted? %>
+                <p> Você deseja:</p>
+                <%=link_to 'Aceitar proposta', :back, class: "btn btn-primary" %> 
+                <%=link_to 'Rejeitar proposta', reject_proposal_path , class: "btn btn-danger" %> 
+            <% end %>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-10" style="vertical-align: middle;">
+            <p><%=link_to 'Voltar', :back %></p>
+        </div>
+    </div>
+       
 
 </div>

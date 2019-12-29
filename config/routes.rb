@@ -19,7 +19,10 @@ Rails.application.routes.draw do
     post 'send_proposal', on: :member, controller: 'proposals', action: :create
   end
 
-  resources :proposals, only: [:index, :show]
+  resources :proposals, only: [:index, :show] do
+    get 'reject', on: :member
+    post 'save_reject', on: :member
+  end
 
   resources :job_vacancies, only: [:index,:show, :new, :create] do
     post 'apply', on: :member
