@@ -1,7 +1,7 @@
 class JobVacanciesController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:new,:create]
-    before_action :authenticate_candidate!, only: [:apply]
+    before_action :authenticate_candidate!, only: [:apply,:search]
 
 
     def index
@@ -33,6 +33,14 @@ class JobVacanciesController < ApplicationController
         else
             render :new
         end
+    end
+
+    def search
+        @job_vacancies = JobVacancy.where("limit_date > ? and title like ?", Date.current , "%#{params[:q]}%").open
+        @job_vacancies = @job_vacancies.where(level: params[:levels]) unless params[:levels].blank?
+        @job_vacancies = @job_vacancies.where("minimum_wage >= ?", "#{params[:minimun]}") unless params[:minimun].blank?
+
+        render :index
     end
 
     def apply

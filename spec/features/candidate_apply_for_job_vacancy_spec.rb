@@ -109,22 +109,4 @@ feature 'Candidate apply for a job vacancy' do
         expect(page).not_to have_button('Candidatar-se a vaga')
         expect(page).to have_content('Você já se encontra inscrito para essa vaga.')
     end
-
-    scenario 'and no have vacancy' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        login_as(candidate, :scope => :candidate)
-
-        visit job_vacancies_path
-
-        expect(page).to have_content('Não existem vagas abertas no momento')
-    end
 end

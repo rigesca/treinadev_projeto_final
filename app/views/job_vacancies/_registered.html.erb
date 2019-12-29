@@ -37,7 +37,7 @@
                                         <%=link_to 'Favorito', mark_registered_path(registered), {class: "btn btn-success", id: "#{registered.id}_#{table_name.gsub(' ','_')}", method: :post}%>                                                                      
                                         <%=link_to 'Encerra inscrição', cancel_registered_path(registered), {class: "btn btn-danger", id: "#{registered.id}_canceled"}%>
                                         <% if registered.proposal.present? %>
-                                            <%= link_to 'Ver proposta', root_path, {class: "btn btn-primary", id: "#{registered.proposal.id}_show_proposal"}%>
+                                            <%= link_to 'Ver proposta', proposal_path(registered.proposal), {class: "btn btn-primary", id: "#{registered.proposal.id}_show_proposal"}%>
                                         <% else %>
                                             <%=link_to 'Proposta', proposal_registered_path(registered), {class: "btn btn-primary", id: "#{registered.id}_create_proposal"}%> 
                                         <% end %>

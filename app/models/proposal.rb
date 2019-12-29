@@ -1,6 +1,6 @@
 class Proposal < ApplicationRecord
-    has_one :registered
-
+    belongs_to :registered
+    
     validates :start_date, :limit_feedback_date, :salary,:benefits, presence: true
     validates :salary, numericality: true
 
@@ -8,7 +8,7 @@ class Proposal < ApplicationRecord
     validate :salary_must_be_between_the_maximum_and_minimum_wage_values
     validate :limit_date_must_be_between_today_and_start_date
 
-    enum status: {submitted: 0, accepted: 10, rejected: 20
+    enum status: {submitted: 0, accepted: 10, rejected: 20,
                   closed: 30, expired: 40}
 
     protected

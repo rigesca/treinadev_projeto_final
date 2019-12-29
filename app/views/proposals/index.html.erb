@@ -1,41 +1,4 @@
 <div class="container">
     
-    <p><%= link_to 'Cadastra uma proposta', new_registered_proposal_path, class: "btn btn-primary" %></p>
 
-    
-    
-    <div class="row">
-        <div class="col-sm-10">
-
-            <table class="table table-striped table-bordered">
-
-                <thead class="thead-dark">
-                    <tr>
-                        <th>PROPOSTAS</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <%if @proposals.nil?%>
-
-                        <tr>
-                            <td><%= "Não foram realizados propostas para esse candidato"%></td>
-                        </tr>
-
-                    <%else%>
-
-                        <% @proposals.each do |proposal|%>
-                            <tr>
-                                <td>
-                                    <%= proposal %>
-                                </td>
-                            </tr>
-                        <%end%>
-
-                    <%end%>
-                </tbody>
-
-            </table>
-        </div>
-    </div>
 </div>            

@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   resources :job_vacancies, only: [:index,:show, :new, :create] do
     post 'apply', on: :member
     get 'candidate_list', on: :member, shallow: true
+
+    get 'search', on: :collection
   end
 
   

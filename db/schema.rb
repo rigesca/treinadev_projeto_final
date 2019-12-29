@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(version: 2019_12_28_000324) do
     t.text "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "registered_id"
     t.date "limit_feedback_date"
     t.integer "status", default: 0
+    t.integer "registered_id"
     t.index ["registered_id"], name: "index_proposals_on_registered_id"
   end
 

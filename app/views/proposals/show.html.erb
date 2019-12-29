@@ -1,0 +1,51 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <p><h4>VAGA: </h4><%= link_to @job_vacancy.heading, job_vacancy_path(@job_vacancy)%></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <p><strong>Descrição da vaga:</strong><%= @job_vacancy.vacancy_description%></p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <p><h4>CANDIDATO: </h4><%= link_to @profile.name, profile_path(@profile) %></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <p><h4>PROPOSTA: </h4></p>
+
+            <p>Status: <%= I18n.t(@proposal.status, scope: [:enum, :statuses]) %>
+
+            <p>Data para inicio das atividades: <%= I18n.localize @proposal.start_date%></p>
+
+            <p>Data limite para resposta: <%= I18n.localize @proposal.limit_feedback_date%></p>
+
+            <p>Salário: <%= number_to_currency @proposal.salary%></p>
+    
+            <p>Benefícios: <%= @proposal.benefits%></p>
+
+            <% if @proposal.note.present? %>
+                <p>Observações: <%= number_to_currency @proposal.salary%></p>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10" style="vertical-align: middle;">
+            <%=link_to 'Voltar', :back %>                                                                      
+        </div>
+    </div>
+
+
+    
+
+
+</div>

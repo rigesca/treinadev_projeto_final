@@ -67,11 +67,11 @@
                     <p>Faixa Salario:</p>
                     <div class="col-sm-4">
                         <%= form.label :minimum_wage%>
-                        <%= form.number_field :minimum_wage, class: "form-control"%>
+                        <%= form.number_field :minimum_wage, value: number_to_currency(form.object.minimum_wage.to_f, delimiter: '', unit: ','), step: :any, class: "form-control"%>
                     </div>
                     <div class="col-sm-4">
                         <%= form.label :maximum_wage%>
-                        <%= form.number_field :maximum_wage, class: "form-control"%>
+                        <%= form.number_field :maximum_wage, value: number_to_currency(form.object.maximum_wage.to_f, delimiter: '', unit: ','), step: :any, class: "form-control"%>
                     </div>
                 </div>
             </div>

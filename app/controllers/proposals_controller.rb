@@ -2,6 +2,15 @@ class ProposalsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:new,:create]
 
+    def index
+
+        
+        
+    end
+
+
+
+
     def new
         @registered = Registered.find(params[:id])
         @proposal = @registered.build_proposal
