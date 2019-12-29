@@ -36,7 +36,9 @@ class JobVacanciesController < ApplicationController
     end
 
     def search
-        @job_vacancies = JobVacancy.where("limit_date > ? and title like ?", Date.current , "%#{params[:q]}%").open
+        @job_vacancies = JobVacancy.where("limit_date > ?", Date.current).open
+        @job_vacancies = @job_vacancies.where("title like ? or vacancy_description like ?",
+                                              "%#{params[:q]}%", "%#{params[:q]}%") unless params[:q].blank?
         @job_vacancies = @job_vacancies.where(level: params[:levels]) unless params[:levels].blank?
         @job_vacancies = @job_vacancies.where("minimum_wage >= ?", "#{params[:minimun]}") unless params[:minimun].blank?
 
