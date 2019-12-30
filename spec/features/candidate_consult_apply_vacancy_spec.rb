@@ -95,9 +95,6 @@ feature 'Candidate consults apply vacancy'do
 
         expect(page).to have_content('O candidato não apresenta todos os requisitos necessarios')
         expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
-
-        click_on job_vacancy.heading
-
-        expect(page).to have_content('Vaga encerrada, veja justificativa em "minhas vagas".')
+        expect(page).to have_content('Vaga encerrada!')
     end
 end

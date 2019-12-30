@@ -23,6 +23,13 @@
     <h4>Status da vaga:</h4>
     <p><%= I18n.t(@job_vacancy.status, scope: [:enum,:statuses]) %></p>
 
+    <% if current_headhunter.present? %>
+        <h4>Candidato(s) que aceitaram a proposta<h4>
+        <% @registereds.each do |registered|%>
+            <p><%= link_to registered.candidate.profile.name, registered.candidate.profile%></p>
+        <% end %>
+    <% end %>
+
     <% if current_candidate.present?%>
 
         <% if @job_vacancy.verify_candidate_apply_for_vacancy(current_candidate.id) %>
@@ -42,7 +49,14 @@
     <% end %>
 
     <% if current_headhunter.present? %>
-        <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
+        <% if !@job_vacancy.closed? %>
+            <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
+        <% end %>
+        
+        <% if @registereds.present? %>
+            <%= link_to 'Encerra vaga', closes_job_vacancy_path , method: :post, class: "btn btn-danger" %>
+        <% end %>
+
     <% end %>    
 
     <%= link_to 'Voltar', job_vacancies_path , class: "btn btn-primary"%>

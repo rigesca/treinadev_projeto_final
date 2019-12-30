@@ -9,7 +9,7 @@ class Proposal < ApplicationRecord
     validate :limit_date_must_be_between_today_and_start_date
 
     enum status: {submitted: 0, accepted: 10, rejected: 20,
-                  closed: 30, expired: 40}
+                  expired: 30}
 
     protected
 

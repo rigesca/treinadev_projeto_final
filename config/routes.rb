@@ -32,6 +32,8 @@ Rails.application.routes.draw do
     get 'candidate_list', on: :member, shallow: true
 
     get 'search', on: :collection
+
+    post 'closes', on: :member
   end
 
   

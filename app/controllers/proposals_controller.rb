@@ -7,7 +7,7 @@ class ProposalsController < ApplicationController
         if current_candidate.present?
             @proposals = Proposal.joins(:registered).where('registereds.candidate_id = ?', current_candidate.id).submitted
         else
-            @proposals = Proposal.joins(registered: [:job_vacancy]).where('job_vacancies.headhunter_id = ? and proposals.status <> 30', current_headhunter.id)
+            @proposals = Proposal.joins(registered: [:job_vacancy]).where('job_vacancies.headhunter_id = ?', current_headhunter.id)
         end
             
     end

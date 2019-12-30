@@ -16,7 +16,9 @@ class JobVacanciesController < ApplicationController
         @job_vacancy = JobVacancy.find(params[:id])
 
         if current_candidate.present?         
-                @registered = Registered.new
+            @registered = Registered.new
+        else
+            @registereds = Registered.where(job_vacancy_id: @job_vacancy).accept_proposal
         end
     end
 
@@ -63,6 +65,23 @@ class JobVacanciesController < ApplicationController
         @registereds = @job_vacancy.registereds.where('registereds.status <> 5')
         @favorits_registereds = @registereds.checked
         @canceled_registereds = @job_vacancy.registereds.closed
+    end
+
+    def closes
+        @job_vacancy = JobVacancy.find(params[:id])
+
+        registereds = Registered.where(status: [:in_progress, :proposal, :reject_proposal]).where(job_vacancy_id: @job_vacancy.id)
+        registereds.each do |registered|
+            registered.closed!
+
+            if registered.proposal.present?
+                registered.proposal.destroy
+            end
+        end
+
+        @job_vacancy.closed!
+
+        redirect_to @job_vacancy
     end
 
     private
