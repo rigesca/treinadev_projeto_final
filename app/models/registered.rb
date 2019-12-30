@@ -10,6 +10,6 @@ class Registered < ApplicationRecord
 
   enum status: {in_progress: 0, closed: 5,
                 proposal: 10, reject_proposal: 15,
-                accepted_proposal: 20}
+                accept_proposal: 20}
 
 end

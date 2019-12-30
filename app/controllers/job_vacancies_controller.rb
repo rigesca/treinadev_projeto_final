@@ -60,7 +60,7 @@ class JobVacanciesController < ApplicationController
 
     def candidate_list
         @job_vacancy = JobVacancy.find(params[:id])
-        @registereds = @job_vacancy.registereds.in_progress
+        @registereds = @job_vacancy.registereds.where('registereds.status <> 5')
         @favorits_registereds = @registereds.checked
         @canceled_registereds = @job_vacancy.registereds.closed
     end

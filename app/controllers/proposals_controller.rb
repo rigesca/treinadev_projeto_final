@@ -6,6 +6,8 @@ class ProposalsController < ApplicationController
 
         if current_candidate.present?
             @proposals = Proposal.joins(:registered).where('registereds.candidate_id = ?', current_candidate.id).submitted
+        else
+            @proposals = Proposal.joins(registered: [:job_vacancy]).where('job_vacancies.headhunter_id = ? and proposals.status <> 30', current_headhunter.id)
         end
             
     end
@@ -35,6 +37,9 @@ class ProposalsController < ApplicationController
 
             redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id)
         else 
+            @minimum = @registered.job_vacancy.minimum_wage
+            @maximum = @registered.job_vacancy.maximum_wage
+            
             render :new
         end        
     end
@@ -82,7 +87,7 @@ class ProposalsController < ApplicationController
             end
             
             @proposal.accepted!
-            @proposal.registered.accepted_proposal!
+            @proposal.registered.accept_proposal!
 
          
             Registered.where('candidate_id = ? and status = 0 or status = 10', current_candidate.id).each do |registered|

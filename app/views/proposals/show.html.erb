@@ -25,8 +25,6 @@
             <h4>PROPOSTA: </h4>
 
             <div class="col-sm-9">
-                <p>Status: <%= I18n.t(@proposal.status, scope: [:enum, :statuses]) %>
-
                 <p>Data para inicio das atividades: <%= I18n.localize @proposal.start_date%></p>
 
                 <p>Data limite para resposta: <%= I18n.localize @proposal.limit_feedback_date%></p>
@@ -38,13 +36,27 @@
                 <% if @proposal.note.present? %>
                     <p>Observações: <%= @proposal.note%></p>
                 <% end %>
-    
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>STATUS: </h4>
+
+            <div class="col-sm-9">
+                <p>Proposta <%= I18n.t(@proposal.status, scope: [:enum, :statuses]) %></p>
+
+                <% if current_headhunter.present? && ( @proposal.rejected? || @proposal.accepted? ) %>
+                    <p>Feedback candidato: <%= @proposal.feedback %></p>
+                <% end %>
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-10" style="vertical-align: middle;">
-            <% if @proposal.submitted? %>
+            <% if @proposal.submitted? && current_candidate.present?%>
                 <p> Você deseja:</p>
                 <%=link_to 'Aceitar proposta', accept_proposal_path , class: "btn btn-primary" %> 
                 <%=link_to 'Rejeitar proposta', reject_proposal_path , class: "btn btn-danger" %> 

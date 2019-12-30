@@ -46,7 +46,7 @@ feature 'Candidate accepted a proposal'do
         registered.reload
         proposal.reload
 
-        expect(registered.status).to eq('accepted_proposal')
+        expect(registered.status).to eq('accept_proposal')
         expect(proposal.status).to eq('accepted')
         expect(proposal.feedback).to eq('Obrigado pela oportunidade')
     end
@@ -91,7 +91,7 @@ feature 'Candidate accepted a proposal'do
         registered.reload
         proposal.reload
 
-        expect(registered.status).to eq('accepted_proposal')
+        expect(registered.status).to eq('accept_proposal')
         expect(proposal.status).to eq('accepted')
         expect(proposal.feedback).to eq('Proposta aceita pelo candidato')
     end
@@ -202,7 +202,7 @@ feature 'Candidate accepted a proposal'do
         registered_1.reload
         proposal_1.reload
 
-        expect(registered_1.status).to eq('accepted_proposal')
+        expect(registered_1.status).to eq('accept_proposal')
         expect(proposal_1.status).to eq('accepted')
         expect(proposal_1.feedback).to eq('Proposta aceita pelo candidato')
 

@@ -13,6 +13,12 @@ class Proposal < ApplicationRecord
 
     protected
 
+    #after_find do |proposal|
+    #    if proposal.limit_feedback_date.present? 
+    #        proposal.expired! unless proposal.limit_feedback_date >= Date.current
+    #    end
+    #end
+
     def start_date_must_be_greater_than_today
         return unless start_date.present?
 

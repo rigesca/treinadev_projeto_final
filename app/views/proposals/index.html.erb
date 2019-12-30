@@ -1,5 +1,10 @@
 <div class="container">
     
-    <%= render partial: "candidate_proposal", locals: {proposals:@proposals}%>
+    <% if current_candidate%>
+        <%= render partial: "candidate_proposal", locals: {proposals:@proposals}%>
+    <% else %>
+        <%= render partial: "headhunter_proposal", locals: {proposals:@proposals}%>
+    <% end %>
+
 
 </div>            

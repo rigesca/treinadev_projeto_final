@@ -1,0 +1,35 @@
+<table class="table table-striped table-bordered">
+                
+    <thead class="thead-dark">
+        <tr>
+            <th>PROPOSTAS</th>
+            <th>STATUS</th>
+        </tr>
+    </thead>
+        
+    <tbody>
+        <%if proposals.empty?%>
+                
+            <tr>
+                <td><%= "Não existem propostas para seu perfil"%></td>
+            </tr>
+
+        <%else%>
+                
+            <% proposals.each do |proposal|%>
+                <tr>
+                    <td>
+                        <p><strong>Proposta enviada para: </strong><%= link_to proposal.registered.candidate.profile.name, proposal.registered.candidate.profile %></p>
+                        <p><strong>Vaga :</strong> <%= link_to proposal.registered.job_vacancy.heading, proposal.registered.job_vacancy%><p>
+                        <p><strong>Data limite para resposta: </strong><%= I18n.localize proposal.limit_feedback_date%></p>
+                        <p><%= link_to 'Analisar proposta', proposal%><p>
+                    </td>
+                    <td>
+                        <p><%= I18n.t proposal.status, scope: [:enum, :statuses]%></p>
+                    </td>
+                </tr>
+            <%end%>
+        <%end%>
+    </tbody>
+
+</table>
