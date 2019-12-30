@@ -61,6 +61,48 @@ class ProposalsController < ApplicationController
         redirect_to @proposal
     end
 
+    def accept
+        @proposal = Proposal.find(params[:id])
+        @job_vacancy = @proposal.registered.job_vacancy
+    end
+
+    def save_accept
+        @proposal = Proposal.find(params[:id])
+        
+        if params[:confirm] == 'unchecked'
+            @job_vacancy = @proposal.registered.job_vacancy
+
+            flash[:alert] = "É necessario confirmar a data de inicio das atividades."
+            redirect_to accept_proposal_path(@proposal)
+        else
+            if params[:proposal][:feedback].blank?
+                @proposal.update(feedback: "Proposta aceita pelo candidato")
+            else
+                @proposal.update(feedback: params[:proposal][:feedback])
+            end
+            
+            @proposal.accepted!
+            @proposal.registered.accepted_proposal!
+
+         
+            Registered.where('candidate_id = ? and status = 0 or status = 10', current_candidate.id).each do |registered|
+                registered.reject_proposal!
+                registered.update(closed_feedback: "Candidato aceitou outra proposta")
+                
+                if registered.proposal.present? 
+                    if registered.proposal.submitted?
+                        registered.proposal.rejected!
+                        registered.proposal.update(feedback: "Candidato aceitou outra proposta")
+                    end
+                end
+            end
+    
+            flash[:notice] = "Proposta aceita com sucesso. Parabéns!"
+            
+            redirect_to @proposal
+        end
+    end
+
     private 
 
     def params_proposal

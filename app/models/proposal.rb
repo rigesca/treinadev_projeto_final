@@ -42,4 +42,9 @@ class Proposal < ApplicationRecord
         end
     end
 
+    def reject_registered
+        status.rejected!
+        feedback = 'Candidato já aceitou outra proposta'
+    end
+
 end

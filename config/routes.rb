@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   resources :proposals, only: [:index, :show] do
     get 'reject', on: :member
     post 'save_reject', on: :member
+
+    get 'accept', on: :member
+    post 'save_accept', on: :member
   end
 
   resources :job_vacancies, only: [:index,:show, :new, :create] do
