@@ -28,9 +28,12 @@
                                     <% elsif registered.reject_proposal? || registered.accept_proposal? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
                                         <p><strong>Feedback do candidato:</strong><%= registered.proposal.feedback %></p>
+                                    <% elsif registered.excluded? %>
+                                        <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
+                                        <p><strong>Feedback do headhunter:</strong><%= registered.closed_feedback %></p>
                                     <% else %>
                                         <%= registered.job_vacancy.heading %>
-                                        <p><strong>Vaga encerrada! </strong><%= registered.closed_feedback %></p>
+                                        <p><strong>Vaga encerrada!</p>
                                     <% end %>
                                 </td>
                                 

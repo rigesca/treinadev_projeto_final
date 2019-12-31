@@ -1,6 +1,9 @@
 class ProposalsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:new,:create]
+    before_action :authenticate_candidate!, only: [:accept,:save_accept,:reject,:save_reject]
+    before_action :authenticate_usser!
+
 
     def index
 
@@ -92,13 +95,10 @@ class ProposalsController < ApplicationController
          
             Registered.where('candidate_id = ? and status = 0 or status = 10', current_candidate.id).each do |registered|
                 registered.reject_proposal!
-                registered.update(closed_feedback: "Candidato aceitou outra proposta")
+                registered.update(closed_feedback: "Um candidato já foi selecionado para essa vaga")
                 
                 if registered.proposal.present? 
-                    if registered.proposal.submitted?
-                        registered.proposal.rejected!
-                        registered.proposal.update(feedback: "Candidato aceitou outra proposta")
-                    end
+                    registered.proposal.destroy
                 end
             end
     

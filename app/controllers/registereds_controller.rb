@@ -1,6 +1,7 @@
 class RegisteredsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:mark, :save_canceled, :cancel]
+    before_action :authenticate_usser!
 
 
     def index
@@ -34,7 +35,7 @@ class RegisteredsController < ApplicationController
             @registered.update(closed_feedback: justification) 
             
             @registered.unchecked!
-            @registered.closed!
+            @registered.excluded!
 
             flash[:notice] = "Candidato #{@registered.candidate.profile.name} teve sua participação finalizada com sucesso"
             redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id)

@@ -47,7 +47,7 @@ feature 'Headhunter rejects a candidate' do
 
         registered.reload
 
-        expect(registered.status).to eq('closed')
+        expect(registered.status).to eq('excluded')
         expect(page).to have_content("Feedback:#{registered.closed_feedback}")
     end
 
@@ -90,5 +90,44 @@ feature 'Headhunter rejects a candidate' do
 
         expect(page).to have_content('Campo Feedback não pode ser vazio')
         expect(registered.status).to eq('in_progress')
+    end
+
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access reject registered option' do
+            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                        password: '123teste')
+        
+            candidate = Candidate.create!(email: 'candidate@teste.com',
+                                          password: '123teste')
+
+            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                           filename:'foto.jpeg')
+
+            
+
+            job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                             vacancy_description:'O profissional ira trabalhar com ruby',
+                                             ability_description:'Conhecimento em TDD e ruby',
+                                             level: :junior,
+                                             limit_date: 7.day.from_now,
+                                             region: 'Av.Paulista, 1000',
+                                             minimum_wage: 2500,
+                                             maximum_wage: 2800,
+                                             headhunter_id: headhunter.id)
+
+            registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
+                                            registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+            
+            visit cancel_registered_path(registered)
+
+            expect(current_path).to eq(new_headhunter_session_path)
+        end
     end
 end

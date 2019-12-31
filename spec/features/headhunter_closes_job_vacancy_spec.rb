@@ -26,6 +26,17 @@ feature 'Headhunter closes job vacancy' do
                                          candidate_id: second_candidate.id)
         second_profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
                                               filename:'foto.jpeg')
+
+        third_candidate = Candidate.create!(email: 'candidate3@teste.com',
+                                             password: '123teste')
+        
+        third_profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                         birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                         description: 'Busco oportunidade como programador',
+                                         experience: 'Trabalhou por 2 anos na empresa X',
+                                         candidate_id: third_candidate.id)
+        third_profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                              filename:'foto.jpeg')
         
         job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
@@ -40,16 +51,24 @@ feature 'Headhunter closes job vacancy' do
         accept_registered = Registered.create!(candidate_id: first_candidate.id, job_vacancy_id: job_vacancy.id, status: :accept_proposal,
                                                registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
-        closed_registered = Registered.create!(candidate_id: second_candidate.id, job_vacancy_id: job_vacancy.id, status: :in_progress,
+        in_progress_registered = Registered.create!(candidate_id: second_candidate.id, job_vacancy_id: job_vacancy.id, 
                                                registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
-        proposal = Proposal.create!(start_date: Date.current.next_day(15), limit_feedback_date: Date.current.next_day(7), 
-                                    salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: closed_registered.id)
+        reject_registered = Registered.create!(candidate_id: third_candidate.id, job_vacancy_id: job_vacancy.id, status: :reject_proposal,
+                                               registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+        rejected_proposal = Proposal.create!(start_date: Date.current.next_day(15), limit_feedback_date: Date.current.next_day(7), status: :rejected,
+                                               salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: reject_registered.id)
+
+        accepted_proposal = Proposal.create!(start_date: Date.current.next_day(15), limit_feedback_date: Date.current.next_day(7), status: :accepted,
+                                    salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: accept_registered.id)
         
         login_as(headhunter, :scope => :headhunter)
         visit root_path
         click_on 'Vagas'
         click_on job_vacancy.heading
+
+        expect(page).to have_content(first_profile.name)
 
         click_on 'Encerra vaga'
 
@@ -59,9 +78,12 @@ feature 'Headhunter closes job vacancy' do
         job_vacancy.reload
         expect(job_vacancy.status).to eq('closed')
 
-        closed_registered.reload
-        expect(closed_registered.status).to eq('closed')
-        expect(closed_registered.proposal).to eq(nil)
+        reject_registered.reload
+        expect(reject_registered.status).to eq('closed')
+        expect(reject_registered.proposal).to eq(nil)
+
+        in_progress_registered.reload
+        expect(in_progress_registered.status).to eq('closed')
     end
 
 

@@ -43,4 +43,28 @@ feature 'Headhunter consults job vancancy' do
         
         expect(page).to have_content('Seu perfil não possui vagas cadastradas')
     end
+
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access show job vacancy option' do
+            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                    password: '123teste')
+
+            job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                             vacancy_description:'O profissional ira trabalhar com ruby',
+                                             ability_description:'Conhecimento em TDD e ruby',
+                                             level: :junior,
+                                             limit_date: 7.day.from_now,
+                                             region: 'Av.Paulista, 1000',
+                                             minimum_wage: 2500,
+                                             maximum_wage: 2800,
+                                             headhunter_id: headhunter.id)
+            
+            visit new_job_vacancy_path
+
+            expect(current_path).to eq(new_headhunter_session_path)
+        end
+    end
+    
 end

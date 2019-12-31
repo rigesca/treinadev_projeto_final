@@ -50,4 +50,14 @@ feature 'Candidate register a profile' do
 
         expect(page).to have_content('Nome completo não pode ficar em branco')
     end
+
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access edit profile option' do
+            visit new_profile_path
+
+            expect(current_path).to eq(new_candidate_session_path)
+        end
+    end
 end

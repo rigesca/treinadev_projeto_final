@@ -60,7 +60,7 @@ feature 'Candidate consults apply vacancy'do
         expect(page).to have_content('Você não possui nenhum inscrição em nenhuma vaga do site')
     end
 
-    scenario 'and be canceled' do
+    scenario 'and be rejected' do
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
         profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
@@ -84,7 +84,7 @@ feature 'Candidate consults apply vacancy'do
                                          maximum_wage: 2800,
                                          headhunter_id: headhunter.id)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :closed,
+        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :excluded,
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa',
                                         closed_feedback: 'O candidato não apresenta todos os requisitos necessarios')
 
@@ -95,6 +95,14 @@ feature 'Candidate consults apply vacancy'do
 
         expect(page).to have_content('O candidato não apresenta todos os requisitos necessarios')
         expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
-        expect(page).to have_content('Vaga encerrada!')
+    end
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access index registered option' do
+            visit registereds_path 
+
+            expect(current_path).to eq(root_path)
+        end
     end
 end

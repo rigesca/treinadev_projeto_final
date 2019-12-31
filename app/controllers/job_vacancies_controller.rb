@@ -1,7 +1,8 @@
 class JobVacanciesController < ApplicationController
 
-    before_action :authenticate_headhunter!, only: [:new,:create]
+    before_action :authenticate_headhunter!, only: [:new,:create, :candidate_list, :closes]
     before_action :authenticate_candidate!, only: [:apply,:search]
+    before_action :authenticate_usser!
 
 
     def index
@@ -64,7 +65,7 @@ class JobVacanciesController < ApplicationController
         @job_vacancy = JobVacancy.find(params[:id])
         @registereds = @job_vacancy.registereds.where('registereds.status <> 5')
         @favorits_registereds = @registereds.checked
-        @canceled_registereds = @job_vacancy.registereds.closed
+        @canceled_registereds = @job_vacancy.registereds.excluded
     end
 
     def closes

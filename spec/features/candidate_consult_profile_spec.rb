@@ -50,4 +50,39 @@ feature 'Candidate consults your profile' do
 
         expect(current_path).to eq(root_path)
     end
+
+
+    
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access edit profile option' do
+            candidate = Candidate.create!(email: 'candidate@teste.com',
+                                          password: '123teste')
+            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+            
+            visit edit_profile_path(profile)
+
+            expect(current_path).to eq(new_candidate_session_path)
+        end
+        
+        
+        scenario 'a no-authenticate usser try to access show profile option' do
+            candidate = Candidate.create!(email: 'candidate@teste.com',
+                                          password: '123teste')
+            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+            
+            visit profile_path(profile)
+
+            expect(current_path).to eq(root_path)
+        end
+    end
 end

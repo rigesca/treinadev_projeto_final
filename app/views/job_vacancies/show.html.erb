@@ -53,12 +53,12 @@
             <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
         <% end %>
         
-        <% if @registereds.present? %>
+        <% if @registereds.present? && @job_vacancy.open? %>
             <%= link_to 'Encerra vaga', closes_job_vacancy_path , method: :post, class: "btn btn-danger" %>
         <% end %>
 
     <% end %>    
 
-    <%= link_to 'Voltar', job_vacancies_path , class: "btn btn-primary"%>
+    <%= link_to 'Voltar', :back , class: "btn btn-primary"%>
 
 </div>

@@ -108,4 +108,26 @@ feature 'Headhunter register a commentary for a candidate' do
         expect(page).to have_content("Boa noite, sou o Headhunter 1 e gostaria de falar com vc")
         expect(page).not_to have_content("Boa noite, sou o Headhunter 2 e gostaria de falar com vc")
     end
+
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access commentary list option' do
+            candidate = Candidate.create!(email: 'candidate@teste.com',
+                                          password: '123teste')
+
+            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                           filename:'foto.jpeg')
+            
+            visit comments_list_profile_path(profile)
+
+            expect(current_path).to eq(root_path)
+        end
+    end
 end

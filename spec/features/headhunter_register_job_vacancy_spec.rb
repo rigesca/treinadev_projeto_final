@@ -105,4 +105,13 @@ feature 'Headhunter register a job vacancy' do
 
         expect(page).to have_content('Valor minimo deve ser maior ou igual a 0')
     end
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access new job vacancy option' do
+            visit new_job_vacancy_path
+
+            expect(current_path).to eq(new_headhunter_session_path)
+        end
+    end
 end

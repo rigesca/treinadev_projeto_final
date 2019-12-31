@@ -227,4 +227,36 @@ feature 'Headhunter list candidates from a vacancy' do
 
         expect(page).to have_content('A vaga não possui candidatos recusados.') 
     end
+
+
+
+    context 'route access test' do
+        scenario 'a no-authenticate usser try to access candidate list option' do
+            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                    password: '123teste')
+    
+            candidate = Candidate.create!(email: 'candidate@teste.com',
+                                          password: '123teste')
+            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                           filename:'foto.jpeg')
+            job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                             vacancy_description:'O profissional ira trabalhar com ruby',
+                                             ability_description:'Conhecimento em TDD e ruby',
+                                             level: :junior,
+                                             limit_date: 7.day.from_now,
+                                             region: 'Av.Paulista, 1000',
+                                             minimum_wage: 2500,
+                                             maximum_wage: 2800,
+                                             headhunter_id: headhunter.id)
+            
+            visit candidate_list_job_vacancy_path(job_vacancy)
+
+            expect(current_path).to eq(new_headhunter_session_path)
+        end
+    end
 end
