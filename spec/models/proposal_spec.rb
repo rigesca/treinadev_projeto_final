@@ -2,6 +2,19 @@ require 'rails_helper'
 
 RSpec.describe Proposal, type: :model do
 
+  describe 'associations' do
+    it { should belong_to(:registered)}
+  end
+
+  describe 'validation' do
+    it { should validate_presence_of(:start_date)}
+    it { should validate_presence_of(:limit_feedback_date)}
+    it { should validate_presence_of(:salary)}
+    it { should validate_presence_of(:benefits)}
+  end
+
+
+
   context '.start_date_must_be_greater_than_today' do
     it 'start date must exist' do
       headhunter = Headhunter.create!(email: 'headhunter@teste.com',

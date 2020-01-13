@@ -34,6 +34,7 @@ feature 'A visitor no-authenticate try to access' do
 
         expect(current_path).to eq(root_path)
     end
+    
     scenario 'index proposal option' do
         headhunter = Headhunter.create!(email: 'headhunter@teste.com',
                                 password: '123teste')

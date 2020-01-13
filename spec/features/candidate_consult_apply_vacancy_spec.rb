@@ -33,11 +33,11 @@ feature 'Candidate consults apply vacancy'do
         visit root_path
         click_on 'Minhas Vagas'
 
-        expect(page).to have_content(job_vacancy.heading)
-        expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
-
         click_on job_vacancy.heading
 
+        expect(page).to have_content(job_vacancy.title)
+        expect(page).to have_content(I18n.t(job_vacancy.status, scope: [:enum,:statuses]))
+        
         expect(page).to have_content('Você já se encontra inscrito para essa vaga.')
     end
 

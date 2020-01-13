@@ -35,4 +35,46 @@ feature 'Candidate edits your profile' do
         expect(page).to have_content('- Trabalho 1 anos e 6 messes na empresa Y')
     end
 
+    scenario 'and change the name to an empty value' do
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                      password: '123teste')
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+
+        login_as(candidate, :scope => :candidate)
+
+        visit edit_profile_path(profile)
+
+        fill_in 'Nome completo', with: ' '
+        
+        click_on 'Salvar'
+
+        expect(page).to have_content('Nome completo não pode ficar em branco')
+    end
+
+    scenario 'and change the birth to an empty value' do
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                      password: '123teste')
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+
+        login_as(candidate, :scope => :candidate)
+
+        visit edit_profile_path(profile)
+
+        fill_in 'Data de nascimento', with: ' '    
+        
+        click_on 'Salvar'
+
+        expect(page).to have_content('Data de nascimento não pode ficar em branco')
+    end
+
 end

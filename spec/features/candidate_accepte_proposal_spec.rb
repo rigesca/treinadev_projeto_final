@@ -35,7 +35,6 @@ feature 'Candidate accepted a proposal'do
         click_on 'Analisar proposta'
         click_on 'Aceitar proposta'
        
-        expect(page).to have_content(I18n.localize proposal.start_date)
         fill_in 'Feedback', with: 'Obrigado pela oportunidade'
         check('confirm')
         
@@ -81,7 +80,6 @@ feature 'Candidate accepted a proposal'do
         login_as(candidate, :scope => :candidate)
         visit accept_proposal_path(proposal)
        
-        expect(page).to have_content(I18n.localize proposal.start_date)
         check('confirm')
         
         click_on 'Enviar'
@@ -126,7 +124,6 @@ feature 'Candidate accepted a proposal'do
         login_as(candidate, :scope => :candidate)
         visit accept_proposal_path(proposal)
        
-        expect(page).to have_content(I18n.localize proposal.start_date)
         fill_in 'Feedback', with: 'Obrigado pela oportunidade'
         
         click_on 'Enviar'
@@ -192,7 +189,6 @@ feature 'Candidate accepted a proposal'do
         login_as(candidate, :scope => :candidate)
         visit accept_proposal_path(proposal_1)
        
-        expect(page).to have_content(I18n.localize proposal_1.start_date)
         check('confirm')
         
         click_on 'Enviar'

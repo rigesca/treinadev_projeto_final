@@ -9,7 +9,7 @@
     <p><%= @job_vacancy.ability_description%></p>
 
     <h4>Nível da vaga:</h4>
-    <p><%= @job_vacancy.level%></p>
+    <p><%= I18n.t(@job_vacancy.level, scope: [:enum, :levels])%></p>
 
     <h4>Região:</h4>
     <p><%= @job_vacancy.region%></p>

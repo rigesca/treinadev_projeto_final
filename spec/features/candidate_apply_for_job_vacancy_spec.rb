@@ -30,8 +30,6 @@ feature 'Candidate apply for a job vacancy' do
         click_on 'Busca por vagas'
         click_on job_vacancy.heading
 
-        expect(current_path).to eq(job_vacancy_path(job_vacancy))
-
         fill_in 'Justificativa', with: 'Sou o candidato mais bem preparado para a vaga.'
         click_on 'Candidatar-se a vaga'
 

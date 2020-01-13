@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-feature 'Headhunter sing in' do
+feature 'Headhunter sign in' do
     scenario 'successfully' do
         headhunter = Headhunter.create!(email: 'headhunter@teste.com',
                            password: '123teste')

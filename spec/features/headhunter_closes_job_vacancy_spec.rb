@@ -68,8 +68,6 @@ feature 'Headhunter closes job vacancy' do
         click_on 'Vagas'
         click_on job_vacancy.heading
 
-        expect(page).to have_content(first_profile.name)
-
         click_on 'Encerra vaga'
 
         expect(page).to have_content("#{I18n.t(:closed, scope: [:enum, :statuses])}")

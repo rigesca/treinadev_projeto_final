@@ -2,6 +2,23 @@ require 'rails_helper'
 
 RSpec.describe JobVacancy, type: :model do
 
+  describe 'associations' do
+    it { should belong_to(:headhunter)}
+    it { should have_many(:candidates)}
+    it { should have_many(:registereds)}
+  end
+
+  describe 'validation' do
+    it { should validate_presence_of(:title)}
+    it { should validate_presence_of(:vacancy_description)}
+    it { should validate_presence_of(:ability_description)}
+    it { should validate_presence_of(:level)}
+    it { should validate_presence_of(:limit_date)}
+    it { should validate_presence_of(:region)}
+    it { should validate_numericality_of(:minimum_wage).is_greater_than_or_equal_to(0)}
+    it { should validate_numericality_of(:maximum_wage)}
+  end
+
   context '.maximun_wage_not_be_greater_than_minimum' do
     it 'minimum wage less than maximo wage' do
       headhunter = Headhunter.create!(email: 'headhunter@teste.com',

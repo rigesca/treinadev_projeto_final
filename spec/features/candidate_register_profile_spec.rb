@@ -30,6 +30,7 @@ feature 'Candidate register a profile' do
         visit root_path
 
         fill_in 'Nome completo', with: 'Fulano Siclano'
+        fill_in 'Data de nascimento', with: '15/07/1989'
         
         click_on 'Salvar'
 
@@ -49,6 +50,7 @@ feature 'Candidate register a profile' do
         click_on 'Salvar'
 
         expect(page).to have_content('Nome completo não pode ficar em branco')
+        expect(page).to have_content('Data de nascimento não pode ficar em branco')
     end
 
 

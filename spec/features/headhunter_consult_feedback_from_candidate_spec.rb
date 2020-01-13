@@ -73,8 +73,6 @@ feature 'Headhunter consult feedback from candidate' do
         visit root_path
         click_on 'Propostas'
 
-        expect(page).to have_content("#{I18n.t(:accepted, scope: [:enum, :statuses])}")
-
         click_on 'Analisar proposta'
 
         expect(page).to have_content("Proposta #{I18n.t(:accepted, scope: [:enum, :statuses])}")

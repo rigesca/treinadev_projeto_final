@@ -3,7 +3,9 @@
 Projeto criado para desenvolver um sistema web para busca de vagas de emprego. Nesse sistema ira existir dois perfis, um de candidato que acessa e se inscreve nas vagas e outro de headhunter, que cadastra as vagas seleciona os candidatos. 
 
 ## Índice 
-### *Gems 
+### *Gems
+### *Versões 
+### *Preparação do ambiente 
 ### *Sistema
 ### *Utilização
 
@@ -13,8 +15,17 @@ Além das gems automáticas criadas pelo projeto, foram adicionadas as seguintes
 * Twitter bootstrap rails - Utilizado para estilizar os códigos do from-end do projeto com os padrões bootstrap.
 * Rack – A gem foi colocada e atualizada no projeto para corrigir um erro de vulnerabilidade detectado pelo github.
 
-## Sistema
+## Versões
+Para esse projeto foram usados as seguintes versões: 
+* Ruby  ver.: 2.6.5
+* Rails ver.: 5.2.3 ou maior
 
+## Preparação do ambiente 
+Apos clonar o projeto, executar o comando 'bundle install' para ser instalado\atualizado todas as gens e dependencias do projeto. O proximo passo é executar o comando 'rails db:migrate' para criação das estruturas do banco de dados. 
+
+Para executar o projeto, basta executar o comando 'rails s' dentro da pasta do projeto, para que o servidor seja criado e executado. 
+
+## Sistema
 O conceito do sistema é criar um programa de criação e candidatura de vagas de emprego, permitindo que headhunter identifiquem e selecionem o(s) melhore(s) candidato(s) para a vaga cadastrada. 
 
 No sistema ira existir dois perfis, um headhunter e um candidato. 
@@ -38,7 +49,6 @@ Já o candidato poderá:
 * Aceitar ou recusar uma proposta enviada por um headhunter referente a uma vaga. 
 
 ## Utilização
-
 Ao acessar o sistema o visitante poderá escolher qual tipo de perfil ele deseja criar, se um headhunter ou um candidato, assim também como escolher qual perfil ira realizar seu login. 
 
 Ao logar como headhunter, o usuario poderá escolher entre duas opções, “vagas” ou “propostas”. Na opção “vagas”, um headhunter pode cadastrar uma vaga ou ver as vagas previamente cadastradas por ele, clicando no titulo da vaga. Atualmente não é possível alterar os dados da vaga. Na criação da vaga o headhunter ira determinar uma data limite para inscrições. 

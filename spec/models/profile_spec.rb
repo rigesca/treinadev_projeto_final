@@ -1,8 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Profile, type: :model do
+
+  describe 'associations' do
+    it { should belong_to(:candidate)}
+    it { should have_many(:comments)}
+  end
+
+  describe 'validation' do
+    it { should validate_presence_of(:name)}
+    it { should validate_presence_of(:birth_date)}
+  end
+
+
+  
   context '.profile_is_complete?' do
-    
     it 'with a complete profile' do
       candidate = Candidate.create!(email: 'candidate@teste.com',
                                     password: '123teste')

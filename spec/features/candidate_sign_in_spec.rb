@@ -1,7 +1,7 @@
 
 require 'rails_helper'
 
-feature 'Candidate sing in' do
+feature 'Candidate sign in' do
     scenario 'successfully' do
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')

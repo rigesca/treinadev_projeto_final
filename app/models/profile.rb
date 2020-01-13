@@ -4,7 +4,7 @@ class Profile < ApplicationRecord
 
   has_one_attached :candidate_photo
 
-  validates :name, presence: true
+  validates :name, :birth_date, presence: true
 
   def profile_is_complete?
     if (name.present? && social_name.present? && birth_date.present? &&
