@@ -13,15 +13,17 @@ Projeto criado para desenvolver um sistema web para busca de vagas de emprego. N
 Além das gems automáticas criadas pelo projeto, foram adicionadas as seguintes gem:
 * Devise - Utilizado para autenticação dos usuários no sistema. 
 * Twitter bootstrap rails - Utilizado para estilizar os códigos do from-end do projeto com os padrões bootstrap.
+* Simplecov - Verifica cobertura dos testes criado no sistema, apresentando estimativas para tomada de decisões (utilizada apenas no ambiente de teste).
+* Shoulda-Matchers - Gem utilizada para criar teste de validação e associações no projeto (utilizada apenas no ambiente de teste).
 * Rack – A gem foi colocada e atualizada no projeto para corrigir um erro de vulnerabilidade detectado pelo github.
 
 ## Versões
 Para esse projeto foram usados as seguintes versões: 
-* Ruby  ver.: 2.6.5
+* Ruby ver.: 2.6.5
 * Rails ver.: 5.2.3 ou maior
 
 ## Preparação do ambiente 
-Apos clonar o projeto, executar o comando 'bundle install' para ser instalado\atualizado todas as gens e dependencias do projeto. O proximo passo é executar o comando 'rails db:migrate' para criação das estruturas do banco de dados. 
+Apos clonar o projeto, executar o comando 'bundle install' para ser instalado\atualizado todas as gens e dependências do projeto. O próximo passo é executar o comando 'rails db:migrate' para criação das estruturas do banco de dados. 
 
 Para executar o projeto, basta executar o comando 'rails s' dentro da pasta do projeto, para que o servidor seja criado e executado. 
 
