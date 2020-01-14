@@ -1,7 +1,7 @@
 class RegisteredsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:mark, :save_canceled, :cancel]
-    before_action :authenticate_usser!
+    before_action :authenticate_user!
 
 
     def index

@@ -213,4 +213,147 @@ RSpec.describe JobVacancy, type: :model do
 
   end
 
+
+  context '.verify_status_registered_for_vacancy' do
+    
+    it 'for a candidate with registered in progress' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(true)
+    end
+
+    it 'for a candidate with registered proposal' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :proposal,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(false)
+    end
+
+    it 'for a candidate with registered reject proposal' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :reject_proposal,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(false)
+    end
+
+    it 'for a candidate with registered accept proposal' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :accept_proposal,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(false)
+    end
+
+    it 'for a candidate with registered excluded' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :excluded,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(false)
+    end
+
+    it 'for a candidate with registered closed' do
+      headhunter = Headhunter.create!(email: 'headhunter@teste.com',
+                                      password: '123teste')
+        
+      candidate = Candidate.create!(email: 'candidate@teste.com',
+                                    password: '123teste')
+
+      job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                       vacancy_description:'O profissional ira trabalhar com ruby',
+                                       ability_description:'Conhecimento em TDD e ruby',
+                                       level: :junior,
+                                       limit_date: 7.day.from_now,
+                                       region: 'Av.Paulista, 1000',
+                                       minimum_wage: 2500,
+                                       maximum_wage: 2800,
+                                       headhunter_id: headhunter.id)
+
+      registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :closed,
+                                      registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+
+      expect(job_vacancy.verify_status_registered_for_vacancy(candidate.id)).to eq(false)
+    end
+
+  end
+
 end

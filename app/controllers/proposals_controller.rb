@@ -1,9 +1,14 @@
 class ProposalsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:new,:create]
-    before_action :authenticate_candidate!, only: [:accept,:save_accept,:reject,:save_reject]
-    before_action :authenticate_usser!
 
+    before_action :authenticate_candidate!, only: [:accept,:save_accept,:reject,:save_reject]
+
+    before_action :authenticate_user!
+
+    before_action :find_proposal_by_id, only: [:show, :reject, :save_reject, :accept, :save_accept]
+    
+    before_action :authenticate_proposal, only: [:show, :reject, :save_reject, :accept, :save_accept]
 
     def index
 
@@ -16,7 +21,6 @@ class ProposalsController < ApplicationController
     end
 
     def show
-        @proposal = Proposal.find(params[:id])
         @job_vacancy = @proposal.registered.job_vacancy
         @profile = @proposal.registered.candidate.profile
     end
@@ -48,12 +52,10 @@ class ProposalsController < ApplicationController
     end
 
     def reject
-        @proposal = Proposal.find(params[:id])
         @job_vacancy = @proposal.registered.job_vacancy
     end
 
     def save_reject
-        @proposal = Proposal.find(params[:id])
 
         if params[:proposal][:feedback].blank?
             @proposal.update(feedback: "Proposta rejeitada pelo candidato")
@@ -70,13 +72,10 @@ class ProposalsController < ApplicationController
     end
 
     def accept
-        @proposal = Proposal.find(params[:id])
         @job_vacancy = @proposal.registered.job_vacancy
     end
 
     def save_accept
-        @proposal = Proposal.find(params[:id])
-        
         if params[:confirm] == 'unchecked'
             @job_vacancy = @proposal.registered.job_vacancy
 
@@ -112,6 +111,24 @@ class ProposalsController < ApplicationController
 
     def params_proposal
         params.require(:proposal).permit(:salary, :start_date, :limit_feedback_date, :benefits, :note)
+    end
+
+    def find_proposal_by_id
+        @proposal = Proposal.find(params[:id])
+    end
+
+    def authenticate_proposal
+        return unless current_candidate.present? || current_headhunter.present? 
+        
+        if current_candidate.present?
+            if @proposal.registered.candidate_id != current_candidate.id
+                redirect_to root_path
+            end
+        else
+            if @proposal.registered.job_vacancy.headhunter_id != current_headhunter.id
+                redirect_to root_path
+            end
+        end
     end
 
 end
