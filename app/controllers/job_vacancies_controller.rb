@@ -1,9 +1,11 @@
 class JobVacanciesController < ApplicationController
 
-    before_action :authenticate_headhunter!, only: [:new,:create, :candidate_list, :closes]
     before_action :authenticate_candidate!, only: [:apply,:search]
+    before_action :validate_profile!, only: [:index, :apply, :search]
+    
+    before_action :authenticate_headhunter!, only: [:new,:create, :candidate_list, :closes]
+    
     before_action :authenticate_user!
-
 
     def index
         if current_headhunter.present?

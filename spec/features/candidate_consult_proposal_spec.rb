@@ -106,7 +106,7 @@ feature 'Candidate consults a proposal'do
                                   experience: 'Trabalhou por 2 anos na empresa X',
                                   candidate_id: candidate.id)
             profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+                                           filename:'foto.jpeg')
 
             job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
@@ -139,10 +139,12 @@ feature 'Candidate consults a proposal'do
                                             password: '123teste')
 
             profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
+                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                      description: 'Busco oportunidade como programador',
+                                      experience: 'Trabalhou por 2 anos na empresa X',
+                                      candidate_id: candidate.id)
+            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                           filename:'foto.jpeg')
                             
             login_as(candidate, :scope => :candidate)
 

@@ -3,6 +3,7 @@ class ProposalsController < ApplicationController
     before_action :authenticate_headhunter!, only: [:new,:create]
 
     before_action :authenticate_candidate!, only: [:accept,:save_accept,:reject,:save_reject]
+    before_action :validate_profile!, only: [:index, :accept,:save_accept,:reject,:save_reject]
 
     before_action :authenticate_user!
 

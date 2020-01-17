@@ -1,6 +1,9 @@
 class RegisteredsController < ApplicationController
 
     before_action :authenticate_headhunter!, only: [:mark, :save_canceled, :cancel]
+    
+    before_action :validate_profile!, only: [:index]
+
     before_action :authenticate_user!
 
 

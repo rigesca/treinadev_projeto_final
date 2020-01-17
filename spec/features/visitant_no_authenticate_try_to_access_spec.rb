@@ -4,7 +4,7 @@ feature 'A visitor no-authenticate try to access' do
     
     scenario 'show proposal option' do
         headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                password: '123teste')
+                                        password: '123teste')
 
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                     password: '123teste')

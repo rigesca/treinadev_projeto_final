@@ -1,17 +1,15 @@
 class HomeController < ApplicationController
+  
+  before_action :validate_profile! 
+  
   def index
     if current_candidate.present?
-      profile = current_candidate.profile
-
-      if profile.present?
-        unless profile.profile_is_complete?
-          flash[:alert] = 'É necessario completar o perfil para se inscrever em qualquer vaga'
-          redirect_to edit_profile_path(profile)
-        end
-      else 
-        flash[:alert] = 'É necessario criar um perfil para se inscrever em qualquer vaga'
-        redirect_to new_profile_path
-      end      
-    end
+      quant_proposal = Proposal.joins(:registered).where('registereds.candidate_id = ? and proposals.status = 0', current_candidate.id).count 
+    
+      if quant_proposal > 0
+        flash.now[:notice] = "Você possui (#{quant_proposal}) propostas não analisadas ainda."
+      end
+    end    
   end
+  
 end

@@ -1,35 +1,47 @@
 <%= nav_bar do%>
     <%if headhunter.nil? && candidate.nil?%>
+      
       <p>
         <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
         <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
       </p>  
+      
       <p>
         <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
         <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
       </p>
+
     <% elsif headhunter.present? %>
+      
       <p>
         Olá <%= headhunter.email%> |
         <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
       </p>
+      
       <p>
         <%= link_to 'Vagas', job_vacancies_path %>
         <%= link_to 'Propostas', proposals_path %>
       </p>
+
     <% else %>
+      
       <p>
         Olá <%= candidate.email%> |
         <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
       </p>
+      
       <p>
-      <%= link_to 'Perfil', candidate.profile %>
-          <% if candidate.profile.present? && candidate.profile.profile_is_complete?%>
-              <%= link_to 'Mensagens', comments_list_profile_path(current_candidate.profile)%>
-              <%= link_to 'Minhas Vagas', registereds_path %>
-              <%= link_to 'Busca por vagas', job_vacancies_path %>
-              <%= link_to 'Minhas propostas', proposals_path %>
-          <%end%>
+        <%= link_to 'Perfil', candidate.profile %>
+        
+        <% if current_candidate.profile.present? %>
+          <%= link_to 'Mensagens', comments_list_profile_path(current_candidate.profile)%>
+        <% end %>
+        
+        <%= link_to 'Minhas Vagas', registereds_path %>
+        <%= link_to 'Busca por vagas', job_vacancies_path %>
+        <%= link_to "Minhas propostas", proposals_path %>
       </p>
+
     <%end%>
+
 <% end %>

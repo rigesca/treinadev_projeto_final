@@ -1,7 +1,10 @@
 class ProfilesController < ApplicationController
 
     before_action :authenticate_candidate!, only: [:new,:create,:edit,:update]
+    before_action :validate_profile!, only: [:comments_list]
+
     before_action :authenticate_headhunter!, only: [:register_comment]
+    
     before_action :authenticate_user!
 
     def new

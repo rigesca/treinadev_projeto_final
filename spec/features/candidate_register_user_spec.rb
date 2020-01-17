@@ -12,7 +12,7 @@ feature 'Candidate register a user' do
 
         click_on 'Sign up'
 
-        expect(page).to have_content('É necessario criar um perfil para se inscrever em qualquer vaga')
+        expect(page).to have_content('É necessario cadastrar um perfil para utilizar o sistema')
     end
 
     scenario 'try register without filling in all fields' do
