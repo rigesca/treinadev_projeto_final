@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter consult feedback from candidate' do
     scenario 'from a accepted proposal' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -30,11 +29,10 @@ feature 'Headhunter consult feedback from candidate' do
                                     feedback: 'Obrigado pela oportunidade, porem já estou negociando com outra empresa')
             
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Propostas'
-
-        expect(page).to have_content("#{I18n.t(:rejected, scope: [:enum, :statuses])}")
-
         click_on 'Analisar proposta'
 
         expect(page).to have_content("Proposta #{I18n.t(:rejected, scope: [:enum, :statuses])}")
@@ -42,8 +40,7 @@ feature 'Headhunter consult feedback from candidate' do
     end
 
     scenario 'from a rejected proposal' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -70,9 +67,10 @@ feature 'Headhunter consult feedback from candidate' do
                                     feedback: 'Obrigado pela oportunidade')
             
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Propostas'
-
         click_on 'Analisar proposta'
 
         expect(page).to have_content("Proposta #{I18n.t(:accepted, scope: [:enum, :statuses])}")

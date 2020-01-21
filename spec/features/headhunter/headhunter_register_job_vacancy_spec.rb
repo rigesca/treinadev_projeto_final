@@ -2,11 +2,12 @@ require 'rails_helper'
 
 feature 'Headhunter register a job vacancy' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
+
         login_as(headhunter, :scope => :headhunter)
 
         visit root_path
+        
         click_on 'Vagas'
         click_on 'Cadastrar vaga'
 
@@ -26,8 +27,8 @@ feature 'Headhunter register a job vacancy' do
     end
 
     scenario 'try register without filling in all fields' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-            password: '123teste')
+        headhunter = create(:headhunter)
+
         login_as(headhunter, :scope => :headhunter)
         
         visit new_job_vacancy_path
@@ -44,8 +45,8 @@ feature 'Headhunter register a job vacancy' do
     end
 
     scenario 'try register with a limit date less than today' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-            password: '123teste')
+        headhunter = create(:headhunter)
+
         login_as(headhunter, :scope => :headhunter)
         
         visit new_job_vacancy_path
@@ -65,8 +66,8 @@ feature 'Headhunter register a job vacancy' do
     end
 
     scenario 'try register with a minimum wage bigger than maximum' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-            password: '123teste')
+        headhunter = create(:headhunter)
+
         login_as(headhunter, :scope => :headhunter)
         
         visit new_job_vacancy_path
@@ -86,8 +87,8 @@ feature 'Headhunter register a job vacancy' do
     end
 
     scenario 'try register with a minimum wage below zero' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-            password: '123teste')
+        headhunter = create(:headhunter)
+        
         login_as(headhunter, :scope => :headhunter)
         
         visit new_job_vacancy_path

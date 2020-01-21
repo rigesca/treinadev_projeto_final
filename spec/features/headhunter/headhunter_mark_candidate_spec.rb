@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter mark a candidate like a highlight' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -32,22 +31,23 @@ feature 'Headhunter mark a candidate like a highlight' do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
 
         page.find("##{registered.id}_candidatos").click
 
-
         expect(page).to have_content("Candidato #{registered.candidate.profile.name} marcado como destaque com sucesso")
+        
         registered.reload
         expect(registered.highlight?).to eq(true) 
     end
 
     scenario 'and unchecked a candidate' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -76,7 +76,9 @@ feature 'Headhunter mark a candidate like a highlight' do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -84,13 +86,13 @@ feature 'Headhunter mark a candidate like a highlight' do
         page.find("##{registered.id}_candidatos").click
         
         expect(page).to have_content("Candidato #{registered.candidate.profile.name} desmarcado como destaque com sucesso")
+        
         registered.reload
         expect(registered.highlight?).to eq(false) 
     end
 
     scenario 'and checked a candidate from a list of candidate' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         first_candidate = Candidate.create!(email: 'first_candidate@teste.com',
                                             password: '123teste')
@@ -140,7 +142,9 @@ feature 'Headhunter mark a candidate like a highlight' do
                                               registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -148,13 +152,13 @@ feature 'Headhunter mark a candidate like a highlight' do
         page.find("##{second_registered.id}_candidatos").click
         
         expect(page).to have_content("Candidato #{second_registered.candidate.profile.name} marcado como destaque com sucesso")
+        
         second_registered.reload
         expect(second_registered.highlight?).to eq(true) 
     end
 
     scenario 'and unchecked a candidate from a list of candidate' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         first_candidate = Candidate.create!(email: 'first_candidate@teste.com',
                                             password: '123teste')
@@ -204,7 +208,9 @@ feature 'Headhunter mark a candidate like a highlight' do
                                               registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -212,6 +218,7 @@ feature 'Headhunter mark a candidate like a highlight' do
         page.find("##{second_registered.id}_candidatos").click
         
         expect(page).to have_content("Candidato #{second_registered.candidate.profile.name} desmarcado como destaque com sucesso")
+        
         second_registered.reload
         expect(second_registered.highlight?).to eq(false) 
     end

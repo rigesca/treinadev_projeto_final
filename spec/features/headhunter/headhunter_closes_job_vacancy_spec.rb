@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter closes job vacancy' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         first_candidate = Candidate.create!(email: 'candidate1@teste.com',
                                             password: '123teste')
@@ -86,8 +85,7 @@ feature 'Headhunter closes job vacancy' do
 
 
     scenario 'and others candidate register be closed' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate1@teste.com',
                                             password: '123teste')

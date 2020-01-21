@@ -25,8 +25,7 @@ feature 'Candidate navigates homepage' do
     end
 
     scenario 'and have proposals' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
 
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')

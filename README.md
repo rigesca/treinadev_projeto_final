@@ -16,6 +16,8 @@ Além das gems automáticas criadas pelo projeto, foram adicionadas as seguintes
 * Simplecov - Verifica cobertura dos testes criado no sistema, apresentando estimativas para tomada de decisões (utilizada apenas no ambiente de teste).
 * Shoulda-Matchers - Gem utilizada para criar teste de validação e associações no projeto (utilizada apenas no ambiente de teste).
 * Rack – A gem foi colocada e atualizada no projeto para corrigir um erro de vulnerabilidade detectado pelo github.
+* FactoryBot - Utilizada para criação de objetos (utilizada apenas no ambiente de teste).
+* FFaker - Utilizada para gerar valores aleatorios em alguns objetos criados pela gem FactoryBot (utilizada apenas no ambiente de teste). 
 
 ## Versões
 Para esse projeto foram usados as seguintes versões: 

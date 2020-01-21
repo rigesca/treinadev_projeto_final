@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter register a commentary for a candidate' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
 
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
@@ -38,14 +37,11 @@ feature 'Headhunter register a commentary for a candidate' do
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
 
-        headhunter_1 = Headhunter.create!(email: 'headhunter_1@teste.com',
-                                          password: '123teste')
+        headhunter_1 = create(:headhunter)
 
-        headhunter_2 = Headhunter.create!(email: 'headhunter_2@teste.com',
-                                          password: '123teste')
+        headhunter_2 = create(:headhunter)
                                     
-        headhunter_3 = Headhunter.create!(email: 'headhunter_3@teste.com',
-                                          password: '123teste')
+        headhunter_3 = create(:headhunter)
         
         profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
                                   birth_date: '15/07/1989',formation: 'Formado pela faculdade X',

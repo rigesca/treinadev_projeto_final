@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter navigates homepage' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
 
         login_as(headhunter, :scope => :headhunter)
 

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter consults job vancancy' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
@@ -19,6 +18,7 @@ feature 'Headhunter consults job vancancy' do
         login_as(headhunter, :scope => :headhunter)
 
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.title
 
@@ -33,12 +33,12 @@ feature 'Headhunter consults job vancancy' do
     end
 
     scenario 'and no have vancany' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         login_as(headhunter, :scope => :headhunter)
 
         visit root_path
+        
         click_on 'Vagas'
         
         expect(page).to have_content('Seu perfil não possui vagas cadastradas')
@@ -48,8 +48,7 @@ feature 'Headhunter consults job vancancy' do
 
     context 'route access test' do
         scenario 'a no-authenticate usser try to access show job vacancy option' do
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+            headhunter = create(:headhunter)
 
             job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                              vacancy_description:'O profissional ira trabalhar com ruby',

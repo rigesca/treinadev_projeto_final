@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter rejects a candidate' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -32,15 +31,16 @@ feature 'Headhunter rejects a candidate' do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
 
         page.find("##{registered.id}_canceled").click
-
         fill_in 'Feedback', with: 'Candidato foi encerrado devido não ter todas as habilidades necessarias.'
-        
+
         click_on 'Encerrar'
 
         expect(page).to have_content("Candidato #{profile.name} teve sua participação finalizada com sucesso")
@@ -52,8 +52,7 @@ feature 'Headhunter rejects a candidate' do
     end
 
     scenario 'and try to closed a registered without fill justification' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -96,8 +95,7 @@ feature 'Headhunter rejects a candidate' do
 
     context 'route access test' do
         scenario 'a no-authenticate usser try to access reject registered option' do
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+            headhunter = create(:headhunter)
         
             candidate = Candidate.create!(email: 'candidate@teste.com',
                                           password: '123teste')

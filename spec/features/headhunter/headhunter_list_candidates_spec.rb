@@ -2,6 +2,8 @@ require 'rails_helper'
 
 feature 'Headhunter list candidates from a vacancy' do
     scenario 'successfully' do
+        headhunter = create(:headhunter)
+
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
 
@@ -13,11 +15,6 @@ feature 'Headhunter list candidates from a vacancy' do
 
         profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
                                        filename:'foto.jpeg')
-
-
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
-
 
         job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
@@ -36,6 +33,7 @@ feature 'Headhunter list candidates from a vacancy' do
         login_as(headhunter, :scope => :headhunter)
 
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -45,6 +43,8 @@ feature 'Headhunter list candidates from a vacancy' do
     end
 
     scenario 'and has many candidates' do
+        headhunter = create(:headhunter)
+
         candidate_1 = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
 
@@ -81,11 +81,6 @@ feature 'Headhunter list candidates from a vacancy' do
         profile_3.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
                                        filename:'foto.jpeg')
 
-
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
-
-
         job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
                                          ability_description:'Conhecimento em TDD e ruby',
@@ -95,7 +90,6 @@ feature 'Headhunter list candidates from a vacancy' do
                                          minimum_wage: 2500,
                                          maximum_wage: 2800,
                                          headhunter_id: headhunter.id)
-
 
         registered_1 = Registered.create!(candidate_id: candidate_1.id, job_vacancy_id: job_vacancy.id,
                                           registered_justification: 'Estou preparado para exercer esse cargo na empresa')
@@ -109,6 +103,7 @@ feature 'Headhunter list candidates from a vacancy' do
         login_as(headhunter, :scope => :headhunter)
 
         visit job_vacancy_path(job_vacancy)
+        
         click_on 'Lista Candidatos'
 
         expect(page).to have_content("#{profile_1.name} - #{profile_1.calculates_candidate_age}")
@@ -122,6 +117,8 @@ feature 'Headhunter list candidates from a vacancy' do
     end
 
     scenario 'and has no registered candidates' do
+        headhunter = create(:headhunter)
+
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
 
@@ -133,11 +130,6 @@ feature 'Headhunter list candidates from a vacancy' do
 
         profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
                                        filename:'foto.jpeg')
-
-
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
-
 
         job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
                                          vacancy_description:'O profissional ira trabalhar com ruby',
@@ -157,8 +149,7 @@ feature 'Headhunter list candidates from a vacancy' do
     end
 
     scenario 'and has no favorit registered candidates' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -187,14 +178,14 @@ feature 'Headhunter list candidates from a vacancy' do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
 
         login_as(headhunter, :scope => :headhunter)
+        
         visit candidate_list_job_vacancy_path(job_vacancy.id)
 
         expect(page).to have_content('A vaga não possui candidatos em destaque.') 
     end
 
     scenario 'and has no canceled registered' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -232,8 +223,7 @@ feature 'Headhunter list candidates from a vacancy' do
 
     context 'route access test' do
         scenario 'a no-authenticate usser try to access candidate list option' do
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+            headhunter = create(:headhunter)
     
             candidate = Candidate.create!(email: 'candidate@teste.com',
                                           password: '123teste')

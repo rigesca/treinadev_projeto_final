@@ -48,9 +48,15 @@ RSpec.configure do |config|
 
   #Devise
   config.include Warden::Test::Helpers
+
+  #Tradução e I18n
   config.include ActionView::Helpers::NumberHelper
   config.include ActiveSupport::Testing::TimeHelpers
 
+  #Criação de objetos para teste
+  config.include FactoryBot::Syntax::Methods
+
+  #Validação e teste de associação
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
       with.test_framework :rspec

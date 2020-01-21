@@ -3,7 +3,9 @@ require 'rails_helper'
 feature 'Candidate search for a job vacancy' do
 
     context 'vacancies screen' do
-        scenario 'and have some valide vacancies'do
+        scenario 'and have some valide vacancies' do
+            headhunter = create(:headhunter)
+            
             candidate = Candidate.create!(email: 'candidate@teste.com',
                                           password: '123teste')
             profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
@@ -12,9 +14,6 @@ feature 'Candidate search for a job vacancy' do
                                       experience: 'Trabalhou por 2 anos na empresa X',
                                       candidate_id: candidate.id)
             profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
 
             job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
                                                vacancy_description:'O profissional ira trabalhar com ruby',

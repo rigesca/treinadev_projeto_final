@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter make a proposal to a candidate'do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -32,7 +31,9 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -56,8 +57,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
 
     scenario 'and try to make a proposal witout a note' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -86,6 +86,7 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit proposal_registered_path(registered)
 
         fill_in 'Salário', with: 2600
@@ -100,8 +101,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
     
     scenario 'and try to make a proposal without filling in all fields' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -128,6 +128,7 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit proposal_registered_path(registered)
 
         click_on 'Enviar'
@@ -139,8 +140,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
 
     scenario 'and try to make a proposal with a invalid salary' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -167,6 +167,7 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit proposal_registered_path(registered)
 
         fill_in 'Salário', with: '2a100'
@@ -180,8 +181,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
 
     scenario 'and try to make a proposal with a lower starting date than today' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -208,6 +208,7 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit proposal_registered_path(registered)
 
         fill_in 'Salário', with: 2600
@@ -221,8 +222,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
 
     scenario 'and try to make a proposal with a lower salary than salary range' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -263,8 +263,7 @@ feature 'Headhunter make a proposal to a candidate'do
     end
 
     scenario 'and try to make a proposal with a bigger salary than salary range' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                             password: '123teste')
@@ -291,6 +290,7 @@ feature 'Headhunter make a proposal to a candidate'do
                                         registered_justification: 'Estou preparado para exercer esse cargo na empresa')
         
         login_as(headhunter, :scope => :headhunter)
+        
         visit proposal_registered_path(registered)
 
         fill_in 'Salário', with: 3200
@@ -304,8 +304,7 @@ feature 'Headhunter make a proposal to a candidate'do
 
     context 'route access test' do 
         scenario 'a no-authenticate usser try to access new option' do
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+            headhunter = create(:headhunter)
     
             candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')

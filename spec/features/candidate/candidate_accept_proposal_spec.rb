@@ -3,8 +3,7 @@ require 'rails_helper'
 feature 'Candidate accepted a proposal'do
      
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+        headhunter = create(:headhunter)
     
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -30,7 +29,9 @@ feature 'Candidate accepted a proposal'do
                                     salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: registered.id)
             
         login_as(candidate, :scope => :candidate)
+        
         visit root_path
+        
         click_on 'Minhas propostas'
         click_on 'Analisar proposta'
         click_on 'Aceitar proposta'
@@ -51,8 +52,7 @@ feature 'Candidate accepted a proposal'do
     end
 
     scenario 'and no fill feedback' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+        headhunter = create(:headhunter)
     
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -78,6 +78,7 @@ feature 'Candidate accepted a proposal'do
                                     salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: registered.id)
             
         login_as(candidate, :scope => :candidate)
+        
         visit accept_proposal_path(proposal)
        
         check('confirm')
@@ -95,8 +96,7 @@ feature 'Candidate accepted a proposal'do
     end
 
     scenario 'and not confirm start date' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+        headhunter = create(:headhunter)
     
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -122,6 +122,7 @@ feature 'Candidate accepted a proposal'do
                                     salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: registered.id)
             
         login_as(candidate, :scope => :candidate)
+        
         visit accept_proposal_path(proposal)
        
         fill_in 'Feedback', with: 'Obrigado pela oportunidade'
@@ -133,8 +134,7 @@ feature 'Candidate accepted a proposal'do
 
 
     scenario 'and have multiples proposal and registered' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+        headhunter = create(:headhunter)
     
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                         password: '123teste')
@@ -215,8 +215,7 @@ feature 'Candidate accepted a proposal'do
 
 
     scenario 'and try to accept a proposal from another candidate' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         first_candidate = Candidate.create!(email: 'candidate1@teste.com',
                                             password: '123teste')
@@ -269,8 +268,7 @@ feature 'Candidate accepted a proposal'do
 
     context 'route access test' do
         scenario 'a no-authenticate usser try to accepted proposal option' do
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                    password: '123teste')
+            headhunter = create(:headhunter)
     
             candidate = Candidate.create!(email: 'candidate@teste.com',
                                           password: '123teste')

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 feature 'Headhunter register a commentary for a candidate' do
     scenario 'successfully' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
@@ -34,6 +33,7 @@ feature 'Headhunter register a commentary for a candidate' do
         login_as(headhunter, :scope => :headhunter)
 
         visit root_path
+        
         click_on 'Vagas'
         click_on job_vacancy.heading
         click_on 'Lista Candidatos'
@@ -47,13 +47,12 @@ feature 'Headhunter register a commentary for a candidate' do
         commentary = Comment.last
 
         expect(page).to have_content(commentary.heading)
-        expect(page).to have_content(commentary.comment)
+        expect(page).to have_content("Boa tarde #{candidate.profile.name}, gostamos muito do seu perfil, você utiliza linkeding ?")
         expect(page).to have_content(commentary.customized_send_time_message)
     end
 
     scenario 'and try to send a comentary without a text' do
-        headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                        password: '123teste')
+        headhunter = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
@@ -78,11 +77,9 @@ feature 'Headhunter register a commentary for a candidate' do
     end
 
     scenario 'and headhunter cant see a commentary from another headhunter' do
-        headhunter_1 = Headhunter.create!(email: 'headhunter@teste_1.com',
-                                          password: '123teste')
+        headhunter_1 = create(:headhunter)
 
-        headhunter_2 = Headhunter.create!(email: 'headhunter@teste_2.com',
-                                          password: '123teste')
+        headhunter_2 = create(:headhunter)
         
         candidate = Candidate.create!(email: 'candidate@teste.com',
                                       password: '123teste')
