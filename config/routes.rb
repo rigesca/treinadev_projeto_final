@@ -36,6 +36,12 @@ Rails.application.routes.draw do
     post 'closes', on: :member
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :job_vacancies, only: %i[show create index]
+    end
+  end
+
   
 
 end
