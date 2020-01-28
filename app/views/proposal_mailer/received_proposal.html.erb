@@ -1,0 +1,5 @@
+<p>Olá <%= @name %>, você acaba de receber uma proposta para a vaga: <%= @job_vacancy_title %>.</p>
+<p>O inicio das atividades esta prevista para a <%= I18n.localize @proposal.start_date%>.</p>
+<p>Acesse seu usuário para mais informações sobre a proposta.</p>
+<p style="color:red;">ATENÇÃO: Você tem ate dia <%= I18n.localize @proposal.limit_feedback_date%> para responder a proposta, caso contrario ela sera encerrada.</p>
+<p>Obrigado!<p>

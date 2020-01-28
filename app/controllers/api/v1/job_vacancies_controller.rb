@@ -26,7 +26,7 @@ module Api
             end
 
             def index
-                vacancy_list = JobVacancy.all
+                vacancy_list = JobVacancy.where("limit_date > ?", Date.current).open
 
                 if vacancy_list.blank?
                     render json: '{ "message" : "No content" }', status: :no_content

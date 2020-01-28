@@ -56,6 +56,53 @@ feature 'Headhunter make a proposal to a candidate'do
         expect(registered.status).to eq('proposal')
     end
 
+    scenario 'a valid proposal send a email to candidate' do
+        headhunter = create(:headhunter)
+        
+        candidate = Candidate.create!(email: 'candidate@teste.com',
+                                            password: '123teste')
+
+        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
+                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
+                                  description: 'Busco oportunidade como programador',
+                                  experience: 'Trabalhou por 2 anos na empresa X',
+                                  candidate_id: candidate.id)
+        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
+                                       filename:'foto.jpeg')
+
+        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
+                                         vacancy_description:'O profissional ira trabalhar com ruby',
+                                         ability_description:'Conhecimento em TDD e ruby',
+                                         level: :junior,
+                                         limit_date: 7.day.from_now,
+                                         region: 'Av.Paulista, 1000',
+                                         minimum_wage: 2500,
+                                         maximum_wage: 2800,
+                                         headhunter_id: headhunter.id)
+
+        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
+                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+        
+        mailer_spy = class_spy(ProposalMailer)
+        stub_const('ProposalMailer', mailer_spy)
+
+        login_as(headhunter, :scope => :headhunter)
+        
+        visit proposal_registered_path(registered)
+
+        fill_in 'Salário', with: 2600
+        fill_in 'Data de inicio das atividades', with: 15.day.from_now
+        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
+        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+        fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
+        
+        click_on 'Enviar'
+
+        proposal = Proposal.last
+
+        expect(ProposalMailer).to have_received(:received_proposal).with(proposal.id)
+    end
+
     scenario 'and try to make a proposal witout a note' do
         headhunter = create(:headhunter)
         

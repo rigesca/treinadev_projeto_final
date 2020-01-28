@@ -40,7 +40,8 @@ class ProposalsController < ApplicationController
 
         if @proposal.save
             @registered.proposal!
-            
+
+            ProposalMailer.received_proposal(@proposal.id)            
             flash[:notice] = "Proposta enviada ao candidato #{@registered.candidate.profile.name} com sucesso"
 
             redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id)
