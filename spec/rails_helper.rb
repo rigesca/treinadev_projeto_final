@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -5,14 +7,16 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+if Rails.env.production?
+  abort('The Rails environment is running in production mode!')
+end
+
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
-
 require 'simplecov'
 SimpleCov.start 'rails'
-puts "simplecov"
+puts 'simplecov'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -46,28 +50,23 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  #Devise
+  # Devise
   config.include Warden::Test::Helpers
 
-  #Tradução e I18n
+  # Tradução e I18n
   config.include ActionView::Helpers::NumberHelper
   config.include ActiveSupport::Testing::TimeHelpers
 
-  #Criação de objetos para teste
+  # Criação de objetos para teste
   config.include FactoryBot::Syntax::Methods
 
-  #Validação e teste de associação
-  Shoulda::Matchers.configure do |config|
-    config.integrate do |with|
+  # Validação e teste de associação
+  Shoulda::Matchers.configure do |c|
+    c.integrate do |with|
       with.test_framework :rspec
       with.library :rails
     end
   end
-
-
-
-
-
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

@@ -1,0 +1,10 @@
+require:
+  - rubocop
+
+Style/AsciiComments: 
+ Enabled: false
+
+# Escrevemos mais linhas em arquivos de teste do que em arquivos de 
+# código, então é importante poder ter esses arquivos do tamanho necessário
+Metrics/BlockLength:
+ ExcludedMethods: ['describe', 'context', 'feature', 'scenario', 'let', 'expect']
