@@ -1,226 +1,134 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Headhunter mark a candidate like a highlight' do
-    scenario 'successfully' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+  scenario 'successfully' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano Da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    login_as(headhunter, scope: :headhunter)
 
-        
+    visit root_path
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    click_on 'Vagas'
+    click_on job_vacancy.heading
+    click_on 'Lista Candidatos'
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+    page.find("##{registered.id}_candidatos").click
 
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit root_path
-        
-        click_on 'Vagas'
-        click_on job_vacancy.heading
-        click_on 'Lista Candidatos'
+    expect(page).to have_content(
+      'Candidato Fulano Da Silva marcado como destaque com sucesso'
+    )
+    registered.reload
+    expect(registered.checked?).to eq(true)
+  end
 
-        page.find("##{registered.id}_candidatos").click
+  scenario 'and unchecked a candidate' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano Da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy,
+                                     highlight: :checked)
 
-        expect(page).to have_content("Candidato #{registered.candidate.profile.name} marcado como destaque com sucesso")
-        
-        registered.reload
-        expect(registered.highlight?).to eq(true) 
-    end
+    login_as(headhunter, scope: :headhunter)
 
-    scenario 'and unchecked a candidate' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+    visit root_path
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    click_on 'Vagas'
+    click_on job_vacancy.heading
+    click_on 'Lista Candidatos'
 
-        
+    page.find("##{registered.id}_candidatos").click
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    expect(page).to have_content(
+      'Candidato Fulano Da Silva desmarcado como destaque com sucesso'
+    )
+    registered.reload
+    expect(registered.unchecked?).to eq(true)
+  end
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, highlight: true, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+  scenario 'and checked a candidate from a list of candidate' do
+    headhunter = create(:headhunter)
 
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit root_path
-        
-        click_on 'Vagas'
-        click_on job_vacancy.heading
-        click_on 'Lista Candidatos'
+    first_profile = create(:profile, :with_photo, name: 'Fulano Da Silva')
+    second_profile = create(:profile, :with_photo, name: 'Siclano Moreira')
+    third_profile = create(:profile, :with_photo, name: 'Beltrano de Oliveira')
 
-        page.find("##{registered.id}_candidatos").click
-        
-        expect(page).to have_content("Candidato #{registered.candidate.profile.name} desmarcado como destaque com sucesso")
-        
-        registered.reload
-        expect(registered.highlight?).to eq(false) 
-    end
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
 
-    scenario 'and checked a candidate from a list of candidate' do
-        headhunter = create(:headhunter)
-        
-        first_candidate = Candidate.create!(email: 'first_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Fulano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: first_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    first_registered = create(:registered, candidate: first_profile.candidate,
+                                           job_vacancy: job_vacancy)
+    second_registered = create(:registered, candidate: second_profile.candidate,
+                                            job_vacancy: job_vacancy)
+    third_registered = create(:registered, candidate: third_profile.candidate,
+                                           job_vacancy: job_vacancy)
 
-        second_candidate = Candidate.create!(email: 'second_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Siclano Moreira', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: second_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-                            
-        third_candidate = Candidate.create!(email: 'third_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Beltrano de Oliveira', social_name: 'Beltrano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: third_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    login_as(headhunter, scope: :headhunter)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    visit root_path
 
-        first_registered = Registered.create!(candidate_id: first_candidate.id, job_vacancy_id: job_vacancy.id, 
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        second_registered = Registered.create!(candidate_id: second_candidate.id, job_vacancy_id: job_vacancy.id, 
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        third_registered = Registered.create!(candidate_id: third_candidate.id, job_vacancy_id: job_vacancy.id, 
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+    click_on 'Vagas'
+    click_on job_vacancy.heading
+    click_on 'Lista Candidatos'
 
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit root_path
-        
-        click_on 'Vagas'
-        click_on job_vacancy.heading
-        click_on 'Lista Candidatos'
+    page.find("##{second_registered.id}_candidatos").click
 
-        page.find("##{second_registered.id}_candidatos").click
-        
-        expect(page).to have_content("Candidato #{second_registered.candidate.profile.name} marcado como destaque com sucesso")
-        
-        second_registered.reload
-        expect(second_registered.highlight?).to eq(true) 
-    end
+    expect(page).to have_content(
+      'Candidato Siclano Moreira marcado como destaque com sucesso'
+    )
 
-    scenario 'and unchecked a candidate from a list of candidate' do
-        headhunter = create(:headhunter)
-        
-        first_candidate = Candidate.create!(email: 'first_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Fulano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: first_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    first_registered.reload
+    second_registered.reload
+    third_registered.reload
 
-        second_candidate = Candidate.create!(email: 'second_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Siclano Moreira', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: second_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-                            
-        third_candidate = Candidate.create!(email: 'third_candidate@teste.com',
-                                            password: '123teste')
-        profile = Profile.create!(name: 'Beltrano de Oliveira', social_name: 'Beltrano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: third_candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    expect(first_registered.unchecked?).to eq(true)
+    expect(second_registered.checked?).to eq(true)
+    expect(third_registered.unchecked?).to eq(true)
+  end
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+  scenario 'and unchecked a candidate from a list of candidate' do
+    headhunter = create(:headhunter)
 
-        first_registered = Registered.create!(candidate_id: first_candidate.id, job_vacancy_id: job_vacancy.id, 
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        second_registered = Registered.create!(candidate_id: second_candidate.id, job_vacancy_id: job_vacancy.id, highlight: true,
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        third_registered = Registered.create!(candidate_id: third_candidate.id, job_vacancy_id: job_vacancy.id, 
-                                              registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+    first_profile = create(:profile, :with_photo, name: 'Fulano Da Silva')
+    second_profile = create(:profile, :with_photo, name: 'Siclano Moreira')
+    third_profile = create(:profile, :with_photo, name: 'Beltrano de Oliveira')
 
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit root_path
-        
-        click_on 'Vagas'
-        click_on job_vacancy.heading
-        click_on 'Lista Candidatos'
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
 
-        page.find("##{second_registered.id}_candidatos").click
-        
-        expect(page).to have_content("Candidato #{second_registered.candidate.profile.name} desmarcado como destaque com sucesso")
-        
-        second_registered.reload
-        expect(second_registered.highlight?).to eq(false) 
-    end
+    first_registered = create(:registered, candidate: first_profile.candidate,
+                                           job_vacancy: job_vacancy)
+    second_registered = create(:registered, candidate: second_profile.candidate,
+                                            job_vacancy: job_vacancy,
+                                            highlight: :checked)
+    third_registered = create(:registered, candidate: third_profile.candidate,
+                                           job_vacancy: job_vacancy,
+                                           highlight: :checked)
 
+    login_as(headhunter, scope: :headhunter)
+
+    visit root_path
+
+    click_on 'Vagas'
+    click_on job_vacancy.heading
+    click_on 'Lista Candidatos'
+
+    page.find("##{second_registered.id}_candidatos").click
+
+    expect(page).to have_content(
+      'Candidato Siclano Moreira desmarcado como destaque com sucesso'
+    )
+
+    first_registered.reload
+    second_registered.reload
+    third_registered.reload
+
+    expect(first_registered.unchecked?).to eq(true)
+    expect(second_registered.unchecked?).to eq(true)
+    expect(third_registered.checked?).to eq(true)
+  end
 end

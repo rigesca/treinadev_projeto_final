@@ -13,6 +13,7 @@ class RegisteredsController < ApplicationController
 
     def mark
         registered = Registered.find(params[:id])
+        
         if registered.checked?
             flash[:alert] = "Candidato #{registered.candidate.profile.name} desmarcado como destaque com sucesso"
             registered.unchecked!

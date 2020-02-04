@@ -14,9 +14,15 @@ end
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
+require 'shoulda/matchers'
 require 'simplecov'
-SimpleCov.start 'rails'
-puts 'simplecov'
+SimpleCov.start 'rails' do 
+  add_filter '/app/helpers'
+  add_filter '/app/jobs'
+  add_filter '/app/channels'
+  add_filter '/app/mailers'
+  add_filter '/app/models/application_record.rb'
+end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -60,14 +66,6 @@ RSpec.configure do |config|
   # Criação de objetos para teste
   config.include FactoryBot::Syntax::Methods
 
-  # Validação e teste de associação
-  Shoulda::Matchers.configure do |c|
-    c.integrate do |with|
-      with.test_framework :rspec
-      with.library :rails
-    end
-  end
-
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
@@ -87,4 +85,11 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+
+Shoulda::Matchers.configure do |c|
+  c.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end
