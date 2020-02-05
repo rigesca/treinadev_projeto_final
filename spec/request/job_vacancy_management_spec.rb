@@ -12,7 +12,7 @@ describe 'JobVacancy', type: :request do
                      vacancy_description: 'Ira trabalhar com java',
                      ability_description: 'Conhecimentos em JAVA e SCRUN',
                      level: :junior, minimum_wage: 1500, maximum_wage: 3000,
-                     limit_date: 30.day.from_now,
+                     limit_date: 30.days.from_now,
                      region: 'Av. Antonio de Chaves, 120',
                      headhunter_id: headhunter.id }
 
@@ -28,7 +28,7 @@ describe 'JobVacancy', type: :request do
       expect(job.level).to eq('junior')
       expect(job.minimum_wage).to eq(1500)
       expect(job.maximum_wage).to eq(3000)
-      expect(job.limit_date).to eq(30.day.from_now.to_date)
+      expect(job.limit_date).to eq(30.days.from_now.to_date)
       expect(job.region).to eq('Av. Antonio de Chaves, 120')
       expect(job.headhunter_id).to eq(headhunter.id)
     end
@@ -51,7 +51,7 @@ describe 'JobVacancy', type: :request do
                      vacancy_description: 'O candidato ira trabalhar com java',
                      ability_description: 'Conhecimentos em JAVA e SCRUN',
                      level: :junior, minimum_wage: 1500, maximum_wage: 3000,
-                     limit_date: 30.day.from_now,
+                     limit_date: 30.days.from_now,
                      region: 'Av. Antonio de Chaves, 120',
                      headhunter_id: headhunter.id }
 

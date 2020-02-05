@@ -82,14 +82,14 @@ RSpec.describe JobVacancy, type: :model do
 
   context '.limit_date_must_be_greater_than_today' do
     it 'limit date bigger than today' do
-      job_vacancy = build(:job_vacancy, limit_date: 7.day.from_now)
+      job_vacancy = build(:job_vacancy, limit_date: 7.days.from_now)
       job_vacancy.valid?
 
       expect(job_vacancy.errors.full_messages).to be_empty
     end
 
     it 'limit date equal today' do
-      job_vacancy = build(:job_vacancy, limit_date: Date.today)
+      job_vacancy = build(:job_vacancy, limit_date: Date.current)
       job_vacancy.valid?
 
       expect(job_vacancy.errors.full_messages).to include(
@@ -98,7 +98,7 @@ RSpec.describe JobVacancy, type: :model do
     end
 
     it 'limit date less than today' do
-      job_vacancy = build(:job_vacancy, limit_date: Date.today.prev_day(7))
+      job_vacancy = build(:job_vacancy, limit_date: Date.current.prev_day(7))
       job_vacancy.valid?
 
       expect(job_vacancy.errors.full_messages).to include(

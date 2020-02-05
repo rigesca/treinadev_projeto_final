@@ -25,16 +25,16 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'start date bigger than today' do
-      proposal = build(:proposal, start_date: Date.today.next_day(15),
-                                  limit_feedback_date: 7.day.from_now)
+      proposal = build(:proposal, start_date: Date.current.next_day(15),
+                                  limit_feedback_date: 7.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to be_empty
     end
 
     it 'start date equal today' do
-      proposal = build(:proposal, start_date: Date.today,
-                                  limit_feedback_date: 7.day.from_now)
+      proposal = build(:proposal, start_date: Date.current,
+                                  limit_feedback_date: 7.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
@@ -43,8 +43,8 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'start date less than today' do
-      proposal = build(:proposal, start_date: Date.today.prev_day(15),
-                                  limit_feedback_date: 7.day.from_now)
+      proposal = build(:proposal, start_date: Date.current.prev_day(15),
+                                  limit_feedback_date: 7.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
@@ -139,16 +139,16 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'limit date must be between today and start date' do
-      proposal = build(:proposal, start_date: 14.day.from_now,
-                                  limit_feedback_date: 7.day.from_now)
+      proposal = build(:proposal, start_date: 14.days.from_now,
+                                  limit_feedback_date: 7.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to be_empty
     end
 
     it 'limit date less than today date' do
-      proposal = build(:proposal, start_date: 15.day.from_now,
-                                  limit_feedback_date: Date.today.prev_day(7))
+      proposal = build(:proposal, start_date: 15.days.from_now,
+                                  limit_feedback_date: Date.current.prev_day(7))
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
@@ -157,7 +157,7 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'limit date equal today' do
-      proposal = build(:proposal, start_date: 15.day.from_now,
+      proposal = build(:proposal, start_date: 15.days.from_now,
                                   limit_feedback_date: Date.current)
       proposal.valid?
 
@@ -167,8 +167,8 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'limit date bigger than start date' do
-      proposal = build(:proposal, start_date: 15.day.from_now,
-                                  limit_feedback_date: 30.day.from_now)
+      proposal = build(:proposal, start_date: 15.days.from_now,
+                                  limit_feedback_date: 30.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
@@ -177,8 +177,8 @@ RSpec.describe Proposal, type: :model do
     end
 
     it 'limit date equal start date' do
-      proposal = build(:proposal, start_date: 15.day.from_now,
-                                  limit_feedback_date: 15.day.from_now)
+      proposal = build(:proposal, start_date: 15.days.from_now,
+                                  limit_feedback_date: 15.days.from_now)
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(

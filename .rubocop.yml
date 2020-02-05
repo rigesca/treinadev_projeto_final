@@ -23,9 +23,6 @@ AllCops:
 Style/Documentation:
  Enabled: false
 
-Style/FrozenStringLiteralComment:
- Enabled: false
-
 Metrics/BlockLength:
  ExcludedMethods: ['describe', 'context', 'feature', 'scenario', 'let']
 

@@ -19,7 +19,7 @@ feature 'Headhunter register a job vacancy' do
     fill_in 'Valor minimo', with: 2500
     fill_in 'Valor maximo', with: 3000
     choose('Júnior')
-    fill_in 'Data limite para inscrições', with: 7.day.from_now
+    fill_in 'Data limite para inscrições', with: 7.days.from_now
     fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
     click_on 'Salvar'
@@ -63,7 +63,7 @@ feature 'Headhunter register a job vacancy' do
     fill_in 'Valor minimo', with: 2500
     fill_in 'Valor maximo', with: 3000
     choose('Especialista')
-    fill_in 'Data limite para inscrições', with: Date.today.prev_day(3)
+    fill_in 'Data limite para inscrições', with: Date.current.prev_day(3)
     fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
     click_on 'Salvar'
@@ -86,7 +86,7 @@ feature 'Headhunter register a job vacancy' do
     fill_in 'Valor minimo', with: 3000
     fill_in 'Valor maximo', with: 1500
     choose('Estágiario')
-    fill_in 'Data limite para inscrições', with: 15.day.from_now
+    fill_in 'Data limite para inscrições', with: 15.days.from_now
     fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
     click_on 'Salvar'
@@ -109,7 +109,7 @@ feature 'Headhunter register a job vacancy' do
     fill_in 'Valor minimo', with: -50
     fill_in 'Valor maximo', with: 1500
     choose('Pleno')
-    fill_in 'Data limite para inscrições', with: 15.day.from_now
+    fill_in 'Data limite para inscrições', with: 15.days.from_now
     fill_in 'Região da vaga', with: 'Av. Paulista, 100'
 
     click_on 'Salvar'

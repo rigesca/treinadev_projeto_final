@@ -1,388 +1,209 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Headhunter make a proposal to a candidate'do
-    scenario 'successfully' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+feature 'Headhunter make a proposal to a candidate' do
+  scenario 'successfully' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    visit root_path
+    click_on 'Vagas'
+    click_on job_vacancy.heading
+    click_on 'Lista Candidatos'
 
-        
+    page.find("##{registered.id}_create_proposal").click
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    fill_in 'Salário', with: 2600
+    fill_in 'Data de inicio das atividades', with: 15.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit root_path
-        
-        click_on 'Vagas'
-        click_on job_vacancy.heading
-        click_on 'Lista Candidatos'
+    click_on 'Enviar'
 
-        page.find("##{registered.id}_create_proposal").click
+    expect(page).to have_content('Proposta enviada ao candidato Fulano da Silva com sucesso')
+    expect(page).not_to have_link("##{registered.id}_create_proposal")
 
-        fill_in 'Salário', with: 2600
-        fill_in 'Data de inicio das atividades', with: 15.day.from_now
-        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
-        
-        click_on 'Enviar'
+    registered.reload
 
-        expect(page).to have_content("Proposta enviada ao candidato #{registered.candidate.profile.name} com sucesso")
-        expect(page).not_to have_link("##{registered.id}_create_proposal")
+    expect(registered.status).to eq('proposal')
+  end
 
-        registered.reload
+  scenario 'a valid proposal send a email to candidate' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
 
-        expect(registered.status).to eq('proposal')
-    end
+    mailer_spy = class_spy(ProposalMailer)
+    stub_const('ProposalMailer', mailer_spy)
 
-    scenario 'a valid proposal send a email to candidate' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+    login_as(headhunter, scope: :headhunter)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    visit proposal_registered_path(registered)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    fill_in 'Salário', with: 2600
+    fill_in 'Data de inicio das atividades', with: 15.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        mailer_spy = class_spy(ProposalMailer)
-        stub_const('ProposalMailer', mailer_spy)
+    click_on 'Enviar'
 
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+    proposal = Proposal.last
 
-        fill_in 'Salário', with: 2600
-        fill_in 'Data de inicio das atividades', with: 15.day.from_now
-        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
-        
-        click_on 'Enviar'
+    expect(ProposalMailer).to have_received(:received_proposal).with(proposal.id)
+  end
 
-        proposal = Proposal.last
+  scenario 'and try to make a proposal witout a note' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-        expect(ProposalMailer).to have_received(:received_proposal).with(proposal.id)
-    end
+    visit proposal_registered_path(registered)
 
-    scenario 'and try to make a proposal witout a note' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+    fill_in 'Salário', with: 2600
+    fill_in 'Data de inicio das atividades', with: 14.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    click_on 'Enviar'
 
-        
+    expect(page).to have_content(
+      'Proposta enviada ao candidato Fulano da Silva com sucesso'
+    )
+    expect(page).not_to have_link("##{registered.id}_create_proposal")
+  end
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+  scenario 'and try to make a proposal without filling in all fields' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+    visit proposal_registered_path(registered)
 
-        fill_in 'Salário', with: 2600
-        fill_in 'Data de inicio das atividades', with: 14.day.from_now
-        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        
-        click_on 'Enviar'
+    click_on 'Enviar'
 
-        expect(page).to have_content("Proposta enviada ao candidato #{registered.candidate.profile.name} com sucesso")
-        expect(page).not_to have_link("##{registered.id}_create_proposal")
-    end
-    
-    scenario 'and try to make a proposal without filling in all fields' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+    expect(page).to have_content('Data inicial não pode ficar em branco')
+    expect(page).to have_content('Salário não pode ficar em branco')
+    expect(page).to have_content('Benefícios não pode ficar em branco')
+    expect(page).to have_content(
+      'Data limite para resposta não pode ficar em branco'
+    )
+  end
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+  scenario 'and try to make a proposal with a invalid salary' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    visit proposal_registered_path(registered)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+    fill_in 'Salário', with: '2a100'
+    fill_in 'Data de inicio das atividades', with: 14.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
 
-        click_on 'Enviar'
+    click_on 'Enviar'
 
-        expect(page).to have_content('Data inicial não pode ficar em branco')
-        expect(page).to have_content('Salário não pode ficar em branco')        
-        expect(page).to have_content('Benefícios não pode ficar em branco')
-        expect(page).to have_content('Data limite para resposta não pode ficar em branco')
-    end
+    expect(page).to have_content('Salário não é um número')
+  end
 
-    scenario 'and try to make a proposal with a invalid salary' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+  scenario 'and try to make a proposal with a lower starting date than today' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    login_as(headhunter, scope: :headhunter)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    visit proposal_registered_path(registered)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+    fill_in 'Salário', with: 2600
+    fill_in 'Data de inicio das atividades', with: Date.current.prev_day(15)
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    click_on 'Enviar'
 
-        fill_in 'Salário', with: '2a100'
-        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
-        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        
-        click_on 'Enviar'
+    expect(page).to have_content('Data inicial deve ser maior que a data atual')
+  end
 
-        expect(page).to have_content("Salário não é um número")
-    end
+  scenario 'and try to make a proposal with a lower salary than salary range' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter,
+                                       maximum_wage: 3000,
+                                       minimum_wage: 2500)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-    scenario 'and try to make a proposal with a lower starting date than today' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
+    visit proposal_registered_path(registered)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    fill_in 'Salário', with: 1500
+    fill_in 'Data de inicio das atividades', with: 15.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    click_on 'Enviar'
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    expect(page).to have_content(
+      'Salário o valor deve estra dentro da faixa estipulado pela vaga.'
+    )
+  end
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+  scenario 'and try to make a proposal with a bigger salary than salary range' do
+    headhunter = create(:headhunter)
+    profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+    job_vacancy = create(:job_vacancy, headhunter: headhunter,
+                                       maximum_wage: 3000,
+                                       minimum_wage: 2500)
+    registered = create(:registered, candidate: profile.candidate,
+                                     job_vacancy: job_vacancy)
+    login_as(headhunter, scope: :headhunter)
 
-        fill_in 'Salário', with: 2600
-        fill_in 'Data de inicio das atividades', with: Date.today.prev_day(15)
+    visit proposal_registered_path(registered)
 
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        
-        click_on 'Enviar'
+    fill_in 'Salário', with: 3200
+    fill_in 'Data de inicio das atividades', with: 15.days.from_now
+    fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    click_on 'Enviar'
 
-        expect(page).to have_content("Data inicial deve ser maior que a data atual")
-    end
+    expect(page).to have_content(
+      'Salário o valor deve estra dentro da faixa estipulado pela vaga.'
+    )
+  end
 
-    scenario 'and try to make a proposal with a lower salary than salary range' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
-
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
+  context 'route access test' do
+    scenario 'a no-authenticate usser try to access new option' do
+      headhunter = create(:headhunter)
+      profile = create(:profile, :with_photo, name: 'Fulano da Silva')
+      job_vacancy = create(:job_vacancy, headhunter: headhunter,
                                          maximum_wage: 3000,
-                                         headhunter_id: headhunter.id)
+                                         minimum_wage: 2500)
+      registered = create(:registered, candidate: profile.candidate,
+                                       job_vacancy: job_vacancy)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
+      proposal = create(:proposal, registered: registered)
 
-        fill_in 'Salário', with: 1500
-        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
-        fill_in 'Data limite para a resposta a proposta', with: Date.today.next_day(7)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        
-        click_on 'Enviar'
+      visit proposal_registered_path(proposal)
 
-        expect(page).to have_content('Salário o valor deve estra dentro da faixa estipulado pela vaga.')
+      expect(current_path).to eq(new_headhunter_session_path)
     end
-
-    scenario 'and try to make a proposal with a bigger salary than salary range' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                            password: '123teste')
-
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 3000,
-                                         headhunter_id: headhunter.id)
-
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, 
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-        
-        login_as(headhunter, :scope => :headhunter)
-        
-        visit proposal_registered_path(registered)
-
-        fill_in 'Salário', with: 3200
-        fill_in 'Data de inicio das atividades', with: Date.today.next_day(15)
-        fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-        
-        click_on 'Enviar'
-
-        expect(page).to have_content('Salário o valor deve estra dentro da faixa estipulado pela vaga.')
-    end
-
-    context 'route access test' do 
-        scenario 'a no-authenticate usser try to access new option' do
-            headhunter = create(:headhunter)
-    
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                        password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                              birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                              description: 'Busco oportunidade como programador',
-                              experience: 'Trabalhou por 2 anos na empresa X',
-                              candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                   filename:'foto.jpeg')
-        
-            job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                     vacancy_description:'O profissional ira trabalhar com ruby',
-                                     ability_description:'Conhecimento em TDD e ruby',
-                                     level: :junior,
-                                     limit_date: 7.day.from_now,
-                                     region: 'Av.Paulista, 1000',
-                                     minimum_wage: 2500,
-                                     maximum_wage: 2800,
-                                     headhunter_id: headhunter.id)
-            registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :proposal,
-                                    registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-    
-            proposal = Proposal.create!(start_date: Date.current.next_day(15), limit_feedback_date: Date.current.next_day(7), 
-                                        salary: 2600, benefits: 'VT, VR, convenio medico e seguro de vida', registered_id: registered.id)
-
-            visit proposal_registered_path(proposal)
-    
-            expect(current_path).to eq(new_headhunter_session_path)
-        end
-    end
-    
-
+  end
 end
