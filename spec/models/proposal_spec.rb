@@ -172,7 +172,8 @@ RSpec.describe Proposal, type: :model do
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
-        'Data limite para resposta deve ser menor que a data de inicio das atividades.'
+        'Data limite para resposta deve ser menor que a data de'\
+        ' inicio das atividades.'
       )
     end
 
@@ -182,7 +183,8 @@ RSpec.describe Proposal, type: :model do
       proposal.valid?
 
       expect(proposal.errors.full_messages).to include(
-        'Data limite para resposta deve ser menor que a data de inicio das atividades.'
+        'Data limite para resposta deve ser menor que a data de'\
+        ' inicio das atividades.'
       )
     end
   end

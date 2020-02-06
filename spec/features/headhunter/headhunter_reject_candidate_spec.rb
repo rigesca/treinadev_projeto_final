@@ -18,7 +18,8 @@ feature 'Headhunter rejects a candidate' do
     click_on 'Lista Candidatos'
 
     page.find("##{registered.id}_canceled").click
-    fill_in 'Feedback', with: 'Candidato foi encerrado devido não ter todas as habilidades necessarias.'
+    fill_in 'Feedback', with: 'Candidato foi encerrado devido não ter todas as'\
+    'habilidades necessarias.'
 
     click_on 'Encerrar'
 

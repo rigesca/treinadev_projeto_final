@@ -12,8 +12,7 @@ feature 'Headhunter consults a proposal' do
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
                                        job_vacancy: job_vacancy,
-                                       status: :proposal,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       status: :proposal)
       create(:proposal, start_date: 15.days.from_now,
                         limit_feedback_date: 7.days.from_now,
                         registered: registered)
@@ -25,9 +24,8 @@ feature 'Headhunter consults a proposal' do
 
       expect(page).to have_content('Proposta enviada para: Fulano da Silva')
       expect(page).to have_content('Vaga : Júnior | Vaga de Ruby')
-      expect(page).to have_content(
-        "Data limite para resposta: #{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}"
-      )
+      expect(page).to have_content('Data limite para resposta: '\
+        "#{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}")
       expect(page).to have_link('Analisar proposta')
       expect(page).to have_content('Enviada')
     end
@@ -37,12 +35,12 @@ feature 'Headhunter consults a proposal' do
       profile = create(:profile, :with_photo, name: 'Fulano da Silva')
       job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
                                          level: :junior,
-                                         vacancy_description: 'O candidato ira atuar programando em Ruby',
+                                         vacancy_description: 'O candidato ira'\
+                                         ' atuar programando em Ruby',
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
                                        job_vacancy: job_vacancy,
-                                       status: :proposal,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       status: :proposal)
       create(:proposal, start_date: 15.days.from_now,
                         limit_feedback_date: 7.days.from_now,
                         salary: 2500,
@@ -57,15 +55,19 @@ feature 'Headhunter consults a proposal' do
       click_on 'Analisar proposta'
 
       expect(page).to have_content('Júnior | Vaga de Ruby')
-      expect(page).to have_content('Descrição da vaga: O candidato ira atuar programando em Ruby')
+      expect(page).to have_content('Descrição da vaga: O candidato ira atuar '\
+        'programando em Ruby')
 
       expect(page).to have_content('Fulano da Silva')
 
       expect(page).to have_content('Proposta Enviada')
-      expect(page).to have_content("Data para inicio das atividades: #{I18n.localize(15.days.from_now, format: '%d/%m/%Y')}")
-      expect(page).to have_content("Data limite para resposta: #{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}")
+      expect(page).to have_content('Data para inicio das atividades: '\
+        "#{I18n.localize(15.days.from_now, format: '%d/%m/%Y')}")
+      expect(page).to have_content('Data limite para resposta: '\
+        "#{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}")
       expect(page).to have_content('Salário: R$ 2.500,00')
-      expect(page).to have_content('Benefícios: VR, VT, convenio e participação nos lucros.')
+      expect(page).to have_content('Benefícios: VR, VT, convenio e'\
+        ' participação nos lucros.')
     end
 
     scenario 'and saw a reject proposal' do
@@ -73,12 +75,12 @@ feature 'Headhunter consults a proposal' do
       profile = create(:profile, :with_photo, name: 'Fulano da Silva')
       job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
                                          level: :full,
-                                         vacancy_description: 'O candidato ira atuar programando em Ruby',
+                                         vacancy_description: 'O candidato ira'\
+                                         ' atuar programando em Ruby',
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
                                        job_vacancy: job_vacancy,
-                                       status: :proposal,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       status: :proposal)
       create(:proposal, start_date: 15.days.from_now,
                         limit_feedback_date: 7.days.from_now,
                         salary: 2500,
@@ -102,12 +104,12 @@ feature 'Headhunter consults a proposal' do
       profile = create(:profile, :with_photo, name: 'Fulano da Silva')
       job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
                                          level: :manager,
-                                         vacancy_description: 'O candidato ira atuar programando em Ruby',
+                                         vacancy_description: 'O candidato ira'\
+                                         ' atuar programando em Ruby',
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
                                        job_vacancy: job_vacancy,
-                                       status: :accept_proposal,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       status: :accept_proposal)
       create(:proposal, start_date: 15.days.from_now,
                         limit_feedback_date: 7.days.from_now,
                         salary: 2500,
@@ -131,11 +133,11 @@ feature 'Headhunter consults a proposal' do
       profile = create(:profile, :with_photo, name: 'Fulano da Silva')
       job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
                                          level: :senior,
-                                         vacancy_description: 'O candidato ira atuar programando em Ruby',
+                                         vacancy_description: 'O candidato ira'\
+                                         ' atuar programando em Ruby',
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
-                                       job_vacancy: job_vacancy,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       job_vacancy: job_vacancy)
       create(:proposal, start_date: 15.days.from_now,
                         limit_feedback_date: 7.days.from_now,
                         salary: 2500,
@@ -161,16 +163,17 @@ feature 'Headhunter consults a proposal' do
       profile = create(:profile, :with_photo, name: 'Fulano da Silva')
       job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
                                          level: :junior,
-                                         vacancy_description: 'O candidato ira atuar programando em Ruby',
+                                         vacancy_description: 'O candidato ira'\
+                                         ' atuar programando em Ruby',
                                          headhunter: headhunter)
       registered = create(:registered, candidate: profile.candidate,
                                        job_vacancy: job_vacancy,
-                                       status: :proposal,
-                                       registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                       status: :proposal)
       proposal = create(:proposal, start_date: 15.days.from_now,
                                    limit_feedback_date: 7.days.from_now,
                                    salary: 2500,
-                                   benefits: 'VR, VT, convenio e participação nos lucros.',
+                                   benefits: 'VR, VT, convenio e participação '\
+                                   'nos lucros.',
                                    registered: registered)
 
       login_as(headhunter, scope: :headhunter)
@@ -183,15 +186,19 @@ feature 'Headhunter consults a proposal' do
       page.find("##{proposal.id}_show_proposal").click
 
       expect(page).to have_content('Júnior | Vaga de Ruby')
-      expect(page).to have_content('Descrição da vaga: O candidato ira atuar programando em Ruby')
+      expect(page).to have_content('Descrição da vaga: O candidato ira atuar '\
+        'programando em Ruby')
 
       expect(page).to have_content('Fulano da Silva')
 
       expect(page).to have_content('Proposta Enviada')
-      expect(page).to have_content("Data para inicio das atividades: #{I18n.localize(15.days.from_now, format: '%d/%m/%Y')}")
-      expect(page).to have_content("Data limite para resposta: #{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}")
+      expect(page).to have_content('Data para inicio das atividades: '\
+        "#{I18n.localize(15.days.from_now, format: '%d/%m/%Y')}")
+      expect(page).to have_content('Data limite para resposta: '\
+        "#{I18n.localize(7.days.from_now, format: '%d/%m/%Y')}")
       expect(page).to have_content('Salário: R$ 2.500,00')
-      expect(page).to have_content('Benefícios: VR, VT, convenio e participação nos lucros.')
+      expect(page).to have_content('Benefícios: VR, VT, convenio e '\
+        'participação nos lucros.')
     end
   end
 
@@ -204,8 +211,7 @@ feature 'Headhunter consults a proposal' do
     job_vacancy = create(:job_vacancy, headhunter: first_headhunter)
     registered = create(:registered, candidate: profile.candidate,
                                      job_vacancy: job_vacancy,
-                                     status: :proposal,
-                                     registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+                                     status: :proposal)
 
     proposal = create(:proposal, registered: registered)
 

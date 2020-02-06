@@ -11,7 +11,8 @@ feature 'Headhunter list candidates from a vacancy' do
 
     create(:registered, candidate: profile.candidate,
                         job_vacancy_id: job_vacancy.id,
-                        registered_justification: 'Acho que sou qualificado para a vaga')
+                        registered_justification: 'Acho que sou '\
+                        'qualificado para a vaga')
 
     login_as(headhunter, scope: :headhunter)
 
@@ -38,13 +39,16 @@ feature 'Headhunter list candidates from a vacancy' do
 
     create(:registered, candidate: first_profile.candidate,
                         job_vacancy: job_vacancy,
-                        registered_justification: 'Sou Fulano da Silva e estou preparado para exercer esse cargo na empresa')
+                        registered_justification: 'Sou Fulano da Silva e estou'\
+                        ' preparado para exercer esse cargo na empresa')
     create(:registered, candidate: second_profile.candidate,
                         job_vacancy: job_vacancy,
-                        registered_justification: 'Sou Siclano Alves estou preparado para exercer esse cargo na empresa')
+                        registered_justification: 'Sou Siclano Alves estou '\
+                        'preparado para exercer esse cargo na empresa')
     create(:registered, candidate: third_profile.candidate,
                         job_vacancy: job_vacancy,
-                        registered_justification: 'Sou Beltrano Carvalho estou preparado para exercer esse cargo na empresa')
+                        registered_justification: 'Sou Beltrano Carvalho estou'\
+                        ' preparado para exercer esse cargo na empresa')
 
     login_as(headhunter, scope: :headhunter)
 
@@ -53,13 +57,16 @@ feature 'Headhunter list candidates from a vacancy' do
     click_on 'Lista Candidatos'
 
     expect(page).to have_content('Fulano da Silva - 25 Anos')
-    expect(page).to have_content('Sou Fulano da Silva e estou preparado para exercer esse cargo na empresa')
+    expect(page).to have_content('Sou Fulano da Silva e estou preparado para '\
+      'exercer esse cargo na empresa')
 
     expect(page).to have_content('Siclano Alves - 37 Anos')
-    expect(page).to have_content('Sou Siclano Alves estou preparado para exercer esse cargo na empresa')
+    expect(page).to have_content('Sou Siclano Alves estou preparado para '\
+      'exercer esse cargo na empresa')
 
     expect(page).to have_content('Beltrano Carvalho - 18 Anos')
-    expect(page).to have_content('Sou Beltrano Carvalho estou preparado para exercer esse cargo na empresa')
+    expect(page).to have_content('Sou Beltrano Carvalho estou preparado para '\
+      'exercer esse cargo na empresa')
   end
 
   scenario 'and has no registered candidates' do

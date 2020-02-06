@@ -21,12 +21,16 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: 2600
     fill_in 'Data de inicio das atividades', with: 15.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-    fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
+    fill_in 'Observações', with: 'O candidato devera usar roupas formais '\
+    'de segunda a quinta feita.'
 
     click_on 'Enviar'
 
-    expect(page).to have_content('Proposta enviada ao candidato Fulano da Silva com sucesso')
+    expect(page).to have_content(
+      'Proposta enviada ao candidato Fulano da Silva com sucesso'
+    )
     expect(page).not_to have_link("##{registered.id}_create_proposal")
 
     registered.reload
@@ -51,14 +55,16 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: 2600
     fill_in 'Data de inicio das atividades', with: 15.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
-    fill_in 'Observações', with: 'O candidato devera usar roupas formais de segunda a quinta feita.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
+    fill_in 'Observações', with: 'O candidato devera usar roupas formais de'\
+    ' segunda a quinta feita.'
 
     click_on 'Enviar'
 
     proposal = Proposal.last
 
-    expect(ProposalMailer).to have_received(:received_proposal).with(proposal.id)
+    expect(ProposalMailer).to have_received(:received_proposal).with proposal.id
   end
 
   scenario 'and try to make a proposal witout a note' do
@@ -74,7 +80,8 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: 2600
     fill_in 'Data de inicio das atividades', with: 14.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
 
     click_on 'Enviar'
 
@@ -117,7 +124,8 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: '2a100'
     fill_in 'Data de inicio das atividades', with: 14.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
 
     click_on 'Enviar'
 
@@ -137,7 +145,8 @@ feature 'Headhunter make a proposal to a candidate' do
 
     fill_in 'Salário', with: 2600
     fill_in 'Data de inicio das atividades', with: Date.current.prev_day(15)
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
     click_on 'Enviar'
 
     expect(page).to have_content('Data inicial deve ser maior que a data atual')
@@ -158,7 +167,8 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: 1500
     fill_in 'Data de inicio das atividades', with: 15.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
     click_on 'Enviar'
 
     expect(page).to have_content(
@@ -166,7 +176,7 @@ feature 'Headhunter make a proposal to a candidate' do
     )
   end
 
-  scenario 'and try to make a proposal with a bigger salary than salary range' do
+  scenario 'and try create proposal with a bigger salary than salary range' do
     headhunter = create(:headhunter)
     profile = create(:profile, :with_photo, name: 'Fulano da Silva')
     job_vacancy = create(:job_vacancy, headhunter: headhunter,
@@ -181,7 +191,8 @@ feature 'Headhunter make a proposal to a candidate' do
     fill_in 'Salário', with: 3200
     fill_in 'Data de inicio das atividades', with: 15.days.from_now
     fill_in 'Data limite para a resposta a proposta', with: 7.days.from_now
-    fill_in 'Benefícios', with: 'Vale transporte, vale refeição, convenio medico e dentario.'
+    fill_in 'Benefícios', with: 'Vale transporte, vale refeição,'\
+    ' convenio medico e dentario.'
     click_on 'Enviar'
 
     expect(page).to have_content(

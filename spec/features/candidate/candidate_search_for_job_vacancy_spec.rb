@@ -1,1047 +1,479 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Candidate search for a job vacancy' do
+  context 'vacancies screen' do
+    scenario 'and have some valide vacancies' do
+      profile = create(:profile, :with_photo)
+      create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                           level: :junior)
 
-    context 'vacancies screen' do
-        scenario 'and have some valide vacancies' do
-            headhunter = create(:headhunter)
-            
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                          password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      create(:job_vacancy, title: 'Desenvolvedor Java',
+                           level: :full)
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            login_as(candidate, :scope => :candidate)
-            visit root_path
-            click_on 'Busca por vagas'
+      login_as(profile.candidate, scope: :candidate)
 
-            expect(page).to have_content(job_vacancy_1.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-        end
+      visit root_path
+      click_on 'Busca por vagas'
 
-        scenario 'and no have vacancy' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                          password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                           filename:'foto.jpeg')
-    
-            login_as(candidate, :scope => :candidate)
-    
-            visit job_vacancies_path
-    
-            expect(page).to have_content('Não existem vagas abertas no momento')
-        end
-    
-        scenario 'and have a closed vacancy' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                          password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                           filename:'foto.jpeg')
-    
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-    
-            job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                             vacancy_description:'O profissional ira trabalhar com ruby',
-                                             ability_description:'Conhecimento em TDD e ruby',
-                                             level: :junior,
-                                             limit_date: 7.day.from_now,
-                                             region: 'Av.Paulista, 1000',
-                                             minimum_wage: 2500,
-                                             maximum_wage: 2800,
-                                             status: :closed,
-                                             headhunter_id: headhunter.id)
-    
-            login_as(candidate, :scope => :candidate)
-    
-            visit job_vacancies_path
-    
-            expect(page).to have_content('Não existem vagas abertas no momento')
-        end
+      expect(page).to have_content('Júnior | Desenvolvedor Ruby')
+      expect(page).to have_content('Pleno | Desenvolvedor Java')
     end
 
+    scenario 'and no have vacancy' do
+      profile = create(:profile, :with_photo)
 
+      login_as(profile.candidate, scope: :candidate)
 
-    context 'only a title'do
-        scenario 'successfully' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      visit job_vacancies_path
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Busca por', with: 'fullstack'
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).to have_content(job_vacancy_3.heading)
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'multiples results' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Busca por', with: 'desen'
-
-            click_on 'Pesquisar'
-
-            expect(page).to have_content(job_vacancy_1.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)
-            expect(page).to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'no result' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Busca por', with: 'rails'
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      expect(page).to have_content('Não existem vagas abertas no momento')
     end
 
+    scenario 'and have a closed vacancy' do
+      profile = create(:profile, :with_photo)
+      create(:job_vacancy, status: :closed)
 
+      login_as(profile.candidate, scope: :candidate)
 
-    context 'only a description' do
-        scenario 'successfully' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      visit job_vacancies_path
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+  context 'only a title' do
+    scenario 'successfully' do
+      profile = create(:profile, :with_photo)
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby')
 
-            fill_in 'Busca por', with: 'objeto'
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java')
 
-            click_on 'Pesquisar'
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack')
 
-            expect(page).not_to have_content(job_vacancy_3.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+        ' desenvolvimento de software')
 
-        scenario 'multiples results' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      login_as(profile.candidate, scope: :candidate)
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      visit job_vacancies_path
+      fill_in 'Busca por', with: 'fullstack'
+      click_on 'Pesquisar'
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto e orientação a objeto e pode vir a trabalhar com ruby',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Busca por', with: 'ruby'
-
-            click_on 'Pesquisar'
-
-            expect(page).to have_content(job_vacancy_1.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'no result' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Busca por', with: '1991'
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
     end
 
+    scenario 'multiples results' do
+      profile = create(:profile, :with_photo)
 
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby')
 
-    context 'only level'do
-        scenario 'successfully' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java')
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack')
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+        ' desenvolvimento de software')
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
+      login_as(profile.candidate, scope: :candidate)
 
-            find("[value='junior']").set(true)
+      visit job_vacancies_path
+      fill_in 'Busca por', with: 'desen'
+      click_on 'Pesquisar'
 
-            click_on 'Pesquisar'
-
-            expect(page).to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'multiples results' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            find("[value='full']").set(true)
-            find("[value='specialist']").set(true)
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-            expect(page).to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'no result' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            find("[value='trainee']").set(true)
-            find("[value='senior']").set(true)
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      expect(page).to have_content(first_vacancy.heading)
+      expect(page).to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).to have_content(fourth_vacancy.heading)
     end
 
+    scenario 'no result' do
+      profile = create(:profile, :with_photo)
 
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby')
 
-    context 'only value'do
-        scenario 'successfully' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java')
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack')
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+        ' desenvolvimento de software')
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
+      login_as(profile.candidate, scope: :candidate)
 
-            fill_in 'Valor minimo', with: 5000
+      visit job_vacancies_path
+      fill_in 'Busca por', with: 'rails'
+      click_on 'Pesquisar'
 
-            click_on 'Pesquisar'
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
 
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+  context 'only a description' do
+    scenario 'successfully' do
+      profile = create(:profile, :with_photo)
 
-        scenario 'multiples results' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           vacancy_description: 'O profissional'\
+                                           ' ira trabalhar com ruby')
+      second_vacancy= create(:job_vacancy, title: 'Desenvolvedor Java',
+                                           vacancy_description: 'O profissional'\
+                                           ' ira trabalhar com java e orientação a objeto')
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           vacancy_description: 'O profissional'\
+                                           ' ira trabalhar varias linguagens')
+      fourth_vacancy= create(:job_vacancy, title: 'Gerente de projeto de '\
+                                                   'desenvolvimento de software',
+                                           vacancy_description: 'O profissional'\
+                                           'ira trabalhar com varios projetos')
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      login_as(profile.candidate, scope: :candidate)
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+      visit job_vacancies_path
+      fill_in 'Busca por', with: 'objeto'
+      click_on 'Pesquisar'
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Valor minimo', with: 3700
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).to have_content(job_vacancy_3.heading)            
-            expect(page).to have_content(job_vacancy_4.heading)
-        end
-
-        scenario 'no result' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
-
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
-
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
-
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-
-            fill_in 'Valor minimo', with: 5500
-
-            click_on 'Pesquisar'
-
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
     end
 
+    scenario 'multiples results' do
+      profile = create(:profile, :with_photo)
 
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           vacancy_description: 'O profissional ira trabalhar com ruby')
 
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto')
 
-    context 'multiples search options'do
-        scenario 'successfully' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           vacancy_description: 'O profissional ira trabalhar varias linguagens, começando por ruby')
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            vacancy_description: 'O profissional ira trabalhar com varios projetos')
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+      login_as(profile.candidate, scope: :candidate)
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
+      visit job_vacancies_path
+      fill_in 'Busca por', with: 'ruby'
+      click_on 'Pesquisar'
 
-            fill_in 'Busca por', with: 'desen'
-            find("[value='full']").set(true)
-            fill_in 'Valor minimo', with: 2800
+      expect(page).to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+    end
 
-            click_on 'Pesquisar'
+    scenario 'no result' do
+      profile = create(:profile, :with_photo)
 
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           vacancy_description: 'O profissional ira trabalhar com ruby')
 
-        scenario 'no results' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto')
 
-            headhunter = Headhunter.create!(email: 'headhunter@teste.com',
-                                            password: '123teste')
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           vacancy_description: 'O profissional ira trabalhar varias linguagens, começando por ruby')
 
-            job_vacancy_1 = JobVacancy.create!(title: 'Desenvolvedor Ruby', 
-                                               vacancy_description:'O profissional ira trabalhar com ruby',
-                                               ability_description:'Conhecimento em TDD e ruby',
-                                               level: :junior,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1000',
-                                               minimum_wage: 2500,
-                                               maximum_wage: 2800,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_2 = JobVacancy.create!(title: 'Desenvolvedor Java', 
-                                               vacancy_description:'O profissional ira trabalhar com java e orientação a objeto',
-                                               ability_description:'Conhecimento em orientação a objeto e java',
-                                               level: :full,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Paulista, 1200',
-                                               minimum_wage: 2800,
-                                               maximum_wage: 3200,
-                                               headhunter_id: headhunter.id)
-            
-            job_vacancy_3 = JobVacancy.create!(title: 'Analista Fullstack', 
-                                               vacancy_description:'O profissional ira trabalhar varias linguagens',
-                                               ability_description:'Conhecimento em varias linguagens',
-                                               level: :specialist,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 5000,
-                                               maximum_wage: 5800,
-                                               headhunter_id: headhunter.id)
-                                
-            job_vacancy_4 = JobVacancy.create!(title: 'Gerente de projeto de desenvolvimento de software', 
-                                               vacancy_description:'O profissional ira trabalhar com varios projetos',
-                                               ability_description:'Conhecimento em vgerenciamento de projetos e metodologias ágeis',
-                                               level: :manager,
-                                               limit_date: 7.day.from_now,
-                                               region: 'Av.Sapopenba, 200',
-                                               minimum_wage: 3700,
-                                               maximum_wage: 4200,
-                                               headhunter_id: headhunter.id)
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            vacancy_description: 'O profissional ira trabalhar com varios projetos')
 
-            login_as(candidate, :scope => :candidate)
-            visit job_vacancies_path
-            
-            fill_in 'Busca por', with: 'Rails'
-            find("[value='senior']").set(true)
-            fill_in 'Valor minimo', with: 3500
+      login_as(profile.candidate, scope: :candidate)
 
-            click_on 'Pesquisar'
+      visit job_vacancies_path
+      fill_in 'Busca por', with: '1991'
+      click_on 'Pesquisar'
 
-            expect(page).not_to have_content(job_vacancy_1.heading)
-            expect(page).not_to have_content(job_vacancy_2.heading)
-            expect(page).not_to have_content(job_vacancy_3.heading)            
-            expect(page).not_to have_content(job_vacancy_4.heading)
-        end
-    end    
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
+
+  context 'only level' do
+    scenario 'successfully' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           level: :junior)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            level: :full)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           level: :specialist)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            level: :manager)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+      find("[value='junior']").set(true)
+      click_on 'Pesquisar'
+
+      expect(page).to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+    end
+
+    scenario 'multiples results' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           level: :junior)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            level: :full)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           level: :specialist)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            level: :manager)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+      find("[value='full']").set(true)
+      find("[value='specialist']").set(true)
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).to have_content(second_vacancy.heading)
+      expect(page).to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+    end
+
+    scenario 'no result' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           level: :junior)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            level: :full)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           level: :specialist)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            level: :manager)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+      find("[value='trainee']").set(true)
+      find("[value='senior']").set(true)
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
+
+  context 'only value' do
+    scenario 'successfully' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           minimum_wage: 2500,
+                                           maximum_wage: 2800)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            minimum_wage: 2800,
+                                            maximum_wage: 3200)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           minimum_wage: 5000,
+                                           maximum_wage: 5800)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            minimum_wage: 3700,
+                                            maximum_wage: 4200)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+      fill_in 'Valor minimo', with: 5000
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+    end
+
+    scenario 'multiples results' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           minimum_wage: 2500,
+                                           maximum_wage: 2800)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            minimum_wage: 2800,
+                                            maximum_wage: 3200)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           minimum_wage: 5000,
+                                           maximum_wage: 5800)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            minimum_wage: 3700,
+                                            maximum_wage: 4200)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+      fill_in 'Valor minimo', with: 3700
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).to have_content(third_vacancy.heading)
+      expect(page).to have_content(fourth_vacancy.heading)
+    end
+
+    scenario 'no result' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           minimum_wage: 2500,
+                                           maximum_wage: 2800)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            minimum_wage: 2800,
+                                            maximum_wage: 3200)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           minimum_wage: 5000,
+                                           maximum_wage: 5800)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+                                            minimum_wage: 3700,
+                                            maximum_wage: 4200)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+
+      fill_in 'Valor minimo', with: 5500
+
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
+
+  context 'multiples search options' do
+    scenario 'successfully' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           vacancy_description: 'O profissional ira trabalhar com ruby',
+                                           level: :junior,
+                                           minimum_wage: 2500,
+                                           maximum_wage: 2800)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto',
+                                            level: :full,
+                                            minimum_wage: 2800,
+                                            maximum_wage: 3200)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           vacancy_description: 'O profissional ira trabalhar varias linguagens',
+                                           level: :specialist,
+                                           minimum_wage: 5000,
+                                           maximum_wage: 5800)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software de desenvolvimento de software',
+                                            vacancy_description: 'O profissional ira trabalhar com varios projetos',
+                                            level: :manager,
+                                            minimum_wage: 3700,
+                                            maximum_wage: 4200)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+
+      fill_in 'Busca por', with: 'desen'
+      find("[value='full']").set(true)
+      fill_in 'Valor minimo', with: 2800
+
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+    end
+
+    scenario 'no results' do
+      profile = create(:profile, :with_photo)
+
+      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
+                                           vacancy_description: 'O profissional ira trabalhar com ruby',
+                                           level: :junior,
+                                           minimum_wage: 2500,
+                                           maximum_wage: 2800)
+
+      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
+                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto',
+                                            level: :full,
+                                            minimum_wage: 2800,
+                                            maximum_wage: 3200)
+
+      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
+                                           vacancy_description: 'O profissional ira trabalhar varias linguagens',
+                                           level: :specialist,
+                                           minimum_wage: 5000,
+                                           maximum_wage: 5800)
+
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software de desenvolvimento de software',
+                                            vacancy_description: 'O profissional ira trabalhar com varios projetos',
+                                            level: :manager,
+                                            minimum_wage: 3700,
+                                            maximum_wage: 4200)
+
+      login_as(profile.candidate, scope: :candidate)
+
+      visit job_vacancies_path
+
+      fill_in 'Busca por', with: 'Rails'
+      find("[value='senior']").set(true)
+      fill_in 'Valor minimo', with: 3500
+
+      click_on 'Pesquisar'
+
+      expect(page).not_to have_content(first_vacancy.heading)
+      expect(page).not_to have_content(second_vacancy.heading)
+      expect(page).not_to have_content(third_vacancy.heading)
+      expect(page).not_to have_content(fourth_vacancy.heading)
+      expect(page).to have_content('Não existem vagas abertas no momento')
+    end
+  end
 end

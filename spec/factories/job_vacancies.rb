@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :job_vacancy do
     title { 'Desenvolvedor Ruby' }
-    vacancy_description { 'O funcionario ira atuar na área de desenvolvimento criando novas funcionalidades e desenvolvendo testes para os programas criados.' }
+    vacancy_description { 'Ira atuar projetando novas funcionalidades e aplicando TDD no projeto' }
     ability_description { 'Conhecimentos em Ruby,Rails, desenvolvimento Agil, web e TDD.' }
     level { %i[trainee junior full senior specialist manager].sample }
     minimum_wage { 1500 }

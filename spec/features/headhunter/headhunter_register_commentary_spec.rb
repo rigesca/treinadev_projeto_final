@@ -20,7 +20,8 @@ feature 'Headhunter register a commentary for a candidate' do
     click_on "#{profile.name} - #{profile.calculates_candidate_age}"
     click_on 'Comentários'
 
-    fill_in 'Comentário', with: 'Boa tarde Fulano da Silva, gostamos muito do seu perfil.'
+    fill_in 'Comentário', with: 'Boa tarde Fulano da Silva,'\
+    ' gostamos muito do seu perfil.'
     click_on 'Envia comentário'
 
     commentary = Comment.last

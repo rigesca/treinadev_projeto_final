@@ -46,16 +46,20 @@ RSpec.describe 'ProposalMailer' do
       email = ProposalMailer.received_proposal(proposal.id)
 
       expect(email.body).to include(
-        'Olá Fulano da Silva, você acaba de receber uma proposta para a vaga: Vaga programador Ruby.'
+        'Olá Fulano da Silva, você acaba de receber uma proposta para a vaga:'\
+        ' Vaga programador Ruby.'
       )
       expect(email.body).to include(
-        "O inicio das atividades esta prevista para : #{I18n.l(30.days.from_now, format: '%d/%m/%Y')}."
+        'O inicio das atividades esta prevista para : '\
+        "#{I18n.l(30.days.from_now, format: '%d/%m/%Y')}."
       )
       expect(email.body).to include(
         'Acesse seu usuário para mais informações sobre a proposta.'
       )
       expect(email.body).to include(
-        "ATENÇÃO: Você tem ate dia #{I18n.l(7.days.from_now, format: '%d/%m/%Y')} para responder a proposta, caso contrario ela sera encerrada."
+        'ATENÇÃO: Você tem ate dia '\
+        "#{I18n.l(7.days.from_now, format: '%d/%m/%Y')} "\
+        'para responder a proposta, caso contrario ela sera encerrada.'
       )
     end
   end

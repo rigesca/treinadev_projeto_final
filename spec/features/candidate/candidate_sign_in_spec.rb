@@ -1,80 +1,78 @@
+# frozen_string_literal: true
 
 require 'rails_helper'
 
 feature 'Candidate sign in' do
-    scenario 'successfully' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+  scenario 'successfully' do
+    candidate = create(:candidate, email: 'candidate@teste.com',
+                                   password: '123teste')
+    create(:profile, :with_photo, candidate: candidate)
 
-        visit root_path
+    visit root_path
 
-        click_on 'Entrar como candidato'
-        
-        fill_in 'Email', with: candidate.email
-        fill_in 'Senha', with: candidate.password
+    click_on 'Entrar como candidato'
 
-        click_on 'Log in'
+    fill_in 'Email', with: candidate.email
+    fill_in 'Senha', with: candidate.password
 
-        expect(page).to have_content('Login efetuado com sucesso!')
-        expect(page).to have_content("Olá #{candidate.email}")
-    end
+    click_on 'Log in'
 
-    scenario 'try log in without filling in all fields' do
-        visit root_path
+    expect(page).to have_content('Login efetuado com sucesso!')
+    expect(page).to have_content('Olá candidate@teste.com')
+  end
 
-        click_on 'Entrar como candidato'
-        click_on 'Log in'
+  scenario 'try log in without filling in all fields' do
+    visit root_path
 
-        expect(page).to have_content('Email ou senha inválida.')
-    end
+    click_on 'Entrar como candidato'
+    click_on 'Log in'
 
-    scenario 'try log in with wrong password' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        
-        visit root_path
+    expect(page).to have_content('Email ou senha inválida.')
+  end
 
-        click_on 'Entrar como candidato'
+  scenario 'try log in with wrong password' do
+    candidate = create(:candidate, email: 'candidate@teste.com',
+                                   password: '123teste')
 
-        fill_in 'Email', with: 'headhunter@empresa.com'
-        fill_in 'Senha', with: candidate.password
+    visit root_path
 
-        click_on 'Log in'
+    click_on 'Entrar como candidato'
 
-        expect(page).to have_content('Email ou senha inválida.')
-    end
+    fill_in 'Email', with: 'headhunter@empresa.com'
+    fill_in 'Senha', with: candidate.password
 
-    scenario 'try log in with wrong password' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        
-        visit root_path
+    click_on 'Log in'
 
-        click_on 'Entrar como candidato'
+    expect(page).to have_content('Email ou senha inválida.')
+  end
 
-        fill_in 'Email', with: candidate.email
-        fill_in 'Senha', with: 'teste123'
+  scenario 'try log in with wrong password' do
+    candidate = create(:candidate, email: 'candidate@teste.com',
+                                   password: '123teste')
 
-        click_on 'Log in'
+    visit root_path
 
-        expect(page).to have_content('Email ou senha inválida.')
-    end
+    click_on 'Entrar como candidato'
 
-    scenario 'and sign out' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        login_as(candidate)
+    fill_in 'Email', with: candidate.email
+    fill_in 'Senha', with: 'teste123'
 
-        visit root_path
+    click_on 'Log in'
 
-        click_on 'Sair'
+    expect(page).to have_content('Email ou senha inválida.')
+  end
 
-        expect(page).to have_content('Saiu com sucesso')
-    end
+  scenario 'and sign out' do
+    candidate = create(:candidate, email: 'candidate@teste.com',
+                                   password: '123teste')
+    create(:profile, :with_photo, candidate: candidate)
+
+    login_as(candidate)
+
+    visit root_path
+
+    click_on 'Sair'
+
+    expect(page).to have_content('Saiu com sucesso')
+  end
 end
