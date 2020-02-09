@@ -122,19 +122,28 @@ feature 'Candidate search for a job vacancy' do
     scenario 'successfully' do
       profile = create(:profile, :with_photo)
 
-      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
-                                           vacancy_description: 'O profissional'\
-                                           ' ira trabalhar com ruby')
-      second_vacancy= create(:job_vacancy, title: 'Desenvolvedor Java',
-                                           vacancy_description: 'O profissional'\
-                                           ' ira trabalhar com java e orientação a objeto')
-      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
-                                           vacancy_description: 'O profissional'\
-                                           ' ira trabalhar varias linguagens')
-      fourth_vacancy= create(:job_vacancy, title: 'Gerente de projeto de '\
-                                                   'desenvolvimento de software',
-                                           vacancy_description: 'O profissional'\
-                                           'ira trabalhar com varios projetos')
+      first_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Ruby',
+                      vacancy_description: 'O profissional ira trabalhar c\ruby'
+      )
+
+      second_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Java',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' java e orientação a objeto'
+      )
+
+      third_vacancy = create(
+        :job_vacancy, title: 'Analista Fullstack',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' varias linguagens'
+      )
+
+      fourth_vacancy = create(
+        :job_vacancy, title: 'Gerente de projeto em desenvolvimento software',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' varios projetos'
+      )
 
       login_as(profile.candidate, scope: :candidate)
 
@@ -151,17 +160,28 @@ feature 'Candidate search for a job vacancy' do
     scenario 'multiples results' do
       profile = create(:profile, :with_photo)
 
-      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
-                                           vacancy_description: 'O profissional ira trabalhar com ruby')
+      first_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Ruby',
+                      vacancy_description: 'O profissional ira trabalhar c\ruby'
+      )
 
-      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
-                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto')
+      second_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Java',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' java e orientação a objeto'
+      )
 
-      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
-                                           vacancy_description: 'O profissional ira trabalhar varias linguagens, começando por ruby')
+      third_vacancy = create(
+        :job_vacancy, title: 'Analista Fullstack',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' varias linguagens, incluindo ruby'
+      )
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
-                                            vacancy_description: 'O profissional ira trabalhar com varios projetos')
+      fourth_vacancy = create(
+        :job_vacancy, title: 'Gerente de projeto em desenvolvimento software',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' varios projetos'
+      )
 
       login_as(profile.candidate, scope: :candidate)
 
@@ -178,17 +198,28 @@ feature 'Candidate search for a job vacancy' do
     scenario 'no result' do
       profile = create(:profile, :with_photo)
 
-      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
-                                           vacancy_description: 'O profissional ira trabalhar com ruby')
+      first_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Ruby',
+                      vacancy_description: 'O profissional ira trabalhar c\ruby'
+      )
 
-      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
-                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto')
+      second_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Java',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' java e orientação a objeto'
+      )
 
-      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
-                                           vacancy_description: 'O profissional ira trabalhar varias linguagens, começando por ruby')
+      third_vacancy = create(
+        :job_vacancy, title: 'Analista Fullstack',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' varias linguagens'
+      )
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
-                                            vacancy_description: 'O profissional ira trabalhar com varios projetos')
+      fourth_vacancy = create(
+        :job_vacancy, title: 'Gerente de projeto em desenvolvimento software',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' varios projetos'
+      )
 
       login_as(profile.candidate, scope: :candidate)
 
@@ -217,7 +248,8 @@ feature 'Candidate search for a job vacancy' do
       third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
                                            level: :specialist)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             level: :manager)
 
       login_as(profile.candidate, scope: :candidate)
@@ -244,7 +276,8 @@ feature 'Candidate search for a job vacancy' do
       third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
                                            level: :specialist)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             level: :manager)
 
       login_as(profile.candidate, scope: :candidate)
@@ -272,7 +305,8 @@ feature 'Candidate search for a job vacancy' do
       third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
                                            level: :specialist)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             level: :manager)
 
       login_as(profile.candidate, scope: :candidate)
@@ -306,7 +340,8 @@ feature 'Candidate search for a job vacancy' do
                                            minimum_wage: 5000,
                                            maximum_wage: 5800)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             minimum_wage: 3700,
                                             maximum_wage: 4200)
 
@@ -337,7 +372,8 @@ feature 'Candidate search for a job vacancy' do
                                            minimum_wage: 5000,
                                            maximum_wage: 5800)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             minimum_wage: 3700,
                                             maximum_wage: 4200)
 
@@ -368,7 +404,8 @@ feature 'Candidate search for a job vacancy' do
                                            minimum_wage: 5000,
                                            maximum_wage: 5800)
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software',
+      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de'\
+                                            ' desenvolvimento de software',
                                             minimum_wage: 3700,
                                             maximum_wage: 4200)
 
@@ -392,29 +429,42 @@ feature 'Candidate search for a job vacancy' do
     scenario 'successfully' do
       profile = create(:profile, :with_photo)
 
-      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
-                                           vacancy_description: 'O profissional ira trabalhar com ruby',
-                                           level: :junior,
-                                           minimum_wage: 2500,
-                                           maximum_wage: 2800)
+      first_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Ruby',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' com ruby',
+                      level: :junior,
+                      minimum_wage: 2500,
+                      maximum_wage: 2800
+      )
 
-      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
-                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto',
-                                            level: :full,
-                                            minimum_wage: 2800,
-                                            maximum_wage: 3200)
+      second_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Java',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' java e orientação a objeto',
+                      level: :full,
+                      minimum_wage: 2800,
+                      maximum_wage: 3200
+      )
 
-      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
-                                           vacancy_description: 'O profissional ira trabalhar varias linguagens',
-                                           level: :specialist,
-                                           minimum_wage: 5000,
-                                           maximum_wage: 5800)
+      third_vacancy = create(
+        :job_vacancy, title: 'Analista Fullstack',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' varias linguagens',
+                      level: :specialist,
+                      minimum_wage: 5000,
+                      maximum_wage: 5800
+      )
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software de desenvolvimento de software',
-                                            vacancy_description: 'O profissional ira trabalhar com varios projetos',
-                                            level: :manager,
-                                            minimum_wage: 3700,
-                                            maximum_wage: 4200)
+      fourth_vacancy = create(
+        :job_vacancy, title: 'Gerente de projeto de desenvolvimento'\
+                      ' de desenvolvimento de software',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' varios projetos',
+                      level: :manager,
+                      minimum_wage: 3700,
+                      maximum_wage: 4200
+      )
 
       login_as(profile.candidate, scope: :candidate)
 
@@ -435,29 +485,42 @@ feature 'Candidate search for a job vacancy' do
     scenario 'no results' do
       profile = create(:profile, :with_photo)
 
-      first_vacancy = create(:job_vacancy, title: 'Desenvolvedor Ruby',
-                                           vacancy_description: 'O profissional ira trabalhar com ruby',
-                                           level: :junior,
-                                           minimum_wage: 2500,
-                                           maximum_wage: 2800)
+      first_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Ruby',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' com ruby',
+                      level: :junior,
+                      minimum_wage: 2500,
+                      maximum_wage: 2800
+      )
 
-      second_vacancy = create(:job_vacancy, title: 'Desenvolvedor Java',
-                                            vacancy_description: 'O profissional ira trabalhar com java e orientação a objeto',
-                                            level: :full,
-                                            minimum_wage: 2800,
-                                            maximum_wage: 3200)
+      second_vacancy = create(
+        :job_vacancy, title: 'Desenvolvedor Java',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' java e orientação a objeto',
+                      level: :full,
+                      minimum_wage: 2800,
+                      maximum_wage: 3200
+      )
 
-      third_vacancy = create(:job_vacancy, title: 'Analista Fullstack',
-                                           vacancy_description: 'O profissional ira trabalhar varias linguagens',
-                                           level: :specialist,
-                                           minimum_wage: 5000,
-                                           maximum_wage: 5800)
+      third_vacancy = create(
+        :job_vacancy, title: 'Analista Fullstack',
+                      vacancy_description: 'O profissional ira trabalhar'\
+                      ' varias linguagens',
+                      level: :specialist,
+                      minimum_wage: 5000,
+                      maximum_wage: 5800
+      )
 
-      fourth_vacancy = create(:job_vacancy, title: 'Gerente de projeto de desenvolvimento de software de desenvolvimento de software',
-                                            vacancy_description: 'O profissional ira trabalhar com varios projetos',
-                                            level: :manager,
-                                            minimum_wage: 3700,
-                                            maximum_wage: 4200)
+      fourth_vacancy = create(
+        :job_vacancy, title: 'Gerente de projeto de desenvolvimento'\
+                      ' de desenvolvimento de software',
+                      vacancy_description: 'O profissional ira trabalhar com'\
+                      ' varios projetos',
+                      level: :manager,
+                      minimum_wage: 3700,
+                      maximum_wage: 4200
+      )
 
       login_as(profile.candidate, scope: :candidate)
 
