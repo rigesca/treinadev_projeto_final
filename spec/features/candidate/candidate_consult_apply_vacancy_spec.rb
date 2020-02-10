@@ -1,110 +1,62 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-feature 'Candidate consults apply vacancy'do
-    scenario 'successfully' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
+feature 'Candidate consults apply vacancy' do
+  scenario 'successfully' do
+    candidate = create(:profile, :with_photo).candidate
+    job_vacancy = create(:job_vacancy, title: 'Vaga de Ruby',
+                                       level: :senior)
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    create(:registered, candidate: candidate,
+                        job_vacancy: job_vacancy)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    login_as(candidate, scope: :candidate)
 
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id,
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
+    visit root_path
+    click_on 'Minhas Vagas'
+    click_on 'Sênior | Vaga de Ruby'
 
-        login_as(candidate, :scope => :candidate)
+    expect(page).to have_content('Vaga de Ruby')
+    expect(page).to have_content('Aberto')
+    expect(page).to have_content('Você já se encontra inscrito para essa vaga.')
+  end
 
-        visit root_path
-        click_on 'Minhas Vagas'
+  scenario 'without vacancy aplly' do
+    candidate = create(:profile, :with_photo).candidate
+    login_as(candidate, scope: :candidate)
 
-        click_on job_vacancy.heading
+    visit root_path
+    click_on 'Minhas Vagas'
 
-        expect(page).to have_content(job_vacancy.title)
-        expect(page).to have_content(I18n.t(job_vacancy.status, scope: [:enum,:statuses]))
-        
-        expect(page).to have_content('Você já se encontra inscrito para essa vaga.')
+    expect(page).to have_content(
+      'Você não possui nenhum inscrição em nenhuma vaga do site'
+    )
+  end
+
+  scenario 'and be rejected' do
+    candidate = create(:profile, :with_photo).candidate
+    create(:registered, candidate: candidate,
+                        status: :excluded,
+                        closed_feedback: 'O candidato não apresenta todos os'\
+                        ' requisitos necessarios')
+
+    login_as(candidate, scope: :candidate)
+
+    visit root_path
+    click_on 'Minhas Vagas'
+
+    expect(page).to have_content(
+      'O candidato não apresenta todos os requisitos necessarios'
+    )
+    expect(page).to have_content('Candidatura Encerrada')
+  end
+
+  context 'route access test' do
+    scenario 'a no-authenticate usser try to access index registered option' do
+      visit registereds_path
+
+      expect(current_path).to eq(root_path)
     end
-
-    scenario 'without vacancy aplly' do
-        headhunter = create(:headhunter)
-
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        login_as(candidate, :scope => :candidate)
-
-        visit root_path
-        click_on 'Minhas Vagas'
-
-        expect(page).to have_content('Você não possui nenhum inscrição em nenhuma vaga do site')
-    end
-
-    scenario 'and be rejected' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
-
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id, status: :excluded,
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa',
-                                        closed_feedback: 'O candidato não apresenta todos os requisitos necessarios')
-
-        login_as(candidate, :scope => :candidate)
-
-        visit root_path
-        click_on 'Minhas Vagas'
-
-        expect(page).to have_content('O candidato não apresenta todos os requisitos necessarios')
-        expect(page).to have_content(I18n.t(registered.status, scope: [:enum,:statuses]))
-    end
-
-
-    context 'route access test' do
-        scenario 'a no-authenticate usser try to access index registered option' do
-            visit registereds_path 
-
-            expect(current_path).to eq(root_path)
-        end
-    end
+  end
 end

@@ -24,13 +24,13 @@
                                 <td>
                                     <% if registered.in_progress? || registered.proposal? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                        <p><strong>Descrição da vaga:</strong><%= registered.job_vacancy.vacancy_description %></p>
+                                        <p><strong>Descrição da vaga: </strong><%= registered.job_vacancy.vacancy_description %></p>
                                     <% elsif registered.reject_proposal? || registered.accept_proposal? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                        <p><strong>Feedback do candidato:</strong><%= registered.proposal.feedback %></p>
+                                        <p><strong>Feedback do candidato: </strong><%= registered.proposal.feedback %></p>
                                     <% elsif registered.excluded? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                        <p><strong>Feedback do headhunter:</strong><%= registered.closed_feedback %></p>
+                                        <p><strong>Feedback do headhunter: </strong><%= registered.closed_feedback %></p>
                                     <% else %>
                                         <%= registered.job_vacancy.heading %>
                                         <p><strong>Vaga encerrada!</p>

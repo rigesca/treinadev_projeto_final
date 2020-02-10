@@ -1,108 +1,58 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Candidate apply for a job vacancy' do
-    scenario 'successfully' do
-        headhunter = create(:headhunter)
+  scenario 'successfully' do
+    candidate = create(:profile, :with_photo).candidate
 
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+    create(:job_vacancy, title: 'Vaga de Ruby',
+                         level: :trainee)
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    login_as(candidate, scope: :candidate)
 
-        login_as(candidate, :scope => :candidate)
+    visit root_path
 
-        visit root_path
-        
-        click_on 'Busca por vagas'
-        click_on job_vacancy.heading
+    click_on 'Busca por vagas'
+    click_on 'Estágiario | Vaga de Ruby'
+    fill_in 'Justificativa', with: 'Estou preparado para a vaga.'
+    click_on 'Candidatar-se a vaga'
 
-        fill_in 'Justificativa', with: 'Sou o candidato mais bem preparado para a vaga.'
-        click_on 'Candidatar-se a vaga'
+    expect(page).to have_content(
+      'Você se escreveu para a vaga: Vaga de Ruby, com sucesso'
+    )
+    expect(page).not_to have_button('Candidatar-se a vaga')
+  end
 
-        expect(page).to have_content("Você se escreveu para a vaga: #{job_vacancy.title}, com sucesso")
-        expect(page).not_to have_button('Candidatar-se a vaga')
-    end
+  scenario 'try to apply for a vacancy without filling in the justification' do
+    candidate = create(:profile, :with_photo).candidate
+    job_vacancy = create(:job_vacancy)
 
-    scenario 'try to apply for a vacancy without filling in the justification' do
-        headhunter = create(:headhunter)
+    login_as(candidate, scope: :candidate)
 
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')
+    visit job_vacancies_path
+    click_on job_vacancy.heading
+    click_on 'Candidatar-se a vaga'
 
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
+    expect(page).to have_content('Justificativa não pode ficar em branco')
+    expect(page).to have_button('Candidatar-se a vaga')
+  end
 
-        login_as(candidate, :scope => :candidate)
+  scenario 'try to apply for a vacancy you already applying for' do
+    candidate = create(:profile, :with_photo).candidate
+    job_vacancy = create(:job_vacancy)
+    create(:registered, candidate: candidate, 
+                        job_vacancy: job_vacancy)
 
-        visit job_vacancies_path
-        click_on job_vacancy.heading
+    login_as(candidate, scope: :candidate)
 
-        click_on 'Candidatar-se a vaga'
+    visit job_vacancies_path
 
-        expect(page).to have_content('Justificativa não pode ficar em branco')
-        expect(page).to have_button('Candidatar-se a vaga')
-    end
+    click_on job_vacancy.heading
 
-    scenario 'try to apply for a vacancy you already applying for' do
-        headhunter = create(:headhunter)
-        
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        job_vacancy = JobVacancy.create!(title: 'Vaga de Ruby', 
-                                         vacancy_description:'O profissional ira trabalhar com ruby',
-                                         ability_description:'Conhecimento em TDD e ruby',
-                                         level: :junior,
-                                         limit_date: 7.day.from_now,
-                                         region: 'Av.Paulista, 1000',
-                                         minimum_wage: 2500,
-                                         maximum_wage: 2800,
-                                         headhunter_id: headhunter.id)
-
-        registered = Registered.create!(candidate_id: candidate.id, job_vacancy_id: job_vacancy.id,
-                                        registered_justification: 'Estou preparado para exercer esse cargo na empresa')
-
-        login_as(candidate, :scope => :candidate)
-
-        visit job_vacancies_path
-
-        click_on job_vacancy.heading
-
-        expect(page).not_to have_button('Candidatar-se a vaga')
-        expect(page).to have_content('Você já se encontra inscrito para essa vaga.')
-    end
+    expect(page).not_to have_button('Candidatar-se a vaga')
+    expect(page).to have_content(
+      'Você já se encontra inscrito para essa vaga.'
+    )
+  end
 end

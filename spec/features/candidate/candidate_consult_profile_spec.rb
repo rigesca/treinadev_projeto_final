@@ -1,88 +1,63 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Candidate consults your profile' do
-    scenario 'successfully' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                              birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                              description: 'Busco oportunidade como programador',
-                              experience: 'Trabalhou por 2 anos na empresa X',
-                              candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+  scenario 'successfully' do
+    profile = create(:profile, :with_photo,
+                     name: 'Fulano da Silva',
+                     social_name: 'Siclano',
+                     birth_date: '10/08/2000',
+                     formation: 'Formado em analise de sistema pela '\
+                     'faculdade UniAlgumaCoisa.',
+                     description: 'Sou talentoso!',
+                     experience: 'Trabalhou 5 anos na empresa Z como '\
+                     'programador ruby.')
 
-        login_as(candidate, :scope => :candidate)
+    login_as(profile.candidate, scope: :candidate)
 
-        visit root_path
-        click_on 'Perfil'
+    visit root_path
+    click_on 'Perfil'
 
-        expect(page).to have_content(profile.name)
-        expect(page).to have_content(profile.social_name)
-        expect(page).to have_content(I18n.localize profile.birth_date)
-        expect(page).to have_content(profile.formation)
-        expect(page).to have_content(profile.description)
-        expect(page).to have_content(profile.experience)
+    expect(page).to have_content('Fulano da Silva')
+    expect(page).to have_content('Siclano')
+    expect(page).to have_content('10/08/2000')
+    expect(page).to have_content(
+      'Formado em analise de sistema pela faculdade UniAlgumaCoisa.'
+    )
+    expect(page).to have_content('Sou talentoso!')
+    expect(page).to have_content(
+      'Trabalhou 5 anos na empresa Z como programador ruby.'
+    )
+  end
+
+  scenario 'successfully and go back to root' do
+    candidate = create(:profile, :with_photo).candidate
+
+    login_as(candidate, scope: :candidate)
+
+    visit root_path
+    click_on 'Perfil'
+    click_on 'Voltar'
+
+    expect(current_path).to eq(root_path)
+  end
+
+  context 'route access test' do
+    scenario 'a no-authenticate usser try to access edit profile option' do
+      profile = create(:profile, :with_photo)
+
+      visit edit_profile_path(profile)
+
+      expect(current_path).to eq(new_candidate_session_path)
     end
 
-    scenario 'successfully and go back to root' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                              birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                              description: 'Busco oportunidade como programador',
-                              experience: 'Trabalhou por 2 anos na empresa X',
-                              candidate_id: candidate.id)
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
+    scenario 'a no-authenticate usser try to access show profile option' do
+      profile = create(:profile, :with_photo)
 
-        login_as(candidate, :scope => :candidate)
+      visit profile_path(profile)
 
-        visit root_path
-        click_on 'Perfil'
-
-        expect(page).to have_content(profile.name)
-        expect(page).to have_content(profile.social_name)
-        expect(page).to have_content(I18n.localize profile.birth_date)
-        expect(page).to have_content(profile.formation)
-        expect(page).to have_content(profile.description)
-        expect(page).to have_content(profile.experience)
-
-        click_on 'Voltar'
-
-        expect(current_path).to eq(root_path)
+      expect(current_path).to eq(root_path)
     end
-
-
-    
-    context 'route access test' do
-        scenario 'a no-authenticate usser try to access edit profile option' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                          password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
-            
-            visit edit_profile_path(profile)
-
-            expect(current_path).to eq(new_candidate_session_path)
-        end
-        
-        
-        scenario 'a no-authenticate usser try to access show profile option' do
-            candidate = Candidate.create!(email: 'candidate@teste.com',
-                                          password: '123teste')
-            profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                      birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                      description: 'Busco oportunidade como programador',
-                                      experience: 'Trabalhou por 2 anos na empresa X',
-                                      candidate_id: candidate.id)
-            profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')), filename:'foto.jpeg')    
-            
-            visit profile_path(profile)
-
-            expect(current_path).to eq(root_path)
-        end
-    end
+  end
 end

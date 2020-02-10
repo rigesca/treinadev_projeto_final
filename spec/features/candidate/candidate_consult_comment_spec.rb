@@ -1,96 +1,64 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 feature 'Headhunter register a commentary for a candidate' do
-    scenario 'successfully' do
-        headhunter = create(:headhunter)
+  scenario 'successfully' do
+    headhunter = create(:headhunter, email: 'headhunter@gmail.com')
 
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
+    profile = create(:profile, :with_photo, name: 'Fulano Da Silva')
 
+    commentary = create(:comment, profile: profile, headhunter: headhunter,
+                                  comment: 'Bom dia Fulano da Silva, '\
+                                  'gostariamos de agendar uma entrevista '\
+                                  'com você, entre em contato conosco.')
 
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
+    login_as(profile.candidate, scope: :candidate)
 
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+    visit root_path
+    click_on 'Perfil'
+    click_on 'Comentários'
 
-        commentary = Comment.create!(profile_id: profile.id, headhunter_id: headhunter.id, 
-                                     comment:"Bom dia #{profile.name}, gostariamos de agendar uma entrevista com você, entre em contato no telefone 1812-5142")
+    expect(page).not_to have_button('Envia comentário')
+    expect(page).to have_content('Headhunter: headhunter@gmail.com')
+    expect(page).to have_content(
+      'Bom dia Fulano da Silva, gostariamos de agendar uma entrevista com '\
+      'você, entre em contato conosco'
+    )
+    expect(page).to have_content(
+      "Enviada em: #{I18n.l(commentary.created_at, format: :long)}"
+    )
+  end
 
-        login_as(candidate, :scope => :candidate)
+  scenario 'and see multiplos comments successfully' do
+    profile = create(:profile, :with_photo)
 
-        visit root_path
-        click_on 'Perfil'
-        click_on 'Comentários' 
+    create(:comment, profile: profile,
+                     comment: 'Primeiro comentário.')
 
-        expect(page).not_to have_button('Envia comentário')
-        expect(page).to have_content(commentary.heading)
-        expect(page).to have_content(commentary.comment)
-        expect(page).to have_content(commentary.customized_send_time_message)
-    end
+    create(:comment, profile: profile,
+                     comment: 'Segundo comentário.')
 
+    create(:comment, profile: profile,
+                     comment: 'Terceiro comentário.')
 
-    scenario 'and see multiplos comments successfully' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
+    login_as(profile.candidate, scope: :candidate)
 
-        headhunter_1 = create(:headhunter)
+    visit comments_list_profile_path(profile)
 
-        headhunter_2 = create(:headhunter)
-                                    
-        headhunter_3 = create(:headhunter)
-        
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
+    expect(page).to have_content('Primeiro comentário.')
+    expect(page).to have_content('Segundo comentário.')
+    expect(page).to have_content('Terceiro comentário.')
+  end
 
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
+  scenario 'and no have commentary in your profile' do
+    profile = create(:profile, :with_photo)
 
-        comment_headhunter_1 = Comment.create!(profile_id: profile.id, headhunter_id: headhunter_1.id, 
-                                     comment:"Bom dia #{profile.name}, gostariamos de agendar uma entrevista com você, entre em contato no telefone 1812-5142")
+    login_as(profile.candidate, scope: :candidate)
 
-        comment_headhunter_2 = Comment.create!(profile_id: profile.id, headhunter_id: headhunter_2.id, 
-                                        comment:"Bom dia #{profile.name}, gostariamos de agendar uma entrevista com você, entre em contato no telefone 1812-5142")
+    visit comments_list_profile_path(profile)
 
-        comment_headhunter_3 = Comment.create!(profile_id: profile.id, headhunter_id: headhunter_3.id, 
-                                        comment:"Bom dia #{profile.name}, gostariamos de agendar uma entrevista com você, entre em contato no telefone 1812-5142")
-
-        login_as(candidate, :scope => :candidate)
-
-        visit comments_list_profile_path(profile)
-
-        expect(page).to have_content(comment_headhunter_2.heading)
-        expect(page).to have_content(comment_headhunter_2.comment)
-        expect(page).to have_content(comment_headhunter_2.customized_send_time_message)
-        
-        expect(page).to have_content(comment_headhunter_3.heading)
-        expect(page).to have_content(comment_headhunter_3.comment)
-        expect(page).to have_content(comment_headhunter_3.customized_send_time_message)
-    end
-
-    scenario 'and no have commentary in your profile' do
-        candidate = Candidate.create!(email: 'candidate@teste.com',
-                                      password: '123teste')
-        
-        profile = Profile.create!(name: 'Fulano Da Silva', social_name: 'Siclano', 
-                                  birth_date: '15/07/1989',formation: 'Formado pela faculdade X',
-                                  description: 'Busco oportunidade como programador',
-                                  experience: 'Trabalhou por 2 anos na empresa X',
-                                  candidate_id: candidate.id)
-
-        profile.candidate_photo.attach(io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-                                       filename:'foto.jpeg')
-
-        login_as(candidate, :scope => :candidate)
-
-        visit comments_list_profile_path(profile)
-
-        expect(page).to have_content('O candidato não possui comentários registrado em seu perfil.')
-    end
+    expect(page).to have_content('O candidato não possui comentários '\
+        'registrado em seu perfil.')
+  end
 end

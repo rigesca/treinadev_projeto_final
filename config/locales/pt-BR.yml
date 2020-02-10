@@ -231,6 +231,7 @@ pt-BR:
       expired: "Expirado"
       reject_proposal: "Proposta rejeitada"
       accept_proposal: "Proposta aceita"
+      excluded: "Candidatura Encerrada"
     levels:
       trainee: "Estágiario"
       junior: "Júnior"
