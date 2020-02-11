@@ -41,7 +41,7 @@ feature 'Candidate apply for a job vacancy' do
   scenario 'try to apply for a vacancy you already applying for' do
     candidate = create(:profile, :with_photo).candidate
     job_vacancy = create(:job_vacancy)
-    create(:registered, candidate: candidate, 
+    create(:registered, candidate: candidate,
                         job_vacancy: job_vacancy)
 
     login_as(candidate, scope: :candidate)

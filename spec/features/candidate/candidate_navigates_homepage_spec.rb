@@ -24,8 +24,8 @@ feature 'Candidate navigates homepage' do
 
     first_registered = create(:registered, candidate: candidate,
                                            status: :proposal)
-    second_registered= create(:registered, candidate: candidate,
-                                           status: :proposal)
+    second_registered = create(:registered, candidate: candidate,
+                                            status: :proposal)
     third_registered = create(:registered, candidate: candidate,
                                            status: :reject_proposal)
 

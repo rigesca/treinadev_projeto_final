@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Registered < ApplicationRecord
   belongs_to :candidate
   belongs_to :job_vacancy
 
-  has_one :proposal
+  has_one :proposal, dependent: :destroy
 
   validates :registered_justification, presence: true
 

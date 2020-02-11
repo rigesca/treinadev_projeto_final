@@ -11,7 +11,7 @@ feature 'Candidate edits your profile' do
                      formation: 'Formado pela faculdade X',
                      description: 'Busco oportunidade como programador',
                      experience: 'Trabalhou por 2 anos na empresa X')
-    login_as(candidate, scope: :candidate)
+    login_as(profile.candidate, scope: :candidate)
 
     visit root_path
     click_on 'Perfil'
@@ -43,7 +43,7 @@ feature 'Candidate edits your profile' do
                      formation: 'Formado pela faculdade X',
                      description: 'Busco oportunidade como programador',
                      experience: 'Trabalhou por 2 anos na empresa X')
-    login_as(candidate, scope: :candidate)
+    login_as(profile.candidate, scope: :candidate)
 
     visit edit_profile_path(profile)
 
@@ -62,7 +62,7 @@ feature 'Candidate edits your profile' do
                      formation: 'Formado pela faculdade X',
                      description: 'Busco oportunidade como programador',
                      experience: 'Trabalhou por 2 anos na empresa X')
-    login_as(candidate, scope: :candidate)
+    login_as(profile.candidate, scope: :candidate)
 
     visit edit_profile_path(profile)
 

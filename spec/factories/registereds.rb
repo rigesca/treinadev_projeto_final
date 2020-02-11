@@ -4,6 +4,8 @@ FactoryBot.define do
   factory :registered do
     candidate
     job_vacancy
-    registered_justification { 'Estou preparado para exercer esse cargo na empresa' }
+    registered_justification do
+      'Estou preparado para exercer esse cargo na empresa'
+    end
   end
 end

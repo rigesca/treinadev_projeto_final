@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :candidates
   devise_for :headhunters
-  
-  root 'home#index'  
 
-  resources :profiles, only: [:show, :new, :create, :edit, :update] do
+  root 'home#index'
+
+  resources :profiles, only: %i[show new create edit update] do
     get 'comments_list', on: :member, shallow: true
     post 'register_comment', on: :member
   end
-  
-  resources :registereds,only: [:index] do
+
+  resources :registereds, only: [:index] do
     post 'mark', on: :member
-    
+
     get 'cancel', on: :member
     post 'save_canceled', on: :member
 
@@ -19,7 +21,7 @@ Rails.application.routes.draw do
     post 'send_proposal', on: :member, controller: 'proposals', action: :create
   end
 
-  resources :proposals, only: [:index, :show] do
+  resources :proposals, only: %i[index show] do
     get 'reject', on: :member
     post 'save_reject', on: :member
 
@@ -27,7 +29,7 @@ Rails.application.routes.draw do
     post 'save_accept', on: :member
   end
 
-  resources :job_vacancies, only: [:index,:show, :new, :create] do
+  resources :job_vacancies, only: %i[index show new create] do
     post 'apply', on: :member
     get 'candidate_list', on: :member, shallow: true
 
@@ -36,12 +38,9 @@ Rails.application.routes.draw do
     post 'closes', on: :member
   end
 
-  namespace :api, default: {format: 'json'} do
+  namespace :api, default: { format: 'json' } do
     namespace :v1 do
       resources :job_vacancies, only: %i[show create index]
     end
   end
-
-  
-
 end

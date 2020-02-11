@@ -59,7 +59,7 @@ feature 'Candidate register a profile' do
                                  birth_date: '15/07/1989')
       login_as(profile.candidate, scope: :candidate)
 
-      visit comments_list_profile_path(candidate.profile)
+      visit comments_list_profile_path(profile)
 
       expect(page).to have_content(
         'É necessario completar o perfil para se inscrever em qualquer vaga'

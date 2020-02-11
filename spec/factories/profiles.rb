@@ -8,17 +8,15 @@ FactoryBot.define do
     name { FFaker::NameBR.name }
     social_name { name }
     birth_date { FFaker::Time.between('1970-01-01 16:20', '2015-01-01 16:20') }
-    formation { 'Formado na Faculdade da cidade, no curso ciências da computação.' }
+    formation do
+      'Formado na Faculdade da cidade, no curso ciências da computação.'
+    end
     description { 'Busco oportunidade como programador' }
     experience { 'Trabalhou por 2 anos na empresa X' }
 
     trait :with_photo do
-      after :create do |profile|
-        profile.candidate_photo.attach(
-          io: File.open(Rails.root.join('spec', 'support', 'foto.jpeg')),
-          filename: 'foto.jpeg'
-        )
-      end
+      image_path = Rails.root.join('spec/support/foto.jpeg')
+      candidate_photo { fixture_file_upload(image_path, 'image/jpeg') }
     end
   end
 end
