@@ -111,5 +111,11 @@ describe 'JobVacancy', type: :request do
 
       expect(response).to have_http_status(:no_content)
     end
+
+    it 'teste' do 
+      get '/api/v1/client/14a1cc557b/payment_simulation?value=1000/'
+
+      
+    end
   end
 end

@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   namespace :api, default: { format: 'json' } do
     namespace :v1 do
       resources :job_vacancies, only: %i[show create index]
+      
+      get 'client/:tolken/payment_simulation', to: 'payment_simulation#simulation'
     end
   end
 end
