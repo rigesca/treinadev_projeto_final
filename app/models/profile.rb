@@ -9,12 +9,11 @@ class Profile < ApplicationRecord
   validates :name, :birth_date, presence: true
 
   def profile_is_complete?
-    if social_name.present? && formation.present? && description.present? &&
-       experience.present? && candidate_photo.attached?
-      true
-    else
-      false
-    end
+    return true if social_name.present? && formation.present? &&
+                   description.present? && experience.present? &&
+                   candidate_photo.attached?
+
+    false
   end
 
   def calculates_candidate_age

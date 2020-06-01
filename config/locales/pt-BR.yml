@@ -239,3 +239,6 @@ pt-BR:
       senior: "Sênior"
       specialist: "Especialista"
       manager: "Diretor"
+  message: 
+    blank_profile: 'É necessario cadastrar um perfil para utilizar o sistema'
+    incomplete_profile: 'É necessario completar o perfil para se inscrever em qualquer vaga'
