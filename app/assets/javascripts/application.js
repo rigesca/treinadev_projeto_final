@@ -15,16 +15,3 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
-
-$(document).ready(function() {
-  $('input[type=radio][name=loginRadio]').change(function(){
-    if (this.value === 'headhunter') {
-      $('#headhunter_menu').show();
-      $('#candidate_menu').hide();
-    }
-    else if (this.value === 'candidate') {
-      $('#headhunter_menu').hide();
-      $('#candidate_menu').show();
-    }
-  });
-})
