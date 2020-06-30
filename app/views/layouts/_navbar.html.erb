@@ -1,15 +1,22 @@
 <%= nav_bar do%>
     <%if headhunter.nil? && candidate.nil?%>
-      
-      <p>
-        <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
-        <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
-      </p>  
-      
-      <p>
-        <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
-        <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
-      </p>
+
+    <div>
+      <input type="radio" name="loginRadio" id="headhunterOption" value="headhunter" checked>
+      <label for="headhunterOption">Headhunter</label>
+      <input type="radio" name="loginRadio" id="candidateOption" value="candidate">
+      <label for="candidateOption">Candidate</label>
+    </div>
+
+    <div id="headhunter_menu" >
+      <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
+      <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
+    </div>
+
+    <div id="candidate_menu" hidden>
+      <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
+      <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
+    </div>
 
     <% elsif headhunter.present? %>
       
