@@ -1,64 +1,51 @@
-<%= nav_bar do%>
-  <% if headhunter_signed_in? %>
-    <p>
-      Olá <%= current_headhunter.email%> |
-      <%= link_to 'Sair', destroy_headhunter_session_path, method: :delete %>
-    </p>
-    
-    <p>
-      <%= link_to 'Vagas', job_vacancies_path %>
-      <%= link_to 'Propostas', proposals_path %>
-    </p>
-  <% elsif candidate_signed_in? %>
-    <p>
-      Olá <%= current_candidate.email%> |
-      <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
-    </p>
-    
-    <p>
-      <%= link_to 'Perfil', current_candidate.profile %>
-      
-      <% if current_candidate.profile.present? %>
-        <%= link_to 'Mensagens', comments_list_profile_path(current_candidate.profile)%>
-      <% end %>
-      
-      <%= link_to 'Minhas Vagas', registereds_path %>
-      <%= link_to 'Busca por vagas', job_vacancies_path %>
-      <%= link_to "Minhas propostas", proposals_path %>
-    </p>
-  <% else %>
-    <div id="user_selection">
-      <div>
-        <input type="radio" name="loginRadio" id="headhunterOption" value="headhunter" checked>
-        <label for="headhunterOption">Headhunter</label>
-        <input type="radio" name="loginRadio" id="candidateOption" value="candidate">
-        <label for="candidateOption">Candidato</label>
-      </div>
+<div id="user_selection">
+  <div>
+    <input type="radio" name="loginRadio" id="headhunterOption" value="headhunter" checked>
+    <label for="headhunterOption">Headhunter</label>
+    <input type="radio" name="loginRadio" id="candidateOption" value="candidate">
+    <label for="candidateOption">Candidato</label>
+  </div>
 
-      <div id="headhunter_menu" >
-        <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
-        <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
-      </div>
+  <div id="headhunter_menu" >
+    <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
+    <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
+  </div>
 
-      <div id="candidate_menu" hidden>
-        <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
-        <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
-      </div>
+  <div id="candidate_menu" hidden>
+    <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
+    <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
+  </div>
 
-      <script>
-        $(document).ready(function() {
-          $('input[type=radio][name=loginRadio]').change(function(){
-            if (this.value === 'headhunter') {
-              $('#headhunter_menu').show();
-              $('#candidate_menu').hide();
+  <script>
+    $(document).ready(function () {
+        if localStorage['loginRadioValue'] {
+            if (localStorage['loginRadioValue'] == "headhunter") {
+              console.log("passou no headhunter")
+              document.getElementBydI("headhunterOption").click();
+            } else {
+              console.log("passou no candidate")
+              document.getElementById("candidateOption").click();
             }
-            else if (this.value === 'candidate') {
-              $('#headhunter_menu').hide();
-              $('#candidate_menu').show();
-            }
-          });
-        })
-      </script>
-    </div>
-  <%end%>
-<% end %>
+        }
+    });
+
+    $(document).ready(function() {
+      $('input[type=radio][name=loginRadio]').change(function(){
+        $('input[type=radio][name=loginRadio]')
+
+        localStorage['loginRadioValue'] = this.value
+
+        if (this.value === 'headhunter') {
+          $('#headhunter_menu').show();
+          $('#candidate_menu').hide();
+        }
+        else if (this.value === 'candidate') {
+          $('#headhunter_menu').hide();
+          $('#candidate_menu').show();
+        }
+      });
+    })
+  </script>
+
+</div>
+

@@ -1,0 +1,16 @@
+<p>
+  Olá <%= candidate.email%> |
+  <%= link_to 'Sair', destroy_candidate_session_path, method: :delete %>
+</p>
+    
+<p>
+  <%= link_to 'Perfil', candidate.profile %>
+
+  <% if candidate.profile.present? %>
+    <%= link_to 'Mensagens', comments_list_profile_path(candidate.profile)%>
+  <% end %>
+
+  <%= link_to 'Minhas Vagas', registereds_path %>
+  <%= link_to 'Busca por vagas', job_vacancies_path %>
+  <%= link_to "Minhas propostas", proposals_path %>
+</p>
