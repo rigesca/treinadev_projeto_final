@@ -15,7 +15,7 @@
     <% elsif candidate_signed_in? %>
       <%= render partial: "layouts/candidate_navbar", locals: { candidate: current_candidate } %>
     <% else %>
-      <%= render partial: "layouts/navbar"%>
+      <%= render partial: "layouts/login_selection"%>
     <% end %>
   <% end %>
 
