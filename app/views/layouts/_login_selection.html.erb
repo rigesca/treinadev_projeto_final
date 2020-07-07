@@ -1,0 +1,63 @@
+<div id="user_selection">
+  <div>
+    <input type="radio" name="loginRadio" id="headhunterOption" value="headhunter">
+    <label for="headhunterOption">Headhunter</label>
+    <input type="radio" name="loginRadio" id="candidateOption" value="candidate">
+    <label for="candidateOption">Candidato</label>
+  </div>
+
+  <div id="headhunter_menu" >
+    <%= link_to 'Cadastrar-se como headhunter', new_headhunter_registration_path%> |
+    <%= link_to 'Entrar como headhunter', new_headhunter_session_path%>
+  </div>
+
+  <div id="candidate_menu">
+    <%= link_to 'Cadastrar-se como candidato', new_candidate_registration_path%> | 
+    <%= link_to 'Entrar como candidato', new_candidate_session_path%> 
+  </div>
+
+  <script>
+  var $radioOptions = $('input[type=radio][name=loginRadio]');
+
+    $(document).ready(function(){
+      var option = localStorage['loginRadioValue'];
+
+      switch (option) {
+        case 'candidate':
+          show_candidate_option();
+        break;
+        default:
+          show_headhunter_option();
+      }
+    });
+
+    $(document).ready(function(){
+      $radioOptions.change(function(){
+        if (this.value === 'headhunter') {
+          show_headhunter_option()
+        }
+        else if (this.value === 'candidate') {
+          show_candidate_option();
+        }
+
+        localStorage.setItem('loginRadioValue',this.value);
+      });
+    });
+
+    function show_headhunter_option(){
+      $('#headhunter_menu').show();
+      $('#candidate_menu').hide();
+
+      $radioOptions.filter('[value="headhunter"]').attr('checked', true);
+    }
+
+    function show_candidate_option(){
+      $('#headhunter_menu').hide();
+      $('#candidate_menu').show();
+
+      $radioOptions.filter('[value="candidate"]').attr('checked', true);
+    }
+  </script>
+
+</div>
+

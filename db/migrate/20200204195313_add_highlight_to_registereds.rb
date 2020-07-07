@@ -3,4 +3,3 @@ class AddHighlightToRegistereds < ActiveRecord::Migration[5.2]
     add_column :registereds, :highlight, :integer, default: 0
   end
 end
-]

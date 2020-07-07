@@ -9,7 +9,15 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <%= render partial: "layouts/navbar"%>
+  <%= nav_bar do %>
+    <% if headhunter_signed_in? %>
+      <%= render partial: "layouts/headhunter_navbar", locals: { headhunter: current_headhunter } %>
+    <% elsif candidate_signed_in? %>
+      <%= render partial: "layouts/candidate_navbar", locals: { candidate: current_candidate } %>
+    <% else %>
+      <%= render partial: "layouts/login_selection"%>
+    <% end %>
+  <% end %>
 
   <div>
     <% if !notice.nil? %>
