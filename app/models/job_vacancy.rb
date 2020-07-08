@@ -18,6 +18,14 @@ class JobVacancy < ApplicationRecord
                 specialist: 40, manager: 50 }
   enum status: { open: 0, closed: 10 }
 
+  scope :word_search, ->(word) {
+    where('title LIKE :word OR vacancy_description LIKE :word',
+          word: "%#{word}%")
+  }
+
+  scope :available_vacancy, -> { where('limit_date > ?', Date.current).open }
+  scope :minimum_wage, ->(wage) { where('minimum_wage >= ?', wage.to_s) }
+
   def heading
     "#{I18n.t(level, scope: %i[enum levels])} | #{title}"
   end

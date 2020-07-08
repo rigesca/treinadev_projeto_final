@@ -13,24 +13,24 @@ RSpec.describe Profile, type: :model do
     it { should validate_presence_of(:birth_date) }
   end
 
-  context '.profile_is_complete?' do
+  context '.is_complete?' do
     it 'with a complete profile' do
       profile = create(:profile, :with_photo)
 
-      expect(profile.profile_is_complete?).to eq(true)
+      expect(profile.is_complete?).to eq(true)
     end
 
     it 'with a incomplete profile' do
       profile = create(:profile, :with_photo, description: '',
                                               experience: '')
 
-      expect(profile.profile_is_complete?).to eq(false)
+      expect(profile.is_complete?).to eq(false)
     end
 
     it 'withou a photo' do
       profile = create(:profile)
 
-      expect(profile.profile_is_complete?).to eq(false)
+      expect(profile.is_complete?).to eq(false)
     end
   end
 end

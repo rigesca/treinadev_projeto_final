@@ -25,7 +25,7 @@ class ProfilesController < ApplicationController
     @profile.candidate_id = current_candidate.id
 
     if @profile.save
-      flash[:notice] = if @profile.profile_is_complete?
+      flash[:notice] = if @profile.is_complete?
                          'Perfil concluido com sucesso'
                        else
                          'Perfil cadastrado com sucesso'

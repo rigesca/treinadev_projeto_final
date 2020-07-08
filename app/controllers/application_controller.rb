@@ -2,21 +2,19 @@
 
 class ApplicationController < ActionController::Base
   def authenticate_user!
-    unless headhunter_signed_in? || candidate_signed_in?
-    redirect_to root_path
-    end
+    redirect_to root_path unless headhunter_signed_in? || candidate_signed_in?
   end
 
   def validate_profile!
-    return if current_candidate.blank?
+    return unless candidate_signed_in?
 
     if current_candidate.profile.blank?
       redirect_to new_profile_path(current_candidate.profile),
                   notice: t('message.blank_profile')
     else
-      unless current_candidate.profile.profile_is_complete?
-        redirect_to edit_profile_path(current_candidate.profile),
-                    notice: t('message.incomplete_profile')
+      unless current_candidate.profile.is_complete?
+      redirect_to edit_profile_path(current_candidate.profile),
+                  notice: t('message.incomplete_profile')
       end
     end
   end
