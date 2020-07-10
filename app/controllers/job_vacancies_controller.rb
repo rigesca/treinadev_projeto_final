@@ -5,7 +5,10 @@ class JobVacanciesController < ApplicationController
   before_action :authenticate_candidate!, only: %i[apply search]
   before_action :authenticate_headhunter!,
                 only: %i[new create candidate_list closes]
+
   before_action :validate_profile!, only: %i[index apply search]
+
+  before_action :find_job_vacancy, only: %i[show apply candidate_list closes]
 
   def index
     @job_vacancies =
@@ -17,8 +20,6 @@ class JobVacanciesController < ApplicationController
   end
 
   def show
-    @job_vacancy = JobVacancy.find(params[:id])
-
     if candidate_signed_in?
       @registered = Registered.new
     else
@@ -44,25 +45,19 @@ class JobVacanciesController < ApplicationController
   def search
     @job_vacancies = JobVacancy.available_vacancy
 
-    if params[:q].present?
-      @job_vacancy = @job_vacancies.word_search(params[:q])
-    end
-    if params[:levels].present?
-      @job_vacancies = @job_vacancies.where(level: params[:levels])
-    end
-    if params[:minimun].present?
-      @job_vacancies = @job_vacancies.minimum_wage(params[:minimun])
-    end
+    @job_vacancies = @job_vacancies.word_search(params[:q]) if params[:q].present?
+    @job_vacancies = @job_vacancies.where(level: params[:levels]) if params[:levels].present?
+    @job_vacancies = @job_vacancies.minimum_wage(params[:minimun]) if params[:minimun].present?
 
     render :index
   end
 
   def apply
-    @job_vacancy = JobVacancy.find(params[:id])
     @registered =
       Registered.new(candidate_id: current_candidate.id,
                      job_vacancy_id: @job_vacancy.id,
-                     registered_justification: params[:registered][:registered_justification])
+                     registered_justification:
+                        params[:registered][:registered_justification])
     if @registered.save
       flash[:notice] = "Você se escreveu para a vaga: #{@job_vacancy.title}, "\
                        'com sucesso'
@@ -74,21 +69,18 @@ class JobVacanciesController < ApplicationController
   end
 
   def candidate_list
-    @job_vacancy = JobVacancy.find(params[:id])
     @registereds = @job_vacancy.registereds.where('registereds.status <> 5')
     @favorits_registereds = @registereds.checked
     @canceled_registereds = @job_vacancy.registereds.excluded
   end
 
   def closes
-    @job_vacancy = JobVacancy.find(params[:id])
-
-    registereds = Registered.where(status: %i[in_progress proposal reject_proposal])
-                            .where(job_vacancy_id: @job_vacancy.id)
+    registereds =
+      Registered.where(status: %i[in_progress proposal reject_proposal])
+                .where(job_vacancy_id: @job_vacancy.id)
 
     registereds.each do |registered|
       registered.closed!
-
       registered.proposal.destroy if registered.proposal.present?
     end
 
@@ -98,6 +90,10 @@ class JobVacanciesController < ApplicationController
   end
 
   private
+
+  def find_job_vacancy
+    @job_vacancy = JobVacancy.find(params[:id])
+  end
 
   def params_job_vacancy
     params.require(:job_vacancy)

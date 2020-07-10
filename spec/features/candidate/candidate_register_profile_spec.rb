@@ -19,7 +19,7 @@ feature 'Candidate register a profile' do
 
     click_on 'Salvar'
 
-    expect(page).to have_content('Perfil concluido com sucesso')
+    expect(page).to have_content('Perfil concluído com sucesso')
     expect(current_path).to eq(root_path)
   end
 
