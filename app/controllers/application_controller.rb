@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       redirect_to new_profile_path(current_candidate.profile),
                   notice: t('message.blank_profile')
     else
-      unless current_candidate.profile.is_complete?
+      unless current_candidate.profile.complete?
       redirect_to edit_profile_path(current_candidate.profile),
                   notice: t('message.incomplete_profile')
       end

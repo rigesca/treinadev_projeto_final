@@ -6,3 +6,9 @@ pt-BR:
       registered:
         registered_justification: "Justificativa"
         closed_feedback: "Feedback"
+  message:
+    candidate_check: "Candidato %{name} marcado como destaque com sucesso"
+    candidate_uncheck: "Candidato %{name} desmarcado como destaque com sucesso"
+    finished: "Candidato %{name} teve sua participação finalizada com sucesso"
+  error: 
+    feedback_not_blank: "Campo Feedback não pode ser vazio"

@@ -35,11 +35,7 @@ class JobVacancy < ApplicationRecord
   end
 
   def verify_status_registered_for_vacancy(candidate_id)
-    if registereds.find_by(candidate_id: candidate_id).in_progress?
-      true
-    else
-      false
-    end
+    registereds.find_by(candidate_id: candidate_id).in_progress?
   end
 
   protected

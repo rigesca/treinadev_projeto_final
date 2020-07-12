@@ -23,7 +23,7 @@ class ProfilesController < ApplicationController
 
     if @profile.save
       flash[:notice] =
-        @profile.is_complete? ? t('.concluded') : t('.success')
+        @profile.complete? ? t('.concluded') : t('.success')
       redirect_to root_path
     else
       render :new
@@ -70,6 +70,7 @@ class ProfilesController < ApplicationController
 
   def profile_params
     params.require(:profile).permit(:name, :social_name, :birth_date,
-                                    :formation, :description, :experience, :candidate_photo)
+                                    :formation, :description, :experience,
+                                    :candidate_photo)
   end
 end
