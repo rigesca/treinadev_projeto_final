@@ -214,7 +214,7 @@ feature 'Headhunter make a proposal to a candidate' do
 
       visit proposal_registered_path(proposal)
 
-      expect(current_path).to eq(new_headhunter_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

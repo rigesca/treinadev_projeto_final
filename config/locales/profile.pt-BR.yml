@@ -11,8 +11,11 @@ pt-BR:
         formation: "Formação"
         experience: "Experiência"
         candidate_photo: "Foto do candidato"
-  message:
-    updated: "Perfil alterado com sucesso"
-    success: "Perfil cadastrado com sucesso"
-    concluded: "Perfil concluído com sucesso"
-    comment_created: "Comentário criado com sucesso"
+  profiles:
+    create:
+      success: "Perfil cadastrado com sucesso"
+      concluded: "Perfil concluído com sucesso"
+    update:
+      updated: "Perfil alterado com sucesso"
+    register_comment:
+      comment_created: "Comentário criado com sucesso"

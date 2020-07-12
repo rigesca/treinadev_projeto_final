@@ -1,22 +1,26 @@
 # frozen_string_literal: true
 
 class ProposalsController < ApplicationController
-  before_action :authenticate_headhunter!, only: %i[new create]
-
-  before_action :authenticate_candidate!, only: %i[accept save_accept reject save_reject]
-  before_action :validate_profile!, only: %i[index accept save_accept reject save_reject]
-
   before_action :authenticate_user!
+  before_action :authenticate_headhunter!, only: %i[new create]
+  before_action :authenticate_candidate!, only: %i[accept save_accept
+                                                   reject save_reject]
+  before_action :validate_profile!, only: %i[index accept save_accept
+                                             reject save_reject]
 
-  before_action :find_proposal_by_id, only: %i[show reject save_reject accept save_accept]
+  before_action :find_proposal_by_id, only: %i[show reject save_reject
+                                               accept save_accept]
+  before_action :find_registered_by_id, only: %i[new create]
 
-  before_action :authenticate_proposal, only: %i[show reject save_reject accept save_accept]
+  before_action :authenticate_proposal, only: %i[show reject save_reject accept
+                                                 save_accept]
 
   def index
-    if current_candidate.present?
-      @proposals = Proposal.joins(:registered).where('registereds.candidate_id = ?', current_candidate.id).submitted
+    if candidate_signed_in?
+      @proposals = Proposal.all_candidate_proposal(current_candidate.id)
     else
-      @proposals = Proposal.joins(registered: [:job_vacancy]).where('job_vacancies.headhunter_id = ?', current_headhunter.id)
+      @proposals = Proposal.all_headhunter_proposal(:job_vacancy,
+                                                    current_headhunter.id)
     end
   end
 
@@ -26,7 +30,6 @@ class ProposalsController < ApplicationController
   end
 
   def new
-    @registered = Registered.find(params[:id])
     @proposal = @registered.build_proposal
 
     @minimum = @registered.job_vacancy.minimum_wage
@@ -34,16 +37,15 @@ class ProposalsController < ApplicationController
   end
 
   def create
-    @registered = Registered.find(params[:id])
     @proposal = @registered.build_proposal(params_proposal)
 
     if @proposal.save
       @registered.proposal!
 
       ProposalMailer.received_proposal(@proposal.id)
-      flash[:notice] = "Proposta enviada ao candidato #{@registered.candidate.profile.name} com sucesso"
 
-      redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id)
+      redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id),
+                  notice: t('.success', name: @registered.candidate.profile.name)
     else
       @minimum = @registered.job_vacancy.minimum_wage
       @maximum = @registered.job_vacancy.maximum_wage
@@ -57,18 +59,20 @@ class ProposalsController < ApplicationController
   end
 
   def save_reject
-    if params[:proposal][:feedback].blank?
+    feedback = params[:proposal][:feedback]
+
+    if feedback.blank?
       @proposal.update(feedback: 'Proposta rejeitada pelo candidato')
     else
-      @proposal.update(feedback: params[:proposal][:feedback])
+      @proposal.update(feedback: feedback)
     end
 
     @proposal.rejected!
     @proposal.registered.reject_proposal!
 
-    flash[:notice] = "Proposta rejeitada pelo candidato #{@proposal.registered.candidate.profile.name}, feedback sera enviado ao headhunter"
-
-    redirect_to @proposal
+    redirect_to @proposal, notice: t('.success', name: @proposal.registered
+                                                                .candidate
+                                                                .profile.name)
   end
 
   def accept
@@ -114,17 +118,17 @@ class ProposalsController < ApplicationController
     @proposal = Proposal.find(params[:id])
   end
 
-  def authenticate_proposal
-    return unless current_candidate.present? || current_headhunter.present?
+  def find_registered_by_id
+    @registered = Registered.find(params[:id])
+  end
 
-    if current_candidate.present?
-      if @proposal.registered.candidate_id != current_candidate.id
-        redirect_to root_path
-      end
+  def authenticate_proposal
+    return unless candidate_signed_in? || headhunter_signed_in?
+
+    if candidate_signed_in?
+      redirect_to root_path unless @proposal.candidate_proposal?(current_candidate.id)
     else
-      if @proposal.registered.job_vacancy.headhunter_id != current_headhunter.id
-        redirect_to root_path
-      end
+      redirect_to root_path unless @proposal.headhunter_proposal?(current_headhunter.id)
     end
   end
 end

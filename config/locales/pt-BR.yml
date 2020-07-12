@@ -242,3 +242,4 @@ pt-BR:
   message: 
     blank_profile: 'É necessario cadastrar um perfil para utilizar o sistema'
     incomplete_profile: 'É necessario completar o perfil para se inscrever em qualquer vaga'
+    proposal_notice : "Você possui (%{amount}) propostas não analisadas ainda."

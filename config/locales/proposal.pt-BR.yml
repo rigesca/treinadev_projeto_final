@@ -10,3 +10,8 @@ pt-BR:
         note: "Observações"
         limit_feedback_date: "Data limite para resposta"
         feedback: "Feedback"
+  proposals:
+    save_reject:
+      success: "Proposta rejeitada pelo candidato %{name}, feedback sera enviado ao headhunter"
+    create: 
+      success: "Proposta enviada ao candidato %{name} com sucesso"

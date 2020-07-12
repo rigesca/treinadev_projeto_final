@@ -50,7 +50,7 @@ feature 'Headhunter consults job vancancy' do
     scenario 'a no-authenticate usser try to access show job vacancy option' do
       visit new_job_vacancy_path
 
-      expect(current_path).to eq(new_headhunter_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

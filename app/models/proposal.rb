@@ -13,6 +13,25 @@ class Proposal < ApplicationRecord
 
   enum status: { submitted: 0, accepted: 10, rejected: 20, expired: 30 }
 
+  scope :all_candidate_proposal, ->(candidate_id) {
+    joins(:registered)
+      .where('registereds.candidate_id = ?', candidate_id)
+      .submitted
+  }
+
+  scope :all_headhunter_proposal, ->(job_vacancy, headhunter_id) {
+    joins(registered: job_vacancy)
+      .where('job_vacancies.headhunter_id = ?', headhunter_id)
+  }
+
+  def candidate_proposal?(candidate_id)
+    registered.candidate_id == candidate_id
+  end
+
+  def headhunter_proposal?(headhunter_id)
+    registered.job_vacancy.headhunter_id == headhunter_id
+  end
+
   protected
 
   def start_date_must_be_greater_than_today

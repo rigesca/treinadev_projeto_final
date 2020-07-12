@@ -49,7 +49,7 @@ feature 'Candidate consults your profile' do
 
       visit edit_profile_path(profile)
 
-      expect(current_path).to eq(new_candidate_session_path)
+      expect(current_path).to eq(root_path)
     end
 
     scenario 'a no-authenticate usser try to access show profile option' do

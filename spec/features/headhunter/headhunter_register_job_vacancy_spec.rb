@@ -121,7 +121,7 @@ feature 'Headhunter register a job vacancy' do
     scenario 'a no-authenticate usser try to access new job vacancy option' do
       visit new_job_vacancy_path
 
-      expect(current_path).to eq(new_headhunter_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

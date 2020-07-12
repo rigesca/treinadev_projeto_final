@@ -111,7 +111,7 @@ feature 'Candidate register a profile' do
     scenario 'a no-authenticate usser try to access edit profile option' do
       visit new_profile_path
 
-      expect(current_path).to eq(new_candidate_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

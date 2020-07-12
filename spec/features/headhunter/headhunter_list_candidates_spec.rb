@@ -109,7 +109,7 @@ feature 'Headhunter list candidates from a vacancy' do
 
       visit candidate_list_job_vacancy_path(job_vacancy)
 
-      expect(current_path).to eq(new_headhunter_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

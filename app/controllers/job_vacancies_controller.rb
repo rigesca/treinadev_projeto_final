@@ -36,7 +36,7 @@ class JobVacanciesController < ApplicationController
     @job_vacancy = JobVacancy.new(params_job_vacancy)
     @job_vacancy.headhunter_id = current_headhunter.id
     if @job_vacancy.save
-      redirect_to @job_vacancy, notice: t('message.success')
+      redirect_to @job_vacancy, notice: t('.success')
     else
       render :new
     end

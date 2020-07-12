@@ -94,7 +94,7 @@ feature 'Candidate reject a proposal' do
 
       visit reject_proposal_path(proposal)
 
-      expect(current_path).to eq(new_candidate_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

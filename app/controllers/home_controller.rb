@@ -4,12 +4,11 @@ class HomeController < ApplicationController
   before_action :validate_profile!
 
   def index
-    if current_candidate.present?
-      quant_proposal = Proposal.joins(:registered).where('registereds.candidate_id = ? and proposals.status = 0', current_candidate.id).count
+    return unless candidate_signed_in?
 
-      if quant_proposal > 0
-        flash.now[:notice] = "Você possui (#{quant_proposal}) propostas não analisadas ainda."
-      end
-    end
+    amount = Proposal.all_candidate_proposal(current_candidate.id).count
+    return unless amount.positive?
+
+    flash.now[:notice] = t('message.proposal_notice', amount: amount)
   end
 end

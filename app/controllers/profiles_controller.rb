@@ -23,7 +23,7 @@ class ProfilesController < ApplicationController
 
     if @profile.save
       flash[:notice] =
-        @profile.is_complete? ? t('message.concluded') : t('message.success')
+        @profile.is_complete? ? t('.concluded') : t('.success')
       redirect_to root_path
     else
       render :new
@@ -32,7 +32,7 @@ class ProfilesController < ApplicationController
 
   def update
     if @profile.update(profile_params)
-      redirect_to @profile, notice: t('message.update')
+      redirect_to @profile, notice: t('.update')
     else
       render :edit
     end
@@ -54,7 +54,7 @@ class ProfilesController < ApplicationController
                            comment: params[:comment][:comment])
 
     if @comment.save
-      flash[:notice] = t('message.comment_created')
+      flash[:notice] = t('.comment_created')
     else
       flash[:alert] = @comment.errors.full_messages.first
     end

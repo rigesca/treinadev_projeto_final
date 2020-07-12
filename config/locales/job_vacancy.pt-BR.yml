@@ -22,5 +22,6 @@ pt-BR:
         statuses: 
           open: "Aberta"
           closed: "Encerrada"
-  message:
-    success: "Vaga criada com sucesso."
+  job_vacancies:
+    create:
+      success: "Vaga criada com sucesso."
