@@ -26,7 +26,7 @@
     <% if current_headhunter.present? %>
         <h4>Candidato(s) que aceitaram a proposta<h4>
         <% @registereds.each do |registered|%>
-            <p><%= link_to registered.candidate.profile.name, registered.candidate.profile%></p>
+            <p><%= link_to registered.candidate.name, registered.candidate.profile%></p>
         <% end %>
     <% end %>
 

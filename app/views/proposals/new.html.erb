@@ -3,7 +3,7 @@
     <h1>Envio de proposta</h1>
 
     <p><strong>VAGA: </strong><%= @registered.job_vacancy.heading%></p>
-    <p><strong>CANDIDATO: </strong><%= @registered.candidate.profile.name%></p>
+    <p><strong>CANDIDATO: </strong><%= @registered.candidate.name%></p>
 
     <% if @proposal.errors.any? %>
         <p>Você deve corrigir os seguintes erros para continuar</p>

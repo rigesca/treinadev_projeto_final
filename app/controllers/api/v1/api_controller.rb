@@ -6,7 +6,8 @@ module Api
       rescue_from ActiveRecord::RecordNotFound, with: :object_not_found
 
       def object_not_found
-        render json: '{ "message" : "Object not found"}', status: :precondition_failed
+        render json: '{ "message" : "Object not found"}',
+               status: :precondition_failed
       end
     end
   end

@@ -8,7 +8,7 @@ class ProposalMailer < ApplicationMailer
 
     candidate = @proposal.registered.candidate
 
-    @name = candidate.profile.name
+    @name = candidate.name
     @job_vacancy_title = @proposal.registered.job_vacancy.title
 
     mail(to: candidate.email,

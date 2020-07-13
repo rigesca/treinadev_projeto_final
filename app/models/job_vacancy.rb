@@ -18,7 +18,7 @@ class JobVacancy < ApplicationRecord
                 specialist: 40, manager: 50 }
   enum status: { open: 0, closed: 10 }
 
-  scope :word_search, ->(word) {
+  scope :word_search, lambda { |word|
     where('title LIKE :word OR vacancy_description LIKE :word',
           word: "%#{word}%")
   }

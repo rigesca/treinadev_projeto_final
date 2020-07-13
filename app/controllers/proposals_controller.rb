@@ -45,7 +45,7 @@ class ProposalsController < ApplicationController
       ProposalMailer.received_proposal(@proposal.id)
 
       redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id),
-                  notice: t('.success', name: @registered.candidate.profile.name)
+                  notice: t('.success', name: @registered.candidate.name)
     else
       @minimum = @registered.job_vacancy.minimum_wage
       @maximum = @registered.job_vacancy.maximum_wage
@@ -72,7 +72,7 @@ class ProposalsController < ApplicationController
 
     redirect_to @proposal, notice: t('.success', name: @proposal.registered
                                                                 .candidate
-                                                                .profile.name)
+                                                                .name)
   end
 
   def accept
@@ -83,8 +83,8 @@ class ProposalsController < ApplicationController
     if params[:confirm] == 'unchecked'
       @job_vacancy = @proposal.registered.job_vacancy
 
-      flash[:alert] = 'É necessario confirmar a data de inicio das atividades.'
-      redirect_to accept_proposal_path(@proposal)
+      redirect_to accept_proposal_path(@proposal),
+                  alert: t('.unchecked_start_date')
     else
       if params[:proposal][:feedback].blank?
         @proposal.update(feedback: 'Proposta aceita pelo candidato')
@@ -95,23 +95,23 @@ class ProposalsController < ApplicationController
       @proposal.accepted!
       @proposal.registered.accept_proposal!
 
-      Registered.where('candidate_id = ? and status = 0 or status = 10', current_candidate.id).each do |registered|
-        registered.reject_proposal!
-        registered.update(closed_feedback: 'Um candidato já foi selecionado para essa vaga')
+      Registered.candidate_registereds(current_candidate.id).each do |register|
+        register.reject_proposal!
+        register.update(closed_feedback:
+          'Um candidato já foi selecionado para essa vaga')
 
-        registered.proposal.destroy if registered.proposal.present?
+        register.proposal.destroy if register.proposal.present?
       end
 
-      flash[:notice] = 'Proposta aceita com sucesso. Parabéns!'
-
-      redirect_to @proposal
+      redirect_to @proposal, notice: t('.proposal_accepted')
     end
   end
 
   private
 
   def params_proposal
-    params.require(:proposal).permit(:salary, :start_date, :limit_feedback_date, :benefits, :note)
+    params.require(:proposal).permit(:salary, :start_date, :limit_feedback_date,
+                                     :benefits, :note)
   end
 
   def find_proposal_by_id
@@ -126,9 +126,13 @@ class ProposalsController < ApplicationController
     return unless candidate_signed_in? || headhunter_signed_in?
 
     if candidate_signed_in?
-      redirect_to root_path unless @proposal.candidate_proposal?(current_candidate.id)
+      unless @proposal.candidate_proposal?(current_candidate.id)
+        redirect_to root_path
+      end
     else
-      redirect_to root_path unless @proposal.headhunter_proposal?(current_headhunter.id)
+      unless @proposal.headhunter_proposal?(current_headhunter.id)
+        redirect_to root_path
+      end
     end
   end
 end

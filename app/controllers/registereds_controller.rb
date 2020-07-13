@@ -14,14 +14,14 @@ class RegisteredsController < ApplicationController
 
   def mark
     if @registered.checked?
-      flash[:alert] = t('message.candidate_uncheck', name: @registered.candidate
-                                                                      .profile
-                                                                      .name)
+      flash[:alert] = t('.candidate_uncheck', name: @registered.candidate
+                                                               .profile
+                                                               .name)
       @registered.unchecked!
     else
-      flash[:notice] = t('message.candidate_check', name: @registered.candidate
-                                                                     .profile
-                                                                     .name)
+      flash[:notice] = t('.candidate_check', name: @registered.candidate
+                                                              .profile
+                                                              .name)
       @registered.checked!
     end
 
@@ -43,12 +43,12 @@ class RegisteredsController < ApplicationController
       @registered.excluded!
 
       redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id),
-                  notice: t('.message.finished', name: @registered.candidate
-                                                                  .profile
-                                                                  .name)
+                  notice: t('.finished', name: @registered.candidate
+                                                          .profile
+                                                          .name)
     else
       redirect_to cancel_registered_path(@registered),
-                  alert: t('.error.feedback_not_blank')
+                  alert: t('.feedback_not_blank')
     end
   end
 

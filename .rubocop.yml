@@ -16,12 +16,18 @@ AllCops:
     - 'node_modules/**/*'
     - 'config/**/*'
     - 'config/ru'
+    - 'Rakefile'
+    - 'Gemfile'
+    - 'config.ru'
 
 Style/Documentation:
  Enabled: false
 
 Metrics/BlockLength:
  ExcludedMethods: ['describe', 'context', 'feature', 'scenario', 'let']
+
+Metrics/MethodLength:
+  Max: 15
 
 Layout/LineLength:
   Max: 80

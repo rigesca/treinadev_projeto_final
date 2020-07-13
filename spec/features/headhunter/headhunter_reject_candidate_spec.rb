@@ -61,7 +61,7 @@ feature 'Headhunter rejects a candidate' do
 
       visit cancel_registered_path(registered)
 
-      expect(current_path).to eq(new_headhunter_session_path)
+      expect(current_path).to eq(root_path)
     end
   end
 end

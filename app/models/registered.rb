@@ -13,4 +13,9 @@ class Registered < ApplicationRecord
   enum status: { in_progress: 0, closed: 5,
                  proposal: 10, reject_proposal: 15,
                  accept_proposal: 20, excluded: 30 }
+
+  scope :candidate_registereds, lambda { |candidate_id|
+    where('candidate_id = ?', candidate_id)
+      .where(status: [0, 10])
+  }
 end

@@ -6,17 +6,20 @@ module Api
       def create
         job_vacancy = JobVacancy.new(params.permit(:title, :vacancy_description,
                                                    :ability_description, :level,
-                                                   :region, :limit_date, :maximum_wage,
-                                                   :minimum_wage, :headhunter_id))
+                                                   :region, :limit_date,
+                                                   :maximum_wage, :minimum_wage,
+                                                   :headhunter_id))
 
         if job_vacancy.valid?
           if job_vacancy.save!
             render json: job_vacancy.as_json(only: [:id]), status: :created
           else
-            render json: '{ "message" : "Internal server error" }', status: :internal_server_error
+            render json: '{ "message" : "Internal server error" }',
+                   status: :internal_server_error
           end
         else
-          render json: '{ "message" : "Object not create" }', status: :precondition_failed
+          render json: '{ "message" : "Object not create" }',
+                 status: :precondition_failed
         end
       end
 

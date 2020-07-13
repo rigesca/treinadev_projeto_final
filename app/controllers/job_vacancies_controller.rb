@@ -45,9 +45,15 @@ class JobVacanciesController < ApplicationController
   def search
     @job_vacancies = JobVacancy.available_vacancy
 
-    @job_vacancies = @job_vacancies.word_search(params[:q]) if params[:q].present?
-    @job_vacancies = @job_vacancies.where(level: params[:levels]) if params[:levels].present?
-    @job_vacancies = @job_vacancies.minimum_wage(params[:minimun]) if params[:minimun].present?
+    if params[:q].present?
+      @job_vacancies = @job_vacancies.word_search(params[:q])
+    end
+    if params[:levels].present?
+      @job_vacancies = @job_vacancies.where(level: params[:levels])
+    end
+    if params[:minimun].present?
+      @job_vacancies = @job_vacancies.minimum_wage(params[:minimun])
+    end
 
     render :index
   end

@@ -10,4 +10,6 @@ class Candidate < ApplicationRecord
 
   has_many :registereds, dependent: :destroy
   has_many :job_vacancies, through: :registereds
+
+  delegate :name, to: :profile
 end

@@ -19,7 +19,7 @@
             <% proposals.each do |proposal|%>
                 <tr>
                     <td>
-                        <p><strong>Proposta enviada para: </strong><%= link_to proposal.registered.candidate.profile.name, proposal.registered.candidate.profile %></p>
+                        <p><strong>Proposta enviada para: </strong><%= link_to proposal.registered.candidate.name, proposal.registered.candidate.profile %></p>
                         <p><strong>Vaga :</strong> <%= link_to proposal.registered.job_vacancy.heading, proposal.registered.job_vacancy%><p>
                         <p><strong>Data limite para resposta: </strong><%= I18n.localize proposal.limit_feedback_date%></p>
                         <p><%= link_to 'Analisar proposta', proposal%><p>
