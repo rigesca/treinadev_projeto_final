@@ -33,8 +33,8 @@ class JobVacanciesController < ApplicationController
   end
 
   def create
-    @job_vacancy = JobVacancy.new(params_job_vacancy)
-    @job_vacancy.headhunter_id = current_headhunter.id
+    @job_vacancy = current_headhunter.job_vacancy.build(params_job_vacancy)
+
     if @job_vacancy.save
       redirect_to @job_vacancy, notice: t('.success')
     else

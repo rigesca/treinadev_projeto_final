@@ -6,7 +6,7 @@
 <p>
   <%= link_to 'Perfil', candidate.profile %>
 
-  <% if candidate.profile.present? %>
+  <% if candidate.profile.present? && candidate.profile.complete? %>
     <%= link_to 'Mensagens', comments_list_profile_path(candidate.profile)%>
   <% end %>
 

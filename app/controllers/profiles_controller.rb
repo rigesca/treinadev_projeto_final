@@ -18,8 +18,7 @@ class ProfilesController < ApplicationController
   def edit; end
 
   def create
-    @profile = Profile.new(profile_params)
-    @profile.candidate_id = current_candidate.id
+    @profile = current_candidate.build_profile(profile_params)
 
     if @profile.save
       flash[:notice] =

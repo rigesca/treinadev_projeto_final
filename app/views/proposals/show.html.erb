@@ -33,7 +33,7 @@
         
                 <p><strong>Benefícios: </strong><%= @proposal.benefits%></p>
 
-                <% if @proposal.note.present? %>
+                <% if @proposal.note? %>
                     <p>Observações: <%= @proposal.note%></p>
                 <% end %>
             </div>

@@ -11,14 +11,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%if @job_vacancies.empty?%>
+                    <%if job_vacancies.empty?%>
                         <tr>
                             <td>Seu perfil não possui vagas cadastradas</td>
                         </tr>
                     <%else%>
-                        <% @job_vacancies.each do |vacancy|%>
+                        <% job_vacancies.each do |vacancy|%>
                             <tr>
-                                <%= render partial:"vacancy", locals: {vacancy:vacancy}%>
+                                <%= render 'vacancy', vacancy: vacancy %>
                             </tr>
                         <%end%>
                     <%end%>           

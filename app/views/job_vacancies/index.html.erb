@@ -1,7 +1,7 @@
 <div class="container">
     <% if current_headhunter.present? %>
-        <%= render partial: "headhunter_index", locals: {job_vacancies: @job_vacancies}%>
+        <%= render "headhunter_index", job_vacancies: @job_vacancies %>
     <% else %>
-        <%= render partial: "candidate_index", locals: {job_vacancies: @job_vacancies}%>
+        <%= render "candidate_index", job_vacancies: @job_vacancies %>
     <% end %>
 </div>
