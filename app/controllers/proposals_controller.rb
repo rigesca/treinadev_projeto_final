@@ -5,12 +5,15 @@ class ProposalsController < ApplicationController
   before_action :authenticate_headhunter!, only: %i[new create]
   before_action :authenticate_candidate!, only: %i[accept save_accept
                                                    reject save_reject]
+
   before_action :validate_profile!, only: %i[index accept save_accept
                                              reject save_reject]
 
   before_action :find_proposal_by_id, only: %i[show reject save_reject
                                                accept save_accept]
   before_action :find_registered_by_id, only: %i[new create]
+
+  before_action :generate_proposal, only: %i[new create]
 
   before_action :authenticate_proposal, only: %i[show reject save_reject accept
                                                  save_accept]
@@ -29,27 +32,18 @@ class ProposalsController < ApplicationController
     @profile = @proposal.registered.candidate.profile
   end
 
-  def new
-    @proposal = @registered.build_proposal
-
-    @minimum = @registered.job_vacancy.minimum_wage
-    @maximum = @registered.job_vacancy.maximum_wage
-  end
+  def new; end
 
   def create
-    @proposal = @registered.build_proposal(params_proposal)
+    @proposal.assign_attributes(proposal_params)
 
     if @proposal.save
       @registered.proposal!
-
       ProposalMailer.received_proposal(@proposal.id)
 
       redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id),
                   notice: t('.success', name: @registered.candidate.name)
     else
-      @minimum = @registered.job_vacancy.minimum_wage
-      @maximum = @registered.job_vacancy.maximum_wage
-
       render :new
     end
   end
@@ -80,38 +74,24 @@ class ProposalsController < ApplicationController
   end
 
   def save_accept
-    if params[:confirm] == 'unchecked'
-      @job_vacancy = @proposal.registered.job_vacancy
+    ProposalService.new(@proposal)
+                   .accepted_proposal(params[:proposal][:feedback])
 
-      redirect_to accept_proposal_path(@proposal),
-                  alert: t('.unchecked_start_date')
-    else
-      if params[:proposal][:feedback].blank?
-        @proposal.update(feedback: 'Proposta aceita pelo candidato')
-      else
-        @proposal.update(feedback: params[:proposal][:feedback])
-      end
-
-      @proposal.accepted!
-      @proposal.registered.accept_proposal!
-
-      Registered.candidate_registereds(current_candidate.id).each do |register|
-        register.reject_proposal!
-        register.update(closed_feedback:
-          'Um candidato já foi selecionado para essa vaga')
-
-        register.proposal.destroy if register.proposal.present?
-      end
-
-      redirect_to @proposal, notice: t('.proposal_accepted')
-    end
+    redirect_to @proposal, notice: t('.proposal_accepted')
   end
 
   private
 
-  def params_proposal
+  def proposal_params
     params.require(:proposal).permit(:salary, :start_date, :limit_feedback_date,
                                      :benefits, :note)
+  end
+
+  def generate_proposal
+    @proposal = @registered.build_proposal
+
+    @minimum = @registered.job_vacancy.minimum_wage
+    @maximum = @registered.job_vacancy.maximum_wage
   end
 
   def find_proposal_by_id

@@ -60,7 +60,7 @@
       to see more useful Rails Best Practices.
     </p>
     <p>
-        Found 66 warnings.
+        Found 39 warnings.
     </p>
     <table>
           <tr>
@@ -69,22 +69,8 @@
                 />&nbsp;<label for="LawOfDemeterReview">Law Of Demeter</label>
               </td>
               <td>
-                <input type="checkbox" class="error-type" id="ReplaceInstanceVariableWithLocalVariableReview" value="ReplaceInstanceVariableWithLocalVariableReview"
-                />&nbsp;<label for="ReplaceInstanceVariableWithLocalVariableReview">Replace Instance Variable With Local Variable</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="UseQueryAttributeReview" value="UseQueryAttributeReview"
-                />&nbsp;<label for="UseQueryAttributeReview">Use Query Attribute</label>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                <input type="checkbox" class="error-type" id="MoveModelLogicIntoModelReview" value="MoveModelLogicIntoModelReview"
-                />&nbsp;<label for="MoveModelLogicIntoModelReview">Move Model Logic Into Model</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="SimplifyRenderInViewsReview" value="SimplifyRenderInViewsReview"
-                />&nbsp;<label for="SimplifyRenderInViewsReview">Simplify Render In Views</label>
+                <input type="checkbox" class="error-type" id="OveruseRouteCustomizationsReview" value="OveruseRouteCustomizationsReview"
+                />&nbsp;<label for="OveruseRouteCustomizationsReview">Overuse Route Customizations</label>
               </td>
               <td>
                 <input type="checkbox" class="error-type" id="RemoveTrailingWhitespaceCheck" value="RemoveTrailingWhitespaceCheck"
@@ -93,18 +79,8 @@
           </tr>
           <tr>
               <td>
-                <input type="checkbox" class="error-type" id="OveruseRouteCustomizationsReview" value="OveruseRouteCustomizationsReview"
-                />&nbsp;<label for="OveruseRouteCustomizationsReview">Overuse Route Customizations</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="UseModelAssociationReview" value="UseModelAssociationReview"
-                />&nbsp;<label for="UseModelAssociationReview">Use Model Association</label>
-              </td>
-          </tr>
-          <tr>
-              <td>
-                <input type="checkbox" class="error-type" id="RemoveEmptyHelpersReview" value="RemoveEmptyHelpersReview"
-                />&nbsp;<label for="RemoveEmptyHelpersReview">Remove Empty Helpers</label>
+                <input type="checkbox" class="error-type" id="MoveModelLogicIntoModelReview" value="MoveModelLogicIntoModelReview"
+                />&nbsp;<label for="MoveModelLogicIntoModelReview">Move Model Logic Into Model</label>
               </td>
               <td>
                 <input type="checkbox" class="error-type" id="UseMultipartAlternativeAsContentTypeOfEmailReview" value="UseMultipartAlternativeAsContentTypeOfEmailReview"
@@ -131,7 +107,7 @@
             <td class='filename'>
                 app/models/proposal.rb
             </td>
-            <td class='line'>29</td>
+            <td class='line'>32</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
             </td>
@@ -140,42 +116,6 @@
             <td class='filename'>
                 app/models/proposal.rb
             </td>
-            <td class='line'>30</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
-            </td>
-          </tr>
-          <tr class="LawOfDemeterReview">
-            <td class='filename'>
-                app/mailers/proposal_mailer.rb
-            </td>
-            <td class='line'>11</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
-            </td>
-          </tr>
-          <tr class="LawOfDemeterReview">
-            <td class='filename'>
-                app/controllers/proposals_controller.rb
-            </td>
-            <td class='line'>32</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
-            </td>
-          </tr>
-          <tr class="LawOfDemeterReview">
-            <td class='filename'>
-                app/controllers/proposals_controller.rb
-            </td>
-            <td class='line'>33</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
-            </td>
-          </tr>
-          <tr class="LawOfDemeterReview">
-            <td class='filename'>
-                app/controllers/proposals_controller.rb
-            </td>
             <td class='line'>48</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
@@ -183,7 +123,7 @@
           </tr>
           <tr class="LawOfDemeterReview">
             <td class='filename'>
-                app/controllers/proposals_controller.rb
+                app/models/proposal.rb
             </td>
             <td class='line'>49</td>
             <td class='message'>
@@ -194,7 +134,25 @@
             <td class='filename'>
                 app/controllers/proposals_controller.rb
             </td>
-            <td class='line'>121</td>
+            <td class='line'>93</td>
+            <td class='message'>
+              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
+            </td>
+          </tr>
+          <tr class="LawOfDemeterReview">
+            <td class='filename'>
+                app/controllers/proposals_controller.rb
+            </td>
+            <td class='line'>94</td>
+            <td class='message'>
+              <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
+            </td>
+          </tr>
+          <tr class="LawOfDemeterReview">
+            <td class='filename'>
+                app/services/proposal_service.rb
+            </td>
+            <td class='line'>16</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/24/the-law-of-demeter/' target='_blank'>law of demeter</a>
             </td>
@@ -221,25 +179,7 @@
             <td class='filename'>
                 app/controllers/proposals_controller.rb
             </td>
-            <td class='line'>36</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@registered use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/proposals_controller.rb
-            </td>
-            <td class='line'>59</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@proposal use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/proposals_controller.rb
-            </td>
-            <td class='line'>78</td>
+            <td class='line'>55</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@proposal use_count > 4)</a>
             </td>
@@ -248,34 +188,25 @@
             <td class='filename'>
                 app/controllers/job_vacancies_controller.rb
             </td>
-            <td class='line'>44</td>
+            <td class='line'>45</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@job_vacancies use_count > 4)</a>
             </td>
           </tr>
           <tr class="MoveModelLogicIntoModelReview">
             <td class='filename'>
-                app/controllers/application_controller.rb
+                app/controllers/registereds_controller.rb
             </td>
-            <td class='line'>10</td>
+            <td class='line'>15</td>
             <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (current_candidate use_count > 4)</a>
+              <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@registered use_count > 4)</a>
             </td>
           </tr>
           <tr class="MoveModelLogicIntoModelReview">
             <td class='filename'>
                 app/controllers/registereds_controller.rb
             </td>
-            <td class='line'>14</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (registered use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="MoveModelLogicIntoModelReview">
-            <td class='filename'>
-                app/controllers/registereds_controller.rb
-            </td>
-            <td class='line'>34</td>
+            <td class='line'>36</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/07/21/move-model-logic-into-the-model/' target='_blank'>move model logic into model (@registered use_count > 4)</a>
             </td>
@@ -307,186 +238,6 @@
               <a href='https://rails-bestpractices.com/posts/2010/07/22/overuse-route-customizations/' target='_blank'>overuse route customizations (customize_count > 3)</a>
             </td>
           </tr>
-          <tr class="RemoveEmptyHelpersReview">
-            <td class='filename'>
-                app/helpers/home_helper.rb
-            </td>
-            <td class='line'>1</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2011/04/09/remove-empty-helpers/' target='_blank'>remove empty helpers</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/job_vacancies/_headhunter_index.html.erb
-            </td>
-            <td class='line'>14</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/job_vacancies/_headhunter_index.html.erb
-            </td>
-            <td class='line'>19</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/job_vacancies/_candidate_index.html.erb
-            </td>
-            <td class='line'>21</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="ReplaceInstanceVariableWithLocalVariableReview">
-            <td class='filename'>
-                app/views/job_vacancies/_candidate_index.html.erb
-            </td>
-            <td class='line'>26</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/24/replace-instance-variable-with-local-variable/' target='_blank'>replace instance variable with local variable</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/_headhunter_index.html.erb
-            </td>
-            <td class='line'>21</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/show.html.erb
-            </td>
-            <td class='line'>45</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/_candidate_index.html.erb
-            </td>
-            <td class='line'>8</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/_candidate_index.html.erb
-            </td>
-            <td class='line'>28</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/candidate_list.html.erb
-            </td>
-            <td class='line'>5</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/candidate_list.html.erb
-            </td>
-            <td class='line'>7</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/candidate_list.html.erb
-            </td>
-            <td class='line'>9</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/index.html.erb
-            </td>
-            <td class='line'>3</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/job_vacancies/index.html.erb
-            </td>
-            <td class='line'>5</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/proposals/index.html.erb
-            </td>
-            <td class='line'>4</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/proposals/index.html.erb
-            </td>
-            <td class='line'>6</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/profiles/edit.html.erb
-            </td>
-            <td class='line'>3</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="SimplifyRenderInViewsReview">
-            <td class='filename'>
-                app/views/profiles/new.html.erb
-            </td>
-            <td class='line'>3</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/04/simplify-render-in-views/' target='_blank'>simplify render in views</a>
-            </td>
-          </tr>
-          <tr class="UseModelAssociationReview">
-            <td class='filename'>
-                app/controllers/profiles_controller.rb
-            </td>
-            <td class='line'>23</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/19/use-model-association/' target='_blank'>use model association (for @profile)</a>
-            </td>
-          </tr>
-          <tr class="UseModelAssociationReview">
-            <td class='filename'>
-                app/controllers/job_vacancies_controller.rb
-            </td>
-            <td class='line'>33</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/07/19/use-model-association/' target='_blank'>use model association (for @job_vacancy)</a>
-            </td>
-          </tr>
           <tr class="UseMultipartAlternativeAsContentTypeOfEmailReview">
             <td class='filename'>
                 app/mailers/proposal_mailer.rb
@@ -496,20 +247,11 @@
               <a href='https://rails-bestpractices.com/posts/2010/08/05/use-multipart-alternative-as-content_type-of-email/' target='_blank'>use multipart/alternative as content_type of email</a>
             </td>
           </tr>
-          <tr class="UseQueryAttributeReview">
-            <td class='filename'>
-                app/views/proposals/show.html.erb
-            </td>
-            <td class='line'>36</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/10/03/use-query-attribute/' target='_blank'>use query attribute (@proposal.note?)</a>
-            </td>
-          </tr>
           <tr class="RemoveTrailingWhitespaceCheck">
             <td class='filename'>
                 app/views/job_vacancies/_canceled.html.erb
             </td>
-            <td class='line'>3</td>
+            <td class='line'>19</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
             </td>
@@ -554,7 +296,7 @@
             <td class='filename'>
                 app/views/job_vacancies/_candidate_index.html.erb
             </td>
-            <td class='line'>2</td>
+            <td class='line'>3</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
             </td>
@@ -573,15 +315,6 @@
                 app/views/job_vacancies/_search.html.erb
             </td>
             <td class='line'>2</td>
-            <td class='message'>
-              <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
-            </td>
-          </tr>
-          <tr class="RemoveTrailingWhitespaceCheck">
-            <td class='filename'>
-                app/views/job_vacancies/candidate_list.html.erb
-            </td>
-            <td class='line'>10</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
             </td>
@@ -642,18 +375,18 @@
           </tr>
           <tr class="RemoveTrailingWhitespaceCheck">
             <td class='filename'>
-                app/views/proposals/index.html.erb
+                app/views/layouts/_login_selection.html.erb
             </td>
-            <td class='line'>2</td>
+            <td class='line'>15</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
             </td>
           </tr>
           <tr class="RemoveTrailingWhitespaceCheck">
             <td class='filename'>
-                app/views/layouts/_navbar.html.erb
+                app/views/layouts/_candidate_navbar.html.erb
             </td>
-            <td class='line'>7</td>
+            <td class='line'>5</td>
             <td class='message'>
               <a href='https://rails-bestpractices.com/posts/2010/12/02/remove-trailing-whitespace/' target='_blank'>remove trailing whitespace</a>
             </td>
