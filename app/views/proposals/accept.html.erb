@@ -1,9 +1,9 @@
 <div class="container">
-    
+
     <h3>Aceitar proposta para a vaga: <strong><%= @job_vacancy.title%></strong></h3>
     <h3><strong>ATENÇÃO! </strong>Data de inicio das atividades: <strong><%= I18n.localize @proposal.start_date%></strong></h3>
 
-    </br>
+    <br>
 
     <%= form_with model: @proposal, url: save_accept_proposal_path, method: :post do |form|%>
 
@@ -22,10 +22,10 @@
                     <%= check_box_tag "confirm", "checked" %>
                 </div>
             </div>
-        </div>    
+        </div>
         <p>
             <%= form.submit 'Enviar', class: "btn btn-success"%>
-        </p>  
+        </p>
     <%end%>
 
 </div>

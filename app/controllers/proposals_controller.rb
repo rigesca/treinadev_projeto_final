@@ -28,8 +28,10 @@ class ProposalsController < ApplicationController
   end
 
   def show
-    @job_vacancy = @proposal.registered.job_vacancy
-    @profile = @proposal.registered.candidate.profile
+    registered = @proposal.registered
+
+    @job_vacancy = registered.job_vacancy
+    @profile = registered.candidate.profile
   end
 
   def new; end
@@ -53,16 +55,8 @@ class ProposalsController < ApplicationController
   end
 
   def save_reject
-    feedback = params[:proposal][:feedback]
-
-    if feedback.blank?
-      @proposal.update(feedback: 'Proposta rejeitada pelo candidato')
-    else
-      @proposal.update(feedback: feedback)
-    end
-
-    @proposal.rejected!
-    @proposal.registered.reject_proposal!
+    ProposalService.new(@proposal)
+                   .rejected_proposal(params[:proposal][:feedback])
 
     redirect_to @proposal, notice: t('.success', name: @proposal.registered
                                                                 .candidate
@@ -74,10 +68,15 @@ class ProposalsController < ApplicationController
   end
 
   def save_accept
-    ProposalService.new(@proposal)
-                   .accepted_proposal(params[:proposal][:feedback])
+    if params[:confirm] == 'unchecked'
+      redirect_to accept_proposal_path(@proposal),
+                  alert: t('.unchecked_start_date')
+    else
+      ProposalService.new(@proposal)
+                     .accepted_proposal(params[:proposal][:feedback])
 
-    redirect_to @proposal, notice: t('.proposal_accepted')
+      redirect_to @proposal, notice: t('.proposal_accepted')
+    end
   end
 
   private
@@ -90,8 +89,8 @@ class ProposalsController < ApplicationController
   def generate_proposal
     @proposal = @registered.build_proposal
 
-    @minimum = @registered.job_vacancy.minimum_wage
-    @maximum = @registered.job_vacancy.maximum_wage
+    @minimum = @registered.minimum_wage
+    @maximum = @registered.maximum_wage
   end
 
   def find_proposal_by_id
@@ -106,13 +105,11 @@ class ProposalsController < ApplicationController
     return unless candidate_signed_in? || headhunter_signed_in?
 
     if candidate_signed_in?
-      unless @proposal.candidate_proposal?(current_candidate.id)
-        redirect_to root_path
-      end
+      return if @proposal.candidate_proposal?(current_candidate.id)
     else
-      unless @proposal.headhunter_proposal?(current_headhunter.id)
-        redirect_to root_path
-      end
+      return if @proposal.headhunter_proposal?(current_headhunter.id)
     end
+
+    redirect_to root_path
   end
 end

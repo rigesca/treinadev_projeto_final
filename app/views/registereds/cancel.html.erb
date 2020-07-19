@@ -9,7 +9,6 @@
     <br>
 
     <%= form_with model: @registered, url: save_canceled_registered_path, method: :post do |form|%>
-
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
@@ -18,12 +17,10 @@
                     <%= form.text_area :closed_feedback, class:"form-control", rows:4%>
                 </div>
             </div>
-        </div>    
+        </div>
         <p>
             <%= form.submit 'Encerrar', class: "btn btn-danger"%>
-        </p>  
+        </p>
     <%end%>
-
-
 
 </div>

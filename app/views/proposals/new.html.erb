@@ -16,7 +16,6 @@
 
 
     <%= form_with model: @proposal,url:send_proposal_registered_path, methods: :post, local:true do |form| %>
-        
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
@@ -40,8 +39,8 @@
                     <%= form.date_field :limit_feedback_date, class:"form-control"%>
                 </div>
             </div>
-        </div> 
-       
+        </div>
+
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
@@ -50,7 +49,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
@@ -59,12 +58,11 @@
                 </div>
             </div>
         </div>
-        
+
         <p>
             <%= form.submit 'Enviar', class: "btn btn-primary"%>
         </p>
-        
-    <% end %>
 
+    <% end %>
 
 </div>

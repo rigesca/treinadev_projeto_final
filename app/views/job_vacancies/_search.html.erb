@@ -1,21 +1,20 @@
 <%= form_with url: search_job_vacancies_path, local: true, method: :get do %>
-        
         <div class="row">
             <div class="col-sm-1">
                 <%= label_tag :q, 'Busca por:' %>
             </div>
             <div class="col-sm-3">
-                <%= text_field_tag :q%>
+                <%= text_field_tag :q %>
             </div>
 
             <div class="col-sm-2">
                 <%= label_tag :minimun, 'Valor minimo:' %>
             </div>
             <div class='col-sm-2'>
-                <%= text_field_tag :minimun %> 
-            </div> 
+                <%= text_field_tag :minimun %>
+            </div>
         </div>
-            
+
         <div class="row">
             <div class="col-sm-1">
                 <%= label_tag 'Nivel:' %>
@@ -26,15 +25,14 @@
                     <%= check_box_tag('levels[]','junior') %><%= I18n.t(:junior, scope: [:enum,:levels])%>
                     <%= check_box_tag('levels[]','full') %> <%= I18n.t(:full, scope: [:enum,:levels])%>
                     </div>
-                <div class="row">  
+                <div class="row">
                     <%= check_box_tag('levels[]','senior') %> <%= I18n.t(:senior, scope: [:enum,:levels])%>
                     <%= check_box_tag('levels[]','specialist') %> <%= I18n.t(:specialist, scope: [:enum,:levels])%>
                     <%= check_box_tag('levels[]','manager') %> <%= I18n.t(:manager, scope: [:enum,:levels]) %>
                 </div>
             </div>
-            <div class="col-sm-2">    
+            <div class="col-sm-2">
                 <%= submit_tag 'Pesquisar'%>
             </div>
         </div>
-           
 <% end %>

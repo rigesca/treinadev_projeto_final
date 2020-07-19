@@ -1,9 +1,7 @@
 <div class="container">
-    
     <h3>Encerrar Proposta para a vaga: <strong><%= @job_vacancy.title%></strong></h3>
 
     <%= form_with model: @proposal, url: save_reject_proposal_path, method: :post do |form|%>
-
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
@@ -12,10 +10,10 @@
                     <%= form.text_area :feedback, class:"form-control", rows:4%>
                 </div>
             </div>
-        </div>    
+        </div>
         <p>
             <%= form.submit 'Enviar', class: "btn btn-danger"%>
-        </p>  
+        </p>
     <%end%>
 
 </div>

@@ -1,5 +1,4 @@
 <div class="container">
-
     <div class="row">
         <div class="col-sm-2 offset-sm-2">
             <%= image_tag @profile.candidate_photo, class: "img-circle", size: '175x175'%>
@@ -12,7 +11,6 @@
             <h4>Data de nascimento:</h4>
             <p><%= I18n.localize @profile.birth_date %></p>
         </div>
-
     </div>
 
     <div class="row">
@@ -35,12 +33,12 @@
      <div class="row">
         <div class="col-sm-12">
            <%= link_to 'Comentários', comments_list_profile_path , class: "btn btn-primary"%>
-            
+
             <% if current_candidate.present?%>
                 <%= link_to 'Editar', edit_profile_path(@profile), class: "btn btn-primary"%>
             <% end %>
 
-            <%= link_to 'Voltar', :back , class: "btn btn-primary"%> 
+            <%= link_to 'Voltar', :back , class: "btn btn-primary"%>
         </div>
     </div>
 </div>

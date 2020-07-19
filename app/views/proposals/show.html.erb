@@ -1,5 +1,4 @@
 <div class="container">
-
     <div class="row">
         <div class="col-sm-12">
             <h4>VAGA: </h4>
@@ -10,7 +9,6 @@
         </div>
     </div>
 
-   
     <div class="row">
         <div class="col-sm-12">
             <h4>CANDIDATO: </h4>
@@ -23,14 +21,13 @@
     <div class="row">
         <div class="col-sm-12">
             <h4>PROPOSTA: </h4>
-
             <div class="col-sm-9">
                 <p><strong>Data para inicio das atividades: </strong><%= I18n.localize @proposal.start_date%></p>
 
                 <p><strong>Data limite para resposta: </strong><%= I18n.localize @proposal.limit_feedback_date%></p>
 
                 <p><strong>Salário: </strong><%= number_to_currency @proposal.salary%></p>
-        
+
                 <p><strong>Benefícios: </strong><%= @proposal.benefits%></p>
 
                 <% if @proposal.note? %>
@@ -58,19 +55,18 @@
         <div class="col-sm-10" style="vertical-align: middle;">
             <% if @proposal.submitted? && current_candidate.present?%>
                 <p><strong>Você deseja:</strong></p>
-                <%=link_to 'Aceitar proposta', accept_proposal_path , class: "btn btn-primary" %> 
-                <%=link_to 'Rejeitar proposta', reject_proposal_path , class: "btn btn-danger" %> 
+                <%=link_to 'Aceitar proposta', accept_proposal_path , class: "btn btn-primary" %>
+                <%=link_to 'Rejeitar proposta', reject_proposal_path , class: "btn btn-danger" %>
             <% end %>
         </div>
     </div>
 
-    </br>
+    <br>
 
     <div class="row">
         <div class="col-sm-10" style="vertical-align: middle;">
             <p><%=link_to 'Voltar', :back ,class: "btn btn-primary"%></p>
         </div>
     </div>
-       
 
 </div>

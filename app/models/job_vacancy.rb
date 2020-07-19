@@ -18,13 +18,22 @@ class JobVacancy < ApplicationRecord
                 specialist: 40, manager: 50 }
   enum status: { open: 0, closed: 10 }
 
+  scope :available_vacancy, -> { where('limit_date > ?', Date.current).open }
+  scope :minimum_wage, ->(wage) { where('minimum_wage >= ?', wage.to_s) }
   scope :word_search, lambda { |word|
     where('title LIKE :word OR vacancy_description LIKE :word',
           word: "%#{word}%")
   }
 
-  scope :available_vacancy, -> { where('limit_date > ?', Date.current).open }
-  scope :minimum_wage, ->(wage) { where('minimum_wage >= ?', wage.to_s) }
+  def self.search_for_vacancies(word:, levels:, minimun:)
+    vacancies = JobVacancy.available_vacancy
+
+    vacancies = vacancies.word_search(word) if word.present?
+    vacancies = vacancies.where(level: levels) if levels.present?
+    vacancies = vacancies.minimum_wage(minimun) if minimun.present?
+
+    vacancies
+  end
 
   def heading
     "#{I18n.t(level, scope: %i[enum levels])} | #{title}"

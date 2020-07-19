@@ -2,6 +2,7 @@
 
 class Proposal < ApplicationRecord
   belongs_to :registered
+  delegate :candidate_id, to: :registered
 
   validates :start_date, :limit_feedback_date,
             :salary, :benefits, presence: true
@@ -29,7 +30,7 @@ class Proposal < ApplicationRecord
   end
 
   def headhunter_proposal?(headhunter_id)
-    registered.job_vacancy.headhunter_id == headhunter_id
+    registered.headhunter_id == headhunter_id
   end
 
   protected
@@ -45,8 +46,8 @@ class Proposal < ApplicationRecord
   def salary_must_be_between_the_maximum_and_minimum_wage_values
     return if salary.blank?
 
-    if salary < registered.job_vacancy.minimum_wage ||
-       salary > registered.job_vacancy.maximum_wage
+    if salary < registered.minimum_wage ||
+       salary > registered.maximum_wage
       errors.add(
         :salary, 'o valor deve estra dentro da faixa estipulado pela vaga.'
       )

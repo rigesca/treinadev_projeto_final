@@ -1,5 +1,4 @@
 <div class="container">
-
     <h3><%= @job_vacancy.title%></h3>
 
     <h4>Descrição da vaga:</h4>
@@ -33,31 +32,31 @@
     <% if current_candidate.present?%>
 
         <% if @job_vacancy.verify_candidate_apply_for_vacancy(current_candidate.id) %>
-            
+
             <% if @job_vacancy.verify_status_registered_for_vacancy(current_candidate.id) %>
                 <p class="notice alert-success">Você já se encontra inscrito para essa vaga.</p>
             <% else %>
                 <p class="notice alert-danger">Vaga encerrada, veja justificativa em "minhas vagas".</p>
             <% end %>
-        
+
         <% else %>
 
             <%= render 'apply_form', registered: @registered %>
 
         <%end%>
-    
+
     <% end %>
 
     <% if current_headhunter.present? %>
         <% if !@job_vacancy.closed? %>
             <%= link_to 'Lista Candidatos', candidate_list_job_vacancy_path , class: "btn btn-primary" %>
         <% end %>
-        
+
         <% if @registereds.present? && @job_vacancy.open? %>
             <%= link_to 'Encerra vaga', closes_job_vacancy_path , method: :post, class: "btn btn-danger" %>
         <% end %>
 
-    <% end %>    
+    <% end %>
 
     <%= link_to 'Voltar', :back , class: "btn btn-primary"%>
 

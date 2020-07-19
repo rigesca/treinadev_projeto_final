@@ -1,5 +1,4 @@
 <%= form_with model: registered, url: apply_job_vacancy_path, method: :post do |form|%>
-
     <div class="row">
         <div class="col-sm-8">
             <div class="form-group">
@@ -8,8 +7,8 @@
                 <%= form.text_area :registered_justification, class:"form-control", rows:4%>
             </div>
         </div>
-    </div>    
+    </div>
     <p>
         <%= form.submit 'Candidatar-se a vaga', class: "btn btn-primary"%>
-    </p>  
+    </p>
 <%end%>

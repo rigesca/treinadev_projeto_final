@@ -1,21 +1,16 @@
 <table class="table table-striped table-bordered">
-                
     <thead class="thead-dark">
         <tr>
             <th>PROPOSTAS</th>
             <th>STATUS</th>
         </tr>
     </thead>
-        
     <tbody>
         <%if proposals.empty?%>
-                
             <tr>
                 <td><%= "Não existem propostas para seu perfil"%></td>
             </tr>
-
         <%else%>
-                
             <% proposals.each do |proposal|%>
                 <tr>
                     <td>
@@ -31,5 +26,4 @@
             <%end%>
         <%end%>
     </tbody>
-
 </table>

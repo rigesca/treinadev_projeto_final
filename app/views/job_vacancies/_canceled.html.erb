@@ -16,7 +16,7 @@
                         <tr>
                             <td>
                                 <div class="col">
-                                    <% if registered.checked? %> 
+                                    <% if registered.checked? %>
                                         <span class="glyphicon glyphicon-star"></span>
                                     <% end %>
                                     <%= link_to "#{registered.candidate.name} - #{registered.candidate.profile.calculates_candidate_age}", profile_path(registered.candidate.profile)%>

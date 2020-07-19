@@ -5,6 +5,15 @@ class ProposalService
     @proposal = proposal
   end
 
+  def rejected_proposal(feedback)
+    feedback = 'Proposta rejeitada pelo candidato' if feedback.blank?
+
+    @proposal.update(feedback: feedback)
+
+    @proposal.rejected!
+    @proposal.registered.reject_proposal!
+  end
+
   def accepted_proposal(feedback)
     feedback = 'Proposta aceita pelo candidato' if feedback.blank?
 
@@ -13,7 +22,7 @@ class ProposalService
     @proposal.accepted!
     @proposal.registered.accept_proposal!
 
-    close_other_proposals(@proposal.registered.candidate_id)
+    close_other_proposals(@proposal.candidate_id)
   end
 
   def close_other_proposals(candidate)

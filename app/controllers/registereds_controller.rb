@@ -13,18 +13,13 @@ class RegisteredsController < ApplicationController
   end
 
   def mark
-    if @registered.checked?
-      flash[:alert] = t('.candidate_uncheck', name: @registered.candidate
-                                                               .profile
-                                                               .name)
-      @registered.unchecked!
-    else
+    if @registered.favorite_candidate == 'checked'
       flash[:notice] = t('.candidate_check', name: @registered.candidate
-                                                              .profile
                                                               .name)
-      @registered.checked!
+    else
+      flash[:alert] = t('.candidate_uncheck', name: @registered.candidate
+                                                               .name)
     end
-
     redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id)
   end
 
@@ -34,17 +29,11 @@ class RegisteredsController < ApplicationController
   end
 
   def save_canceled
-    justification = params[:registered][:closed_feedback]
-
-    if justification.present?
-      @registered.update(closed_feedback: justification)
-
-      @registered.unchecked!
-      @registered.excluded!
+    if params[:registered][:closed_feedback].present?
+      @registered.canceled_registered(params[:registered][:closed_feedback])
 
       redirect_to candidate_list_job_vacancy_path(@registered.job_vacancy.id),
                   notice: t('.finished', name: @registered.candidate
-                                                          .profile
                                                           .name)
     else
       redirect_to cancel_registered_path(@registered),

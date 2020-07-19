@@ -3,6 +3,7 @@
 
     <div class="row">
         <div class="col-sm-10">
+
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -11,23 +12,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
                     <%if @registereds.empty?%>
                         <tr>
                             <td>Você não possui nenhum inscrição em nenhuma vaga do site</td>
                         </tr>
                     <%else%>
-                        
                         <% @registereds.each do |registered|%>
                             <tr>
-                                
                                 <td>
                                     <% if registered.in_progress? || registered.proposal? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                        <p><strong>Descrição da vaga: </strong><%= registered.job_vacancy.vacancy_description %></p>
+                                        <p><strong>Descrição da vaga: </strong><%= registered.vacancy_description %></p>
                                     <% elsif registered.reject_proposal? || registered.accept_proposal? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
-                                        <p><strong>Feedback do candidato: </strong><%= registered.proposal.feedback %></p>
+                                        <p><strong>Feedback do candidato: </strong><%= registered.feedback %></p>
                                     <% elsif registered.excluded? %>
                                         <%= link_to registered.job_vacancy.heading, registered.job_vacancy%>
                                         <p><strong>Feedback do headhunter: </strong><%= registered.closed_feedback %></p>
@@ -36,7 +34,6 @@
                                         <p><strong>Vaga encerrada!</p>
                                     <% end %>
                                 </td>
-                                
                                 <td>
                                     <% if registered.closed? %>
                                         <strong> <%= I18n.t(registered.status, scope: [:enum,:statuses]) %></strong>
@@ -47,15 +44,12 @@
                                         <%= I18n.t(registered.status, scope: [:enum,:statuses]) %>
                                     <% end %>
                                 </td>
-
                             </tr>
                         <%end%>
-
-                    <%end%>  
-
+                    <%end%>
                 </tbody>
             </table>
+
         </div>
     </div>
-
 </div>
