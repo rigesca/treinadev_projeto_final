@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '2.6.10'
 gem 'rails', '~> 5.2.3'
 
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -19,7 +19,8 @@ gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 5.2.0'
+  gem 'factory_bot', '~> 5.2.0'
   gem 'ffaker'
   gem 'rspec-rails', '~> 3.9'
 end

@@ -21,7 +21,7 @@ Além das gems automáticas criadas pelo projeto, foram adicionadas as seguintes
 
 ## Versões
 Para esse projeto foram usados as seguintes versões: 
-* Ruby ver.: 2.6.5
+* Ruby ver.: 2.6.10
 * Rails ver.: 5.2.3 ou maior
 
 ## Preparação do ambiente 
@@ -77,3 +77,4 @@ E por ultimo, na opção “propostas” ele pode ver as propostas que recebeu d
 
 Ao ter uma ou mais propostas aceitas, o headhunter pode encerrar a vaga dentro da tela de consulta da vaga. Ao fazer isso, todas as propostas são finalizadas e as demais inscrições canceladas.
 
+docker run -it --rm -v $(pwd):/app -w /app ruby:2.6.10 bash
