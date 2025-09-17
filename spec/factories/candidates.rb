@@ -4,7 +4,13 @@ require 'ffaker'
 
 FactoryBot.define do
   factory :candidate do
-    email { FFaker::Internet.email }
+    sequence(:email) { |n| "candidate#{n}@email.com" }
     password { '12345678' }
+  end
+
+  trait :with_profile do
+    after(:create) do |candidate|
+      create(:profile, :with_photo, candidate: candidate)
+    end
   end
 end
